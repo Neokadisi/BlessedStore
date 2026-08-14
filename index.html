@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>BlessedStore - Bolsos de Lujo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- AOS Animaciones -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+  <!-- Fuentes -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Lora:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root{
+      --gold:#e49bbd;
+      --pink:#ece9ea;
+      --pink-200:#c978a3;
+      --ivory:#d184b1;
+      --onyx:#111111;
+    }
+    html,body{height:100%}
+    body{
+      font-family:'Lora',serif;
+      color:var(--onyx); 
+      background: radial-gradient(1200px 600px at 15% 10%, #ec91b6 0%, #e485b7 35%, #e280b1 75%) fixed,
+                  linear-gradient(to bottom right,#e990b4,#e47bb3);
+      background-attachment: fixed;
+    }
+    h1,h2,h3,h4{font-family:'Playfair Display',serif}
+    .gold-text{color:var(--gold)}
+    .gold-bg{background-color:var(--gold); transition: background-color 0.2s ease-in-out;}
+    .gold-bg:hover{background-color:#da78b4;} 
+    .btn-pink{background-color:var(--pink); color:#e274b4; transition: background-color 0.2s ease-in-out;}
+    .btn-pink:hover{background-color:var(--pink-200);}
+
+    /* Hero slider detrás del eslogan */
+    .hero-track{
+      display:flex; gap:24px; width:max-content;
+      animation: scroll-left 22s linear infinite;
+    }
+    @keyframes scroll-left{
+      0%{ transform:translateX(0) }
+      100%{ transform:translateX(-50%) }
+    }
+    .hero-mask{
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, rgb(10, 10, 10) 10%, rgb(15, 14, 15) 90%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, rgb(0, 0, 0) 10%, rgb(0, 0, 0) 90%, transparent 100%);
+    }
+    .hero-track img {
+      border-radius: 1rem; 
+      box-shadow: 0 10px 30px rgba(214, 117, 177, 0.1); 
+    }
+
+    /* Drawer del carrito */
+    .drawer{ transform: translateX(100%); }
+    .drawer.open{ transform: translateX(0%); }
+
+    /* Tarjeta elegante reutilizable */
+    .card{
+      background:#fff; border:1px solid rgba(17,17,17,.04); /* Borde más suave */
+      border-radius:18px; box-shadow: 0 8px 24px rgba(0,0,0,.04); /* Sombra más suave */
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Transición para hover */
+    }
+    .card:hover {
+      transform: translateY(-3px); /* Efecto de elevación al pasar el ratón */
+      box-shadow: 0 12px 36px rgba(0,0,0,.08); /* Sombra más pronunciada al pasar el ratón */
+    }
+
+    /* Badge Edición Limitada */
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:.3rem .8rem; border-radius:999px; font-size:.7rem; border:1px solid rgba(17,17,17,.1); /* Borde más definido */
+      background:var(--ivory); /* Fondo con color ivory */
+      color:var(--onyx); /* Texto oscuro */
+      font-weight:500;
+      letter-spacing:0.05em;
+    }
+
+    /* Contenedor máximo */
+    .wrap{max-width:1200px; margin:0 auto; padding:0 1.25rem}
+
+    /* Navbar */
+    header {
+      background-color: rgba(255, 255, 255, 0.9); 
+      -webkit-backdrop-filter: blur(8px); 
+      backdrop-filter: blur(8px); 
+      border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+    }
+
+    /* Hero Section */
+    .hero-section h1 {
+      color: var(--onyx); 
+    }
+
+    .hero-section p {
+      color: var(--onyx); 
+      background-color: rgba(255, 255, 255, 0.7); 
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      display: inline-block;
+    }
+
+    .filter-btn.gold-bg {
+      background-color: var(--gold);
+      color: #fff;
+      border-color: var(--gold);
+    }
+
+    .filter-btn {
+      transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+    }
+
+    .filter-btn:hover:not(.gold-bg) {
+      background-color: var(--ivory);
+      border-color: var(--ivory);
+    }
+
+    /* FOOTER */
+    footer {
+      background-color: var(--ivory);
+      color: var(--onyx);
+    }
+
+    footer .gold-text {
+      color: var(--gold); 
+    }
+
+    footer a {
+      color: rgba(17, 17, 17, 0.8); 
+      transition: color 0.2s ease-in-out;
+    }
+
+    footer a:hover {
+      color: var(--gold); 
+    }
+
+    
+    footer .border-t {
+      border-color: rgba(57, 50, 50, 0.116); 
+      color: rgba(17, 17, 17, 0.6); 
+    }
+  </style>
+
+<style id="adminStyles">
+  .admin-overlay{position:fixed;inset:0;background:rgba(15,23,42,.72);z-index:9999;display:none;overflow:auto;padding:24px}
+  .admin-panel{max-width:1200px;margin:0 auto;background:#fff;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden}
+  .admin-head{background:#111827;color:#fff;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;gap:15px}
+  .admin-head h2{font-size:22px;font-weight:800}
+  .admin-body{padding:22px}
+  .admin-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+  .admin-btn{border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}
+  .admin-btn.primary{background:#111827;color:#fff}
+  .admin-btn.gold{background:#C9A227;color:#fff}
+  .admin-btn.danger{background:#dc2626;color:#fff}
+  .admin-btn.light{background:#f3f4f6;color:#111827}
+  .admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+  .admin-card{border:1px solid #e5e7eb;border-radius:14px;padding:14px;background:#fafafa}
+  .admin-card img{width:100%;height:170px;object-fit:cover;border-radius:10px;background:#eee}
+  .admin-card label{display:block;font-size:12px;font-weight:700;color:#4b5563;margin:10px 0 4px}
+  .admin-card input,.admin-card select{width:100%;padding:9px;border:1px solid #d1d5db;border-radius:8px;background:#fff}
+  .admin-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .admin-status{padding:10px;border-radius:10px;background:#ecfdf5;color:#047857;font-weight:700;margin-bottom:16px}
+  .admin-help{font-size:13px;color:#6b7280;margin:8px 0 18px}
+  @media(max-width:600px){.admin-overlay{padding:8px}.admin-body{padding:12px}.admin-row{grid-template-columns:1fr}}
+</style>
+
+
+<style id="reviewStyles">
+  .reviews-section{max-width:1100px;margin:35px auto;padding:0 20px}
+  .review-box{background:#fff;border-radius:16px;padding:22px;box-shadow:0 5px 20px rgba(0,0,0,.08);margin-bottom:22px}
+  .review-form{display:grid;gap:12px}
+  .review-form input,.review-form textarea{width:100%;padding:11px;border:1px solid #ddd;border-radius:9px;font-family:inherit}
+  .review-form textarea{min-height:100px;resize:vertical}
+  .star-picker{display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:4px}
+  .star-picker input{display:none}
+  .star-picker label{font-size:30px;color:#d1d5db;cursor:pointer;transition:.15s}
+  .star-picker label:hover,.star-picker label:hover ~ label,
+  .star-picker input:checked ~ label{color:#f4b400}
+  .review-submit{background:#C9A227;color:#fff;border:0;padding:11px 18px;border-radius:9px;font-weight:700;cursor:pointer}
+  .review-submit:hover{opacity:.9}
+  .review-item{border-top:1px solid #eee;padding:18px 0}
+  .review-item:first-child{border-top:0}
+  .review-name{font-weight:800}
+  .review-stars{color:#f4b400;letter-spacing:1px}
+  .review-date{font-size:12px;color:#888}
+  .review-text{margin-top:8px;color:#444;line-height:1.5}
+  .review-summary{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:15px}
+  .review-average{font-size:30px;font-weight:800}
+</style>
+
+</head>
+
+<body>
+
+<button id="openAdmin" class="px-4 py-2 rounded bg-gray-900 text-white font-semibold hover:bg-gray-700">
+  ⚙️ Administrar
+</button>
+
+  <!-- NAVBAR -->
+  <header class="fixed top-0 inset-x-0 z-40 bg-white/90 backdrop-blur border-b border-[rgba(212,175,55,.1)]">
+    <div class="wrap h-16 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2">
+        <span class="text-xl font-bold gold-text">BlessedStore</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-6 text-sm">
+        <a href="#rebajas" class="hover:underline">Rebajas</a>
+        <a href="#marcas" class="hover:underline">Marcas</a>
+        <a href="#destacada" class="hover:underline">Colección Destacada</a>
+        <a href="#coleccion" class="hover:underline">Nuestra Colección</a>
+        <a href="#proceso" class="hover:underline">Proceso</a>
+        <a href="#contacto" class="hover:underline">Contacto</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <label for="currencySelect" class="sr-only">Seleccionar moneda</label>
+        <select id="currencySelect" class="border rounded px-2 py-1 text-sm" aria-label="Seleccionar moneda">
+          <option value="CLP">CLP</option>
+          
+        </select>
+        <button id="cartBtn" class="relative text-sm px-4 py-2 border rounded hover:bg-white">
+          Carrito
+          <span id="cartCount" class="absolute -top-2 -right-2 bg-pink-400 text-white text-xs rounded-full px-2">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  
+  <section class="pt-24 relative hero-section">
+    <div class="wrap relative">
+    
+      <div class="absolute inset-x-0 -top-4 sm:-top-6 -z-10 hero-mask">
+        <div class="overflow-hidden">
+          <div class="hero-track">
+            <img src="images/hero1.jpg" alt="" class="h-[220px] sm:h-[280px] w-auto object-cover rounded-xl shadow" />
+            <img src="images/hero2.jpg" alt="" class="h-[220px] sm:h-[280px] w-auto object-cover rounded-xl shadow" />
+            <img src="images/hero3.jpg" alt="" class="h-[220px] sm:h-[280px] w-auto object-cover rounded-xl shadow" />
+            
+            <img src="images/hero1.jpg" alt="" class="h-[220px] sm:h-[280px] w-auto object-cover rounded-xl shadow" />
+            <img src="images/hero2.jpg" alt="" class="h-[220px] sm:h-[280px] w-auto object-cover rounded-xl shadow" />
+            <img src="images/hero3.jpg" alt="" class="h-[220px] sm:h-[280px] w-auto object-cover rounded-xl shadow" />
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center max-w-3xl mx-auto py-14 sm:py-20" data-aos="fade-up">
+        <span class="badge inline-block text-xs tracking-widest px-3 py-1 rounded-full border bg-white/80">Edición limitada</span>
+        <h1 class="text-4xl sm:text-5xl font-bold mt-4 text-onyx"></h1>
+        <p class="mt-3 text-onyx bg-white/70 inline-block px-4 py-2 rounded-lg">autenticidad garantizada y una experiencia de compra impecable.</p>
+        <div class="mt-6 flex items-center justify-center gap-3">
+          <a href="#coleccion" class="px-6 py-3 gold-bg text-white rounded-lg">Explorar colección</a>
+          <a href="#rebajas" class="px-6 py-3 btn-pink rounded-lg">Rebajas</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REBAJAS -->
+  <section id="rebajas" class="py-16" data-aos="fade-up">
+    <div class="wrap">
+      <h2 class="text-3xl font-bold text-center mb-2">Rebajas exclusivas</h2>
+      <p class="text-center text-gray-600">Hasta 30% en modelos seleccionados</p>
+    </div>
+  </section>
+
+  <!-- MARCAS -->
+  <section id="marcas" class="py-16 bg-white" data-aos="fade-up">
+    <div class="wrap">
+      <h2 class="text-3xl font-bold text-center mb-8">Marcas con las que trabajamos</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <div class="p-4 card">Chanel</div>
+        <div class="p-4 card">Hermès</div>
+        <div class="p-4 card">Prada</div>
+        <div class="p-4 card">Gucci</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COLECCIÓN DESTACADA -->
+  <section id="destacada" class="py-16 bg-white" data-aos="fade-up">
+    <div class="wrap">
+      <h2 class="text-3xl font-bold text-center mb-8">Colección Destacada</h2>
+      <div class="flex gap-6 justify-center overflow-x-auto snap-x">
+        <div class="min-w-[300px] snap-center card p-4">
+          <img src="images/bp2.jpg" class="w-full h-64 object-cover mb-4 rounded" alt="">
+          <h4 class="font-bold text-center">Bolso Premium 1</h4>
+          <p class="gold-text text-center">$29.990 CLP</p>
+          <button class="mt-4 px-4 py-2 gold-bg text-white rounded" onclick="addToCartFromFeatured(1, 'Bolso Premium 1', 29990)">Agregar al carrito</button>
+        </div>
+        <div class="min-w-[300px] snap-center card p-4">
+          <img src="images/bp1.jpg" class="w-full h-64 object-cover mb-4 rounded" alt="">
+          <h4 class="font-bold text-center">Bolso Premium 2</h4>
+          <p class="gold-text text-center">$39.990 CLP</p>
+          <button class="mt-4 px-4 py-2 gold-bg text-white rounded" onclick="addToCartFromFeatured(2, 'Bolso Premium 2', 39990)">Agregar al carrito</button>
+        </div>
+        <div class="min-w-[300px] snap-center card p-4">
+          <img src="images/bp3.jpg" class="w-full h-64 object-cover mb-4 rounded" alt="">
+          <h4 class="font-bold text-center">Bolso Premium 3</h4>
+          <p class="gold-text text-center">$44.990 CLP</p>
+          <button class="mt-4 px-4 py-2 gold-bg text-white rounded" onclick="addToCartFromFeatured(3, 'Bolso Premium 3', 44990)">Agregar al carrito</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function addToCartFromFeatured(id, name, price) {
+      const existing = cart.find(item => item.id === id);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ id, name, price, quantity: 1 });
+      }
+      updateCart();
+      openCart();
+    }
+  </script>
+
+  <!-- NUESTRA COLECCIÓN -->
+  <section id="coleccion" class="py-16 bg-white" data-aos="fade-up">
+    <div class="wrap">
+      <h2 class="text-3xl font-bold text-center mb-8">Nuestra Colección</h2>
+
+      <!-- Controles -->
+      <div class="flex flex-col lg:flex-row items-center justify-between gap-4 mb-6">
+        <div class="flex items-center gap-2">
+          <button data-cat="Todas" class="filter-btn px-4 py-2 border rounded text-sm bg-white gold-bg text-white">Todas</button>
+          <button data-cat="Bolsos de Mano" class="filter-btn px-4 py-2 border rounded text-sm bg-white">Bolsos de Mano</button>
+          <button data-cat="Carteras de Hombro" class="filter-btn px-4 py-2 border rounded text-sm bg-white">Carteras de Hombro</button>
+          <button data-cat="Mochilas" class="filter-btn px-4 py-2 border rounded text-sm bg-white">Mochilas</button>
+          <button data-cat="Clutch" class="filter-btn px-4 py-2 border rounded text-sm bg-white">Clutch</button>
+          <button data-cat="Limited" class="filter-btn px-4 py-2 border rounded text-sm bg-white">Edición Limitada</button>
+        </div>
+        <div class="flex items-center gap-3">
+          <input id="search" type="text" placeholder="Buscar..." class="border rounded p-2 text-sm">
+          <label for="sort" class="sr-only">Ordenar productos</label>
+          <select id="sort" class="border rounded p-2 text-sm" aria-label="Ordenar productos">
+            <option value="default">Ordenar por</option>
+            <option value="price-asc">Precio: menor a mayor</option>
+            <option value="price-desc">Precio: mayor a menor</option>
+            <option value="rating-desc">Mejor calificados</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Grid -->
+      <div id="products" class="grid grid-cols-1 md:grid-cols-4 gap-6"></div>
+
+      <!-- Ver más -->
+      <div class="text-center mt-6">
+        <button id="loadMore" class="gold-bg text-white px-6 py-3 rounded-lg">Ver más productos</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- OPINIONES -->
+  <section id="opiniones" class="py-16" data-aos="fade-up">
+    <div class="wrap">
+      <h2 class="text-3xl font-bold text-center mb-10">Opiniones de clientes</h2>
+      <div id="reviews" class="grid md:grid-cols-3 gap-6"></div>
+    </div>
+  </section>
+
+  <!-- POR QUÉ CONFIAR EN NOSOTROS -->
+  <section id="trust" class="py-16 bg-white" data-aos="fade-up">
+    <div class="wrap">
+      <h2 class="text-3xl font-bold text-center mb-12">Por qué confiar en nosotros</h2>
+      <div class="grid md:grid-cols-4 gap-8">
+        <div class="card p-6 text-center">
+          <div class="w-12 h-12 mx-auto rounded-full gold-bg mb-4 flex items-center justify-center text-white text-2xl">✓</div>
+          <p class="font-semibold">Responsabilidad y Dedicacion</p>
+          <p class="text-sm text-gray-600 mt-2">Buenos Productos</p>
+        </div>
+        <div class="card p-6 text-center">
+          <div class="w-12 h-12 mx-auto rounded-full gold-bg mb-4 flex items-center justify-center text-white text-2xl">✨</div>
+          <p class="font-semibold">Curaduría Experta</p>
+          <p class="text-sm text-gray-600 mt-2">Selección de piezas icónicas y limitadas.</p>
+        </div>
+        <div class="card p-6 text-center">
+          <div class="w-12 h-12 mx-auto rounded-full gold-bg mb-4 flex items-center justify-center text-white text-2xl">🔒</div>
+          <p class="font-semibold">Pagos Seguros</p>
+          <p class="text-sm text-gray-600 mt-2">Procesamiento confiable y cifrado.</p>
+        </div>
+        <div class="card p-6 text-center">
+          <div class="w-12 h-12 mx-auto rounded-full gold-bg mb-4 flex items-center justify-center text-white text-2xl">📦</div>
+          <p class="font-semibold">Envíos Cuidando Detalles</p>
+          <p class="text-sm text-gray-600 mt-2">Por Starken y BlueXpress</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESO -->
+  <section id="proceso" class="py-16" data-aos="fade-up">
+    <div class="wrap">
+      <h2 class="text-3xl font-bold text-center mb-12">Proceso de compra y envío</h2>
+      <ol class="grid md:grid-cols-4 gap-8">
+        <li class="card p-6">
+          <div class="text-xs tracking-widest gold-text">Paso 1</div>
+          <h3 class="text-lg font-semibold mt-1">Elegí tu bolso</h3>
+          <p class="text-sm text-gray-600 mt-2">Explorá la colección y añadilo al carrito.</p>
+        </li>
+        <li class="card p-6">
+          <div class="text-xs tracking-widest gold-text">Paso 2</div>
+          <h3 class="text-lg font-semibold mt-1">Checkout seguro</h3>
+          <p class="text-sm text-gray-600 mt-2">Completá tus datos y método de pago.</p>
+        </li>
+        <li class="card p-6">
+          <div class="text-xs tracking-widest gold-text">Paso 3</div>
+          <h3 class="text-lg font-semibold mt-1">Preparación</h3>
+          <p class="text-sm text-gray-600 mt-2">Control de calidad y packaging de lujo.</p>
+        </li>
+        <li class="card p-6">
+          <div class="text-xs tracking-widest gold-text">Paso 4</div>
+          <h3 class="text-lg font-semibold mt-1">Envío</h3>
+          <p class="text-sm text-gray-600 mt-2">Despacho en 24–72h y seguimiento.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- INSPIRACIÓN -->
+  <section id="inspiracion" class="py-16 bg-white" data-aos="fade-up">
+    <div class="wrap">
+      <h2 class="text-3xl font-bold text-center mb-12">Inspiración</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <article class="card p-6">
+          <h3 class="font-semibold">Cómo cuidar tu bolso de cuero</h3>
+          <p class="text-sm text-gray-600 mt-2">Rutina simple para preservar textura y color.</p>
+          <a href="#" class="mt-3 inline-block text-sm gold-text hover:underline">Leer más</a>
+        </article>
+        <article class="card p-6">
+          <h3 class="font-semibold">Cinco íconos que trascienden temporadas</h3>
+          <p class="text-sm text-gray-600 mt-2">Piezas que mantienen su valor en el tiempo.</p>
+          <a href="#" class="mt-3 inline-block text-sm gold-text hover:underline">Leer más</a>
+        </article>
+        <article class="card p-6">
+          <h3 class="font-semibold">Guía de combinaciones</h3>
+          <p class="text-sm text-gray-600 mt-2">Del día a la noche con la misma pieza.</p>
+          <a href="#" class="mt-3 inline-block text-sm gold-text hover:underline">Leer más</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto" class="py-16 text-center" data-aos="fade-up">
+    <div class="wrap">
+      <h2 class="text-3xl font-bold mb-4">Contacto</h2>
+      <p class="mb-6 text-gray-600">Escribinos para más información o asesoramiento personalizado.</p>
+      <div class="flex justify-center gap-4">
+        <a href="https://www.tiktok.com/@blessed.carterass" target="_blank" rel="blesses.carterass" class="px-6 py-3 gold-bg text-white rounded-lg">TIKTOK</a>
+        <a href="https://wa.me/+56 9 6876 2137" target="_blank" rel="whastsapp" class="px-6 py-3 btn-pink rounded-lg">WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ================= OPINIONES DE CLIENTES ================= -->
+<section id="opiniones" class="reviews-section">
+  <div class="review-box">
+    <h2 class="text-2xl font-bold mb-2">⭐ Opiniones de nuestros clientes</h2>
+    <p class="text-gray-600 mb-4">Cuéntanos qué te pareció tu experiencia con BlessedStore.</p>
+
+    <div class="review-summary">
+      <span id="reviewAverage" class="review-average">0,0</span>
+      <span class="review-stars" id="reviewAverageStars">☆☆☆☆☆</span>
+      <span id="reviewCount" class="text-gray-500">0 opiniones</span>
+    </div>
+
+    <form id="reviewForm" class="review-form">
+      <input id="reviewName" type="text" maxlength="50" placeholder="Tu nombre" required>
+
+      <div>
+        <label class="block font-semibold mb-1">Tu recomendación</label>
+        <div class="star-picker" aria-label="Selecciona una calificación">
+          <input type="radio" id="star5" name="reviewRating" value="5" required><label for="star5">★</label>
+          <input type="radio" id="star4" name="reviewRating" value="4"><label for="star4">★</label>
+          <input type="radio" id="star3" name="reviewRating" value="3"><label for="star3">★</label>
+          <input type="radio" id="star2" name="reviewRating" value="2"><label for="star2">★</label>
+          <input type="radio" id="star1" name="reviewRating" value="1"><label for="star1">★</label>
+        </div>
+      </div>
+
+      <textarea id="reviewComment" maxlength="500" placeholder="Escribe tu comentario..." required></textarea>
+
+      <button type="submit" class="review-submit">Publicar opinión</button>
+    </form>
+  </div>
+
+  <div class="review-box">
+    <h3 class="text-xl font-bold mb-2">Lo que dicen nuestros clientes</h3>
+    <div id="reviewsList">
+      <p class="text-gray-500">Todavía no hay opiniones. ¡Sé el primero en recomendar BlessedStore!</p>
+    </div>
+  </div>
+</section>
+
+
+  <!-- FOOTER -->
+  <footer class="bg-ivory text-onyx">
+    <div class="wrap py-12 grid md:grid-cols-4 gap-8">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="gold-text">◆</span>
+          <span class="font-semibold">BlessedStore</span>
+        </div>
+        <p class="text-sm text-onyx/70 mt-3">Bolsos de lujo curados. Autenticidad y estado impecable.</p>
+      </div>
+      <div>
+        <div class="font-semibold mb-2">Atención</div>
+        <ul class="text-sm text-onyx/70 space-y-1">
+          <li>Lunes a Sábado, 10–19h</li>
+          <li>Envíos a todo el país</li>
+          <li>Pagos: débito, transferencia</li>
+        </ul>
+      </div>
+      <div>
+        <div class="font-semibold mb-2">Información</div>
+        <ul class="text-sm text-onyx/70 space-y-1">
+          <li><a href="#trust" class="hover:underline">Por qué confiar</a></li>
+          <li><a href="#proceso" class="hover:underline">Proceso de compra y envío</a></li>
+          <li><a href="#opiniones" class="hover:underline">Opiniones</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="font-semibold mb-2">Contacto</div>
+        <ul class="text-sm text-onyx/70 space-y-1">
+          <li><a href="https://instagram.com/lulastra_" target="_blank" rel="noopener" class="hover:underline">Instagram</a></li>
+          <li><a href="https://wa.me/541130890681" target="_blank" rel="noopener" class="hover:underline">WhatsApp</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-onyx/10 py-4 text-center text-xs text-onyx/60">© <span id="yr"></span> BlessedStore. Todos los derechos reservados.</div>
+  </footer>
+
+
+
+  <!-- DRAWER CARRITO -->
+  <div id="cartOverlay" class="hidden fixed inset-0 bg-black/50 z-40"></div>
+  <aside id="cartDrawer" class="drawer fixed top-0 right-0 w-80 h-full bg-white shadow-2xl transition-transform duration-300 z-50 flex flex-col">
+    <div class="flex justify-between items-center p-4 border-b">
+      <h3 class="text-lg font-bold">Tu Carrito (<span id="cartItemCount">0</span>)</h3>
+      <button id="closeCart" class="text-gray-500 hover:text-black">Cerrar</button>
+    </div>
+    <div id="cartItems" class="flex-1 overflow-y-auto p-4 space-y-3"></div>
+    <div class="border-t p-4">
+      <p id="cartTotal" class="font-bold mb-1">Total: $0</p>
+      <p id="totalProductsInCart" class="text-sm text-gray-600 mb-4">Cantidad de productos: 0</p>
+      <p class="text-xs text-gray-500 mb-3">Tu carrito se enviará con productos, cantidades y total a WhatsApp.</p>
+      <div class="flex justify-between">
+        <button id="clearCart" class="px-4 py-2 bg-red-500 text-white rounded">Vaciar</button>
+        <button id="whatsappCheckout" class="px-4 py-2 gold-bg text-white rounded">Enviar pedido por WhatsApp</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- SCRIPT -->
+  <script>
+    AOS.init();
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    /* ========= Productos ========= */
+    /*
+     * ============================================================
+     * EDITA TUS PRODUCTOS AQUÍ
+     * ============================================================
+     * Para cambiar un producto, modifica solamente:
+     * name     = nombre
+     * category = categoría
+     * price    = precio en PESOS CHILENOS
+     * rating   = estrellas (1 a 5)
+     * limited  = true si es edición limitada, false si no
+     * img      = nombre/ruta de la imagen
+     *
+     * Ejemplo de imagen:
+     * img: "images/mi-bolso.jpg"
+     *
+     * Coloca tus imágenes dentro de la carpeta "images".
+     * ============================================================
+     */
+    const products = [
+      { id: 1,  name: "Bolso Premium 1",  category: "Bolsos de Mano",       price: 29990, rating: 5, limited: true,  img: "images/p01.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 2,  name: "Bolso Premium 2",  category: "Carteras de Hombro",   price: 39990, rating: 5, limited: false, img: "images/p02.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 3,  name: "Bolso Premium 3",  category: "Mochilas",              price: 44990, rating: 4, limited: false, img: "images/p03.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 4,  name: "Bolso Elegance",   category: "Clutch",                price: 24990, rating: 5, limited: false, img: "images/p04.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 5,  name: "Bolso Classic",    category: "Bolsos de Mano",       price: 35990, rating: 4, limited: false, img: "images/p05.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 6,  name: "Bolso Paris",      category: "Carteras de Hombro",   price: 42990, rating: 5, limited: true,  img: "images/p06.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 7,  name: "Bolso Milano",     category: "Mochilas",              price: 49990, rating: 5, limited: false, img: "images/p07.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 8,  name: "Bolso Rose",       category: "Clutch",                price: 27990, rating: 4, limited: false, img: "images/p08.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 9,  name: "Bolso Royal",      category: "Bolsos de Mano",       price: 54990, rating: 5, limited: false, img: "images/p09.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 10, name: "Bolso Bella",      category: "Carteras de Hombro",   price: 31990, rating: 4, limited: false, img: "images/p10.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 11, name: "Bolso Luxe",       category: "Mochilas",              price: 59990, rating: 5, limited: true,  img: "images/p11.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 12, name: "Bolso Chic",       category: "Clutch",                price: 28990, rating: 4, limited: false, img: "images/p12.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 13, name: "Bolso Aura",       category: "Bolsos de Mano",       price: 37990, rating: 5, limited: false, img: "images/p13.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 14, name: "Bolso Velvet",     category: "Carteras de Hombro",   price: 45990, rating: 5, limited: false, img: "images/p14.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 15, name: "Bolso Diamond",    category: "Mochilas",              price: 62990, rating: 5, limited: true,  img: "images/p15.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 16, name: "Bolso Pearl",      category: "Clutch",                price: 33990, rating: 4, limited: false, img: "images/p16.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 17, name: "Bolso Grace",      category: "Bolsos de Mano",       price: 41990, rating: 5, limited: false, img: "images/p17.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 18, name: "Bolso Monaco",     category: "Carteras de Hombro",   price: 47990, rating: 4, limited: false, img: "images/p18.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 19, name: "Bolso Monaco II",  category: "Mochilas",              price: 51990, rating: 5, limited: false, img: "images/p19.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 20, name: "Bolso Queen",      category: "Clutch",                price: 36990, rating: 5, limited: true,  img: "images/p20.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 21, name: "Bolso Signature",  category: "Bolsos de Mano",       price: 57990, rating: 5, limited: false, img: "images/p21.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 22, name: "Bolso Classy",     category: "Carteras de Hombro",   price: 38990, rating: 4, limited: false, img: "images/p22.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 23, name: "Bolso Icon",       category: "Mochilas",              price: 64990, rating: 5, limited: true,  img: "images/p23.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 24, name: "Bolso Dream",      category: "Clutch",                price: 30990, rating: 4, limited: false, img: "images/p24.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 25, name: "Bolso Gold",       category: "Bolsos de Mano",       price: 69990, rating: 5, limited: true,  img: "images/p25.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 26, name: "Bolso Soft",       category: "Carteras de Hombro",   price: 34990, rating: 4, limited: false, img: "images/p26.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 27, name: "Bolso Prestige",   category: "Mochilas",              price: 72990, rating: 5, limited: true,  img: "images/p27.jpg", fallbackImg: "placeholder.jpg" },
+      { id: 28, name: "Bolso Exclusive",  category: "Clutch",                price: 79990, rating: 5, limited: true,  img: "images/p28.jpg", fallbackImg: "placeholder.jpg" }
+    ];
+
+
+    /*
+     * GUÍA RÁPIDA PARA CAMBIAR IMÁGENES:
+     * 1. Abre la carpeta images.
+     * 2. Reemplaza p01.jpg, p02.jpg, etc. por tus fotos.
+     * 3. Mantén el mismo nombre si quieres evitar cambiar el código.
+     *
+     * O cambia directamente img: "images/mi-foto.jpg" arriba.
+     *
+     * GUÍA RÁPIDA PARA CAMBIAR PRECIOS:
+     * price: 29990  -> se mostrará como $29.990
+     */
+
+    /* ========= Precios en pesos chilenos ========= */
+    function formatPrice(clp){
+      return new Intl.NumberFormat('es-CL', {
+        style: 'currency',
+        currency: 'CLP',
+        maximumFractionDigits: 0
+      }).format(clp);
+    }
+
+    /* ========= Estado de filtros / vista ========= */
+    const productGrid = document.getElementById('products');
+    const loadMoreBtn = document.getElementById('loadMore');
+    const searchInput = document.getElementById('search');
+    const sortSelect = document.getElementById('sort');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+
+    let visibleCount = 0;
+    let activeCategory = 'Todas';
+    let query = '';
+    let sortKey = 'default';
+
+    filterButtons.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        activeCategory = btn.dataset.cat;
+        filterButtons.forEach(b=>b.classList.remove('gold-bg','text-white'));
+        btn.classList.add('gold-bg','text-white');
+        resetAndRender();
+      });
+    });
+
+    searchInput.addEventListener('input', e=>{
+      query = e.target.value.trim().toLowerCase();
+      resetAndRender();
+    });
+
+    sortSelect.addEventListener('change', e=>{
+      sortKey = e.target.value;
+      resetAndRender();
+    });
+
+    function filtered(){
+      let list = products.filter(p=>{
+        const matchCat = activeCategory === 'Todas'
+          ? true
+          : (activeCategory === 'Limited' ? p.limited : p.category === activeCategory);
+        const matchQ = p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query);
+        return matchCat && matchQ;
+      });
+      if (sortKey === 'price-asc') list.sort((a,b)=> a.price - b.price);
+      if (sortKey === 'price-desc') list.sort((a,b)=> b.price - a.price);
+      if (sortKey === 'rating-desc') list.sort((a,b)=> b.rating - a.rating);
+      return list;
+    }
+
+    function resetAndRender(){
+      visibleCount = 0;
+      productGrid.innerHTML = '';
+      loadMoreBtn.style.display = 'inline-flex';
+      renderMore();
+    }
+
+    function renderCard(p){
+      const card = document.createElement('div');
+      card.className = "card p-4 flex flex-col";
+      card.setAttribute("data-aos","fade-up");
+
+      const img = document.createElement('img');
+      img.src = p.img;
+      img.alt = p.name;
+      img.className = "mb-4 rounded w-full h-56 object-cover";
+      img.onerror = ()=>{ img.src = p.fallbackImg; };
+      card.appendChild(img);
+
+      const title = document.createElement('h4');
+      title.className = "font-bold mb-1";
+      title.textContent = p.name;
+      card.appendChild(title);
+
+      const meta = document.createElement('div');
+      meta.className = "flex items-center justify-between text-sm text-gray-600 mb-2";
+      meta.innerHTML = `<span>${p.category}</span><span>${"★".repeat(p.rating)}${"☆".repeat(5-p.rating)}</span>`;
+      card.appendChild(meta);
+
+      if (p.limited){
+        const badge = document.createElement('span');
+        badge.className = "badge mb-2";
+        badge.textContent = "Edición Limitada";
+        card.appendChild(badge);
+      }
+
+      const price = document.createElement('p');
+      price.className = "mb-3 gold-text font-medium";
+      price.textContent = formatPrice(p.price);
+      price.dataset.baseusd = p.price; 
+      card.appendChild(price);
+
+      const btn = document.createElement('button');
+      btn.className = "mt-auto px-4 py-2 gold-bg text-white rounded";
+      btn.textContent = "Agregar al carrito";
+      btn.addEventListener('click', ()=> addToCart(p.id));
+      card.appendChild(btn);
+
+      return card;
+    }
+
+    function renderMore(){
+      const list = filtered();
+      const next = list.slice(visibleCount, visibleCount + (visibleCount === 0 ? 4 : 8)); // 1 fila al inicio, luego de 8 en 8
+      next.forEach(p => productGrid.appendChild(renderCard(p)));
+      visibleCount += next.length;
+      if (visibleCount >= list.length) loadMoreBtn.style.display = 'none';
+      AOS.refreshHard();
+    }
+
+    function renderVisible(){
+      // Recalcula los precios visibles sin re-renderizar todo
+      document.querySelectorAll('#products p.gold-text').forEach(el=>{
+        const clp = Number(el.dataset.baseusd);
+        el.textContent = formatPrice(clp);
+      });
+    }
+
+    loadMoreBtn.addEventListener('click', renderMore);
+    resetAndRender(); // arranque
+
+    /* ========= Opiniones dinámicas ========= */
+    const reviews = [
+      { name:"Lucía",   rating:5, text:"Servicio impecable y bolsos en estado perfecto." },
+      { name:"Marina",  rating:5, text:"Presentación de lujo y atención personalizada." },
+      { name:"Agustina",rating:4, text:"Pieza limitada a excelente precio." },
+      { name:"Carolina",rating:5, text:"Envío rápido y comunicación clara." },
+      { name:"Micaela", rating:4, text:"Gran variedad y proceso simple." },
+      { name:"Sofía",   rating:5, text:"Autenticidad garantizada." }
+    ];
+    const reviewsGrid = document.getElementById('reviews');
+    reviews.forEach((r,i)=>{
+      const card = document.createElement('div');
+      card.className = "card p-6";
+      card.setAttribute('data-aos','fade-up');
+      card.setAttribute('data-aos-delay', String(i*50));
+      card.innerHTML = `
+        <div class="text-lg mb-2">“${r.text}”</div>
+        <div class="text-sm text-gray-600">${"★".repeat(r.rating)}${"☆".repeat(5-r.rating)}</div>
+        <div class="mt-2 font-semibold">${r.name}</div>`;
+      reviewsGrid.appendChild(card);
+    });
+
+    /* ========= Carrito ========= */
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartItems = document.getElementById('cartItems');
+    const cartTotal = document.getElementById('cartTotal');
+    const cartCount = document.getElementById('cartCount');
+    const cartItemCount = document.getElementById('cartItemCount');
+    const cartDrawer = document.getElementById('cartDrawer');
+    const cartOverlay = document.getElementById('cartOverlay');
+    const closeCart = document.getElementById('closeCart');
+    const cartBtn = document.getElementById('cartBtn');
+
+    function updateCart(){
+      cartItems.innerHTML = '';
+      let total = 0, itemCount = 0;
+
+      cart.forEach((item, index)=>{
+        const row = document.createElement('div');
+        row.className = "flex justify-between items-center gap-3";
+        row.innerHTML = `
+          <div>
+            <p class="font-semibold">${item.name}</p>
+            <p>${formatPrice(item.price)}</p>
+            <div class="text-sm text-gray-600">Cant: ${item.quantity}</div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button class="px-2 py-1 border rounded" data-action="dec">-</button>
+            <button class="px-2 py-1 border rounded" data-action="inc">+</button>
+            <button class="text-red-600" data-action="rm">Quitar</button>
+          </div>
+        `;
+        // listeners de cantidad
+        row.querySelector('[data-action="dec"]').addEventListener('click', ()=>{
+          cart[index].quantity = Math.max(1, cart[index].quantity - 1);
+          persistAndUpdate();
+        });
+        row.querySelector('[data-action="inc"]').addEventListener('click', ()=>{
+          cart[index].quantity += 1;
+          persistAndUpdate();
+        });
+        row.querySelector('[data-action="rm"]').addEventListener('click', ()=>{
+          cart.splice(index,1);
+          persistAndUpdate();
+        });
+        cartItems.appendChild(row);
+
+        total += item.price * item.quantity;
+        itemCount += item.quantity;
+      });
+
+      cartTotal.textContent = `Total: ${formatPrice(total)}`;
+      document.getElementById("totalProductsInCart").textContent = `Cantidad de productos: ${itemCount}`;
+      cartCount.textContent = itemCount;
+      cartItemCount.textContent = itemCount;
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    function persistAndUpdate(){ localStorage.setItem('cart', JSON.stringify(cart)); updateCart(); }
+
+    function addToCart(id){
+      const prod = products.find(p => p.id === id);
+      const existing = cart.find(i => i.id === id);
+      if (existing) existing.quantity += 1;
+      else cart.push({ id: prod.id, name: prod.name, price: prod.price, quantity: 1 });
+      updateCart();
+      openCart();
+    }
+
+    document.getElementById('clearCart').addEventListener('click', ()=>{
+      cart = [];
+      updateCart();
+    });
+
+
+    /* ========= Enviar pedido por WhatsApp ========= */
+    const whatsappNumber = "56968762137";
+    const whatsappCheckout = document.getElementById('whatsappCheckout');
+
+    function sendCartToWhatsApp(){
+      if (cart.length === 0) {
+        alert("Tu carrito está vacío. Agrega al menos un producto.");
+        return;
+      }
+
+      let total = 0;
+      let totalProducts = 0;
+      let message = "Hola BlessedStore 👋\n\nQuiero realizar el siguiente pedido:\n\n";
+
+      cart.forEach((item) => {
+        const subtotal = item.price * item.quantity;
+        total += subtotal;
+        totalProducts += item.quantity;
+
+        message += `• ${item.name}\n`;
+        message += `  Cantidad: ${item.quantity}\n`;
+        message += `  Precio unitario: ${formatPrice(item.price)}\n`;
+        message += `  Subtotal: ${formatPrice(subtotal)}\n\n`;
+      });
+
+      message += `Cantidad total de productos: ${totalProducts}\n`;
+      message += `Total del pedido: ${formatPrice(total)}\n\n`;
+      message += "¿Me pueden confirmar disponibilidad y datos para el pago/envío?";
+
+      window.open(
+        `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`,
+        "_blank"
+      );
+    }
+
+    whatsappCheckout.addEventListener('click', sendCartToWhatsApp);
+
+    function openCart(){
+      cartDrawer.classList.add('open');
+      cartOverlay.classList.remove('hidden');
+    }
+    function closeCartFn(){
+      cartDrawer.classList.remove('open');
+      cartOverlay.classList.add('hidden');
+    }
+    cartBtn.addEventListener('click', openCart);
+    closeCart.addEventListener('click', closeCartFn);
+    cartOverlay.addEventListener('click', closeCartFn);
+
+    updateCart();
+  </script>
+
+<!-- ================= PANEL DE ADMINISTRACIÓN ================= -->
+<div id="adminOverlay" class="admin-overlay">
+  <div class="admin-panel">
+    <div class="admin-head">
+      <h2>⚙️ Administrador de productos</h2>
+      <button id="closeAdmin" class="admin-btn light">✕ Cerrar</button>
+    </div>
+    <div class="admin-body">
+      <div class="admin-status">Los cambios se guardan en este navegador y se aplican al catálogo inmediatamente.</div>
+      <p class="admin-help">
+        Edita nombre, categoría, precio, estrellas, edición limitada e imagen. Para imágenes,
+        escribe la ruta de tu archivo, por ejemplo <b>images/mi-bolso.jpg</b>.
+      </p>
+
+      <div class="admin-toolbar">
+        <button id="saveAdmin" class="admin-btn primary">💾 Guardar cambios</button>
+        <button id="resetAdmin" class="admin-btn light">↩️ Restaurar catálogo original</button>
+        <button id="exportAdmin" class="admin-btn gold">📦 Exportar catálogo</button>
+        <label class="admin-btn light" style="display:inline-flex;align-items:center;gap:6px">
+          📥 Importar catálogo
+          <input id="importAdmin" type="file" accept=".json" hidden>
+        </label>
+      </div>
+
+      <div id="adminGrid" class="admin-grid"></div>
+    </div>
+  </div>
+</div>
+
+
+<script id="adminScript">
+(function(){
+  const ADMIN_KEY = "blessedstore_products_admin_v1";
+  const originalProducts = JSON.parse(JSON.stringify(products));
+
+  const overlay = document.getElementById("adminOverlay");
+  const grid = document.getElementById("adminGrid");
+  const openBtn = document.getElementById("openAdmin");
+  const closeBtn = document.getElementById("closeAdmin");
+  const saveBtn = document.getElementById("saveAdmin");
+  const resetBtn = document.getElementById("resetAdmin");
+  const exportBtn = document.getElementById("exportAdmin");
+  const importInput = document.getElementById("importAdmin");
+
+  function getAdminProducts(){
+    try{
+      const saved = localStorage.getItem(ADMIN_KEY);
+      return saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(originalProducts));
+    }catch(e){
+      return JSON.parse(JSON.stringify(originalProducts));
+    }
+  }
+
+  function setProducts(newProducts){
+    products.length = 0;
+    newProducts.forEach(p => products.push(p));
+  }
+
+  function renderAdmin(){
+    const data = getAdminProducts();
+    setProducts(data);
+
+    grid.innerHTML = data.map((p,i) => `
+      <div class="admin-card" data-index="${i}">
+        <img src="${escapeHtml(p.img)}" onerror="this.src='${escapeHtml(p.fallbackImg || "placeholder.jpg")}'" alt="${escapeHtml(p.name)}">
+        <label>Producto #${p.id}</label>
+
+        <label>Nombre</label>
+        <input data-field="name" value="${escapeAttr(p.name)}">
+
+        <label>Categoría</label>
+        <select data-field="category">
+          ${["Bolsos de Mano","Carteras de Hombro","Mochilas","Clutch"].map(c =>
+            `<option ${p.category===c?"selected":""}>${c}</option>`
+          ).join("")}
+        </select>
+
+        <div class="admin-row">
+          <div>
+            <label>Precio CLP</label>
+            <input type="number" min="0" step="1" data-field="price" value="${Number(p.price)||0}">
+          </div>
+          <div>
+            <label>Estrellas</label>
+            <input type="number" min="1" max="5" step="1" data-field="rating" value="${Number(p.rating)||5}">
+          </div>
+        </div>
+
+        <label>Imagen</label>
+        <input data-field="img" value="${escapeAttr(p.img)}" placeholder="images/mi-bolso.jpg">
+
+        <label style="display:flex;align-items:center;gap:8px;margin-top:12px">
+          <input type="checkbox" data-field="limited" ${p.limited ? "checked" : ""} style="width:auto">
+          Edición limitada
+        </label>
+      </div>
+    `).join("");
+  }
+
+  function escapeHtml(v){
+    return String(v ?? "").replace(/[&<>"']/g, s => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[s]));
+  }
+  function escapeAttr(v){ return escapeHtml(v); }
+
+  function readAdmin(){
+    return [...grid.querySelectorAll(".admin-card")].map((card,i)=>{
+      const old = products[i] || originalProducts[i];
+      return {
+        id: old.id,
+        name: card.querySelector('[data-field="name"]').value.trim() || `Producto ${old.id}`,
+        category: card.querySelector('[data-field="category"]').value,
+        price: Number(card.querySelector('[data-field="price"]').value) || 0,
+        rating: Math.max(1, Math.min(5, Number(card.querySelector('[data-field="rating"]').value) || 1)),
+        limited: card.querySelector('[data-field="limited"]').checked,
+        img: card.querySelector('[data-field="img"]').value.trim() || "placeholder.jpg",
+        fallbackImg: old.fallbackImg || "placeholder.jpg"
+      };
+    });
+  }
+
+  function saveAdmin(){
+    const data = readAdmin();
+    localStorage.setItem(ADMIN_KEY, JSON.stringify(data));
+    setProducts(data);
+
+    // Actualiza la tienda si existen sus funciones.
+    try{ renderVisible(); }catch(e){}
+    try{ updateCart(); }catch(e){}
+    renderAdmin();
+    alert("✅ Catálogo guardado correctamente.");
+  }
+
+  openBtn.addEventListener("click", ()=>{
+    renderAdmin();
+    overlay.style.display = "block";
+    document.body.style.overflow = "hidden";
+  });
+
+  closeBtn.addEventListener("click", ()=>{
+    overlay.style.display = "none";
+    document.body.style.overflow = "";
+    try{ renderVisible(); }catch(e){}
+  });
+
+  overlay.addEventListener("click", e=>{
+    if(e.target === overlay) closeBtn.click();
+  });
+
+  saveBtn.addEventListener("click", saveAdmin);
+
+  resetBtn.addEventListener("click", ()=>{
+    if(confirm("¿Restaurar los 28 productos a los valores originales?")){
+      localStorage.removeItem(ADMIN_KEY);
+      setProducts(JSON.parse(JSON.stringify(originalProducts)));
+      renderAdmin();
+      try{ renderVisible(); }catch(e){}
+      try{ updateCart(); }catch(e){}
+    }
+  });
+
+  exportBtn.addEventListener("click", ()=>{
+    const data = readAdmin();
+    const blob = new Blob([JSON.stringify(data,null,2)], {type:"application/json"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "blessedstore-productos.json";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+
+  importInput.addEventListener("change", e=>{
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = ()=>{
+      try{
+        const data = JSON.parse(reader.result);
+        if(!Array.isArray(data) || data.length === 0) throw new Error();
+        localStorage.setItem(ADMIN_KEY, JSON.stringify(data));
+        setProducts(data);
+        renderAdmin();
+        try{ renderVisible(); }catch(e){}
+        alert("✅ Catálogo importado.");
+      }catch(err){
+        alert("❌ El archivo JSON no tiene un catálogo válido.");
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  });
+
+  // Cargar cambios guardados al iniciar.
+  setProducts(getAdminProducts());
+})();
+</script>
+
+
+<script id="reviewsScript">
+(function(){
+  const REVIEWS_KEY = "blessedstore_reviews_v1";
+  const form = document.getElementById("reviewForm");
+  const list = document.getElementById("reviewsList");
+  const average = document.getElementById("reviewAverage");
+  const averageStars = document.getElementById("reviewAverageStars");
+  const count = document.getElementById("reviewCount");
+
+  if(!form || !list) return;
+
+  function getReviews(){
+    try{
+      return JSON.parse(localStorage.getItem(REVIEWS_KEY) || "[]");
+    }catch(e){
+      return [];
+    }
+  }
+
+  function stars(n){
+    n = Number(n);
+    return "★".repeat(n) + "☆".repeat(5-n);
+  }
+
+  function escapeHtml(value){
+    return String(value ?? "").replace(/[&<>"']/g, s => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[s]));
+  }
+
+  function renderReviews(){
+    const reviews = getReviews();
+
+    if(reviews.length === 0){
+      list.innerHTML = '<p class="text-gray-500">Todavía no hay opiniones. ¡Sé el primero en recomendar BlessedStore!</p>';
+      average.textContent = "0,0";
+      averageStars.textContent = "☆☆☆☆☆";
+      count.textContent = "0 opiniones";
+      return;
+    }
+
+    const avg = reviews.reduce((sum,r)=>sum + Number(r.rating),0) / reviews.length;
+    average.textContent = avg.toFixed(1).replace(".", ",");
+    averageStars.textContent = stars(Math.round(avg));
+    count.textContent = `${reviews.length} ${reviews.length === 1 ? "opinión" : "opiniones"}`;
+
+    list.innerHTML = reviews.slice().reverse().map(r => `
+      <article class="review-item">
+        <div class="flex justify-between gap-3 flex-wrap">
+          <div>
+            <span class="review-name">${escapeHtml(r.name)}</span>
+            <span class="review-stars ml-2">${stars(r.rating)}</span>
+          </div>
+          <span class="review-date">${escapeHtml(r.date)}</span>
+        </div>
+        <p class="review-text">${escapeHtml(r.comment)}</p>
+      </article>
+    `).join("");
+  }
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+
+    const name = document.getElementById("reviewName").value.trim();
+    const rating = Number(document.querySelector('input[name="reviewRating"]:checked')?.value);
+    const comment = document.getElementById("reviewComment").value.trim();
+
+    if(!name || !rating || !comment){
+      alert("Completa tu nombre, calificación y comentario.");
+      return;
+    }
+
+    const reviews = getReviews();
+    reviews.push({
+      name,
+      rating,
+      comment,
+      date: new Date().toLocaleDateString("es-CL")
+    });
+
+    localStorage.setItem(REVIEWS_KEY, JSON.stringify(reviews));
+    form.reset();
+    renderReviews();
+    alert("⭐ ¡Gracias por compartir tu opinión!");
+  });
+
+  renderReviews();
+})();
+</script>
+
+</body>
+</html>

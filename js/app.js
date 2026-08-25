@@ -42,8 +42,8 @@ let cart = JSON.parse(localStorage.getItem("blessed_cart") || "[]");
 
         // [JS-01] FORMATO DE PRECIOS: convierte números a pesos chilenos.
 function money(n) {
-  return "$" + Number(n).toLocaleString("es-CL") + " CLP";
-}
+  return "$" + Number(n).toLocaleString("es-CL");
+}   
 
         // [JS-02] PRODUCTOS: genera las tarjetas de productos.
 function getFilteredProducts(){

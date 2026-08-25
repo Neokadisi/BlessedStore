@@ -379,7 +379,7 @@ async function checkoutWhatsApp() {
         console.log("📤 Enviando cliente al servidor...");
 
         const respuesta = await fetch(
-            "http://localhost:3000/api/clientes",
+            "http://api.blessedcarteras.cl/api/clientes",
             {
                 method: "POST",
 
@@ -440,7 +440,7 @@ async function checkoutWhatsApp() {
 console.log("📦 Enviando pedido al servidor...");
 
 const respuestaPedido = await fetch(
-    "http://localhost:3000/api/pedidos",
+    "http://api.blessedcarteras.cl/api/pedidos",
     {
         method: "POST",
 

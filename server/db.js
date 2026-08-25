@@ -1,14 +1,19 @@
 require("dotenv").config();
 
-const sql = require("mssql/msnodesqlv8");
+const sql = require("mssql");
 
 const config = {
-    connectionString:
-        `Driver={${process.env.DB_DRIVER}};` +
-        `Server=${process.env.DB_SERVER};` +
-        `Database=${process.env.DB_DATABASE};` +
-        `Trusted_Connection=Yes;` +
-        `TrustServerCertificate=Yes;`
+    server: process.env.DB_SERVER,
+    database: process.env.DB_DATABASE,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+
+    options: {
+        encrypt: true,
+        trustServerCertificate: false
+    },
+
+    port: 1433
 };
 
 let pool = null;

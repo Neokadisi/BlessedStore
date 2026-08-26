@@ -1,4 +1,4 @@
-/* =========================================================
+﻿/* =========================================================
            [7] JAVASCRIPT: comportamiento y funcionalidades
            ========================================================= */
 const products = [
@@ -176,34 +176,8 @@ function closeCart() {
 }
 
 // [JS-10.5] ENVÍO: muestra los campos correspondientes.
-function mostrarDatosEnvio() {
-
-    const envio = document.getElementById("tipoEnvio").value;
-
-    const starken = document.getElementById("datosStarken");
-    const blueExpress = document.getElementById("datosBlueExpress");
-    const domicilio = document.getElementById("datosDomicilio");
-
-    // Ocultar todo
-    starken.style.display = "none";
-    blueExpress.style.display = "none";
-    domicilio.style.display = "none";
-
-    // Mostrar según selección
-    if (envio === "Starken") {
-        starken.style.display = "block";
-    }
-
-    if (envio === "Blue Express") {
-        blueExpress.style.display = "block";
-    }
-
-    if (envio === "A domicilio") {
-        domicilio.style.display = "block";
-    }
-}
 // =====================================================
-// WHATSAPP + GUARDAR CLIENTE EN SQL SERVER
+// WHATSAPP
 // =====================================================
 
 async function checkoutWhatsApp() {
@@ -213,459 +187,83 @@ async function checkoutWhatsApp() {
     // ==============================
 
     if (!cart.length) {
-        alert("Tu carrito está vacío 💗");
+        alert("Tu carrito est� vac�o ??");
         return;
     }
 
 
     // ==============================
-    // DATOS DEL CLIENTE
+    // CREAR MENSAJE DE WHATSAPP
     // ==============================
 
-    const nombre =
-        document.getElementById("clienteNombre").value.trim();
+    let text =
+        "Hola BlessedCarteras ??\n\n";
 
-    const apellido =
-        document.getElementById("clienteApellido").value.trim();
-
-    const rut =
-        document.getElementById("clienteRut").value.trim();
-
-    const telefono =
-        document.getElementById("clienteTelefono")
-            ? document.getElementById("clienteTelefono").value.trim()
-            : "";
-
-    const email =
-        document.getElementById("clienteEmail")
-            ? document.getElementById("clienteEmail").value.trim()
-            : "";
+    text +=
+        "??? QUIERO REALIZAR ESTE PEDIDO\n\n";
 
 
     // ==============================
-    // MÉTODO DE ENTREGA
+    // PRODUCTOS
     // ==============================
 
-    const envio =
-        document.getElementById("tipoEnvio").value;
+    text +=
+        "?? PRODUCTOS\n\n";
 
 
-    // ==============================
-    // VALIDACIONES
-    // ==============================
+    cart.forEach(x => {
 
-    if (!nombre) {
-        alert("Por favor ingresa tu nombre.");
-        return;
-    }
+        const subtotal =
+            x.price * x.qty;
 
-    if (!apellido) {
-        alert("Por favor ingresa tu apellido.");
-        return;
-    }
+        text +=
+            `� ${x.name}\n`;
 
-    if (!rut) {
-        alert("Por favor ingresa tu RUT.");
-        return;
-    }
+        text +=
+            `  Cantidad: ${x.qty}\n`;
 
-    if (!telefono) {
-        alert("Por favor ingresa tu teléfono.");
-        return;
-    }
+        text +=
+            `  Subtotal: ${money(subtotal)}\n\n`;
 
-    if (!envio) {
-        alert("Por favor selecciona el método de entrega.");
-        return;
-    }
+    });
 
 
     // ==============================
-    // DATOS DE ENVÍO
+    // TOTAL
     // ==============================
 
-    let comuna = "";
-    let direccion = "";
-    let datosEnvio = "";
-
-
-    // --------------------------------
-    // STARKEN
-    // --------------------------------
-
-    if (envio === "Starken") {
-
-        const sucursal =
-            document
-                .getElementById("sucursalStarken")
-                .value
-                .trim();
-
-        if (!sucursal) {
-            alert("Por favor indica la sucursal Starken.");
-            return;
-        }
-
-        datosEnvio =
-            `🚚 Empresa: Starken\n` +
-            `🏢 Sucursal: ${sucursal}`;
-    }
-
-
-    // --------------------------------
-    // BLUE EXPRESS
-    // --------------------------------
-
-    if (envio === "Blue Express") {
-
-        const sucursal =
-            document
-                .getElementById("sucursalBlueExpress")
-                .value
-                .trim();
-
-        if (!sucursal) {
-            alert("Por favor indica la sucursal Blue Express.");
-            return;
-        }
-
-        datosEnvio =
-            `📦 Empresa: Blue Express\n` +
-            `🏢 Sucursal: ${sucursal}`;
-    }
-
-
-    // --------------------------------
-    // A DOMICILIO
-    // --------------------------------
-
-    if (envio === "A domicilio") {
-
-        direccion =
-            document
-                .getElementById("direccionCliente")
-                .value
-                .trim();
-
-        comuna =
-            document
-                .getElementById("comunaCliente")
-                .value
-                .trim();
-
-        if (!direccion) {
-            alert("Por favor ingresa tu dirección.");
-            return;
-        }
-
-        if (!comuna) {
-            alert("Por favor ingresa tu comuna.");
-            return;
-        }
-
-        datosEnvio =
-            `🏠 Entrega: A domicilio\n` +
-            `📍 Dirección: ${direccion}\n` +
-            `🏙️ Comuna: ${comuna}`;
-    }
-
-
-    // =====================================================
-    // GUARDAR CLIENTE EN SQL SERVER
-    // =====================================================
-
-    try {
-
-        console.log("📤 Enviando cliente al servidor...");
-
-        const respuesta = await fetch(
-            "https://blessedstore.onrender.com/api/clientes",
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify({
-
-                    nombre: nombre,
-                    apellido: apellido,
-                    rut: rut,
-                    telefono: telefono,
-                    email: email,
-                    comuna: comuna,
-                    direccion: direccion,
-                    metodo_entrega: envio
-
-                })
-            }
+    const total =
+        cart.reduce(
+            (s, x) =>
+                s + (x.price * x.qty),
+            0
         );
 
 
-        const resultado =
-            await respuesta.json();
+    text +=
+        `?? TOTAL: ${money(total)}\n\n`;
 
+    text +=
+        "?? Gracias por comprar en BlessedCarteras.\n";
 
-        console.log("📥 Respuesta del servidor:", resultado);
+    text +=
+        "Quedo atenta para coordinar el pago y env�o.";
 
 
-        // ==============================
-        // ERROR DEL SERVIDOR
-        // ==============================
+    // ==============================
+    // ABRIR WHATSAPP
+    // ==============================
 
-        if (!respuesta.ok || !resultado.ok) {
+    const numeroWhatsApp =
+        "56968762137";
 
-            alert(
-                resultado.mensaje ||
-                "No se pudo guardar tus datos. Por favor intenta nuevamente."
-            );
 
-            return;
-        }
+    const url =
+        `https://wa.me/${numeroWhatsApp}?text=` +
+        encodeURIComponent(text);
 
 
-        // ==============================
-        // CLIENTE GUARDADO
-        // ==============================
-
-        console.log(
-            `✅ Cliente guardado con ID: ${resultado.id}`
-        );
-
-// =====================================================
-// GUARDAR PEDIDO EN SQL SERVER
-// =====================================================
-
-console.log("📦 Enviando pedido al servidor...");
-
-const respuestaPedido = await fetch(
-    "https://blessedstore.onrender.com/api/pedidos",
-    {
-        method: "POST",
-
-        headers: {
-            "Content-Type": "application/json"
-        },
-
-        body: JSON.stringify({
-            cliente_id: resultado.id,
-
-            productos: cart.map(x => ({
-                producto: x.name,
-                cantidad: x.qty,
-                precio: x.price
-            })),
-
-            estado: "Pendiente"
-        })
-    }
-);
-
-const resultadoPedido = await respuestaPedido.json();
-
-console.log(
-    "📥 Respuesta del pedido:",
-    resultadoPedido
-);
-
-if (!respuestaPedido.ok || !resultadoPedido.ok) {
-
-    alert(
-        resultadoPedido.mensaje ||
-        "El cliente se guardó, pero no se pudo guardar el pedido."
-    );
-
-    return;
-}
-
-console.log(
-    `✅ Pedido guardado con ID: ${resultadoPedido.idPedido}`
-);
-
-console.log(
-    `💰 Total guardado: ${money(resultadoPedido.total)}`
-);
-        // =====================================================
-        // CREAR MENSAJE DE WHATSAPP
-        // =====================================================
-
-        let text =
-            "Hola BlessedCarteras 💗\n\n";
-
-        text +=
-            "🛍️ QUIERO REALIZAR ESTE PEDIDO\n\n";
-
-
-        // DATOS CLIENTE
-
-        text +=
-            "👤 DATOS DEL CLIENTE\n";
-
-        text +=
-            `Nombre: ${nombre}\n`;
-
-        text +=
-            `Apellido: ${apellido}\n`;
-
-        text +=
-            `RUT: ${rut}\n`;
-
-        text +=
-            `Teléfono: ${telefono}\n\n`;
-
-
-        // ENVÍO
-
-        text +=
-            "📦 DATOS DE ENTREGA\n";
-
-        text +=
-            `${datosEnvio}\n\n`;
-
-
-        // =====================================================
-        // PRODUCTOS
-        // =====================================================
-
-        text +=
-            "🛒 PRODUCTOS\n\n";
-
-
-        cart.forEach(x => {
-
-            const subtotal =
-                x.price * x.qty;
-
-            text +=
-                `• ${x.name}\n`;
-
-            text +=
-                `  Cantidad: ${x.qty}\n`;
-
-            text +=
-                `  Subtotal: ${money(subtotal)}\n\n`;
-
-        });
-
-
-        // =====================================================
-        // TOTAL
-        // =====================================================
-
-        const total =
-            cart.reduce(
-                (s, x) =>
-                    s + (x.price * x.qty),
-                0
-            );
-
-
-        text +=
-            `💰 TOTAL: ${money(total)}\n\n`;
-
-        text +=
-            "💗 Gracias por comprar en BlessedCarteras.\n";
-
-        text +=
-            "Quedo atenta para coordinar el pago y envío.";
-
-
-        // =====================================================
-        // ABRIR WHATSAPP
-        // =====================================================
-
-        const numeroWhatsApp =
-            "56968762137";
-
-
-        const url =
-            `https://wa.me/${numeroWhatsApp}?text=` +
-            encodeURIComponent(text);
-
-
-        window.open(url, "_blank");
-
-
-        // =====================================================
-        // LIMPIAR FORMULARIO
-        // =====================================================
-
-        document.getElementById("clienteNombre").value = "";
-
-        document.getElementById("clienteApellido").value = "";
-
-        document.getElementById("clienteRut").value = "";
-
-        if (document.getElementById("clienteTelefono")) {
-            document.getElementById("clienteTelefono").value = "";
-        }
-
-        if (document.getElementById("clienteEmail")) {
-            document.getElementById("clienteEmail").value = "";
-        }
-
-        document.getElementById("tipoEnvio").value = "";
-
-
-        if (document.getElementById("sucursalStarken")) {
-            document.getElementById("sucursalStarken").value = "";
-        }
-
-        if (document.getElementById("sucursalBlueExpress")) {
-            document.getElementById("sucursalBlueExpress").value = "";
-        }
-
-        if (document.getElementById("direccionCliente")) {
-            document.getElementById("direccionCliente").value = "";
-        }
-
-        if (document.getElementById("comunaCliente")) {
-            document.getElementById("comunaCliente").value = "";
-        }
-
-
-        // OCULTAR CAMPOS DE ENVÍO
-
-        if (document.getElementById("datosStarken")) {
-            document.getElementById("datosStarken").style.display = "none";
-        }
-
-        if (document.getElementById("datosBlueExpress")) {
-            document.getElementById("datosBlueExpress").style.display = "none";
-        }
-
-        if (document.getElementById("datosDomicilio")) {
-            document.getElementById("datosDomicilio").style.display = "none";
-        }
-
-
-        // =====================================================
-        // VACIAR CARRITO
-        // =====================================================
-
-        cart = [];
-
-        localStorage.setItem(
-            "blessed_cart",
-            JSON.stringify(cart)
-        );
-
-        renderCart();
-
-
-    } catch (error) {
-
-        console.error(
-            "❌ ERROR AL GUARDAR CLIENTE:",
-            error
-        );
-
-        alert(
-            "No se pudo conectar con el servidor. " +
-            "Asegúrate de tener Node.js ejecutándose."
-        );
-    }
+    window.open(url, "_blank");
 
 }
 
@@ -847,3 +445,7 @@ actualizarContador();
 
 setInterval(actualizarContador, 1000);
         /* FIN DEL JAVASCRIPT */
+
+
+
+

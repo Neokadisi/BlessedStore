@@ -1,4 +1,4 @@
-<!--
+﻿<!--
 ====================================================================
  BLESSED.CARTERAS / BLESSEDSTORE
  Proyecto demostrativo - Programación Web Básica
@@ -155,7 +155,7 @@
     <div class="filters" role="group" aria-label="Filtrar productos">
       <button class="filter active" data-cat="todos" onclick="setCategory('todos')">Todos</button>
       <button class="filter" data-cat="carteras" onclick="setCategory('carteras')">Carteras</button>
-      <button class="filter" data-cat="bolsos" onclick="setCategory('bolsos')"></button>
+      <button class="filter" data-cat="bolsos" onclick="setCategory('bolsos')">Bolsos</button>
       <button class="filter" data-cat="mochilas" onclick="setCategory('mochilas')">Mochilas</button>
       <button class="filter" data-cat="bandoleras" onclick="setCategory('bandoleras')">Bandoleras</button>
       <button class="filter" data-cat="ofertas" onclick="setCategory('ofertas')">Ofertas</button>
@@ -428,160 +428,6 @@
   <div class="cart-items" id="cartItems"></div>
   <div class="cart-foot">
     <div class="total" id="cartTotal">Total: $0</div>
-    <div class="checkout-form">
-
-      <div class="datos-pedido-box">
-    <h3>📦 Datos para tu pedido</h3>
-
-    <!-- NOMBRE -->
-    <div class="form-group">
-        <label for="clienteNombre">Nombre</label>
-        <input
-            type="text"
-            id="clienteNombre"
-            placeholder="Ingresa tu nombre"
-        >
-    </div>
-
-    <!-- APELLIDO -->
-    <div class="form-group">
-        <label for="clienteApellido">Apellido</label>
-        <input
-            type="text"
-            id="clienteApellido"
-            placeholder="Ingresa tu apellido"
-        >
-    </div>
-
-    <!-- RUT -->
-    <div class="form-group">
-        <label for="clienteRut">RUT</label>
-        <input
-            type="text"
-            id="clienteRut"
-            placeholder="Ej: 12.345.678-9"
-        >
-    </div>
-
-    <div class="form-group">
-    <label for="clienteTelefono">Teléfono</label>
-    <input
-        type="tel"
-        id="clienteTelefono"
-        placeholder="Ej: 912345678"
-    >
-    </div>
-
-    <!-- MÉTODO DE ENTREGA -->
-    <div class="form-group">
-        <label for="tipoEnvio">Método de entrega</label>
-
-        <select id="tipoEnvio" onchange="mostrarDatosEnvio()">
-            <option value="">Selecciona una opción</option>
-            <option value="Starken">🚚 Starken</option>
-            <option value="Blue Express">📦 Blue Express</option>
-            <option value="A domicilio">🏠 A domicilio</option>
-        </select>
-    </div>
-
-
-    <!-- ============================= -->
-    <!-- DATOS STARKEN -->
-    <!-- ============================= -->
-
-    <div
-        id="datosStarken"
-        class="datos-envio"
-        style="display:none;"
-    >
-
-        <div class="form-group">
-
-            <label for="sucursalStarken">
-                🚚 Sucursal Starken
-            </label>
-
-            <input
-                type="text"
-                id="sucursalStarken"
-                placeholder="Ej: Starken Santiago Centro"
-            >
-
-        </div>
-
-    </div>
-
-
-    <!-- ============================= -->
-    <!-- DATOS BLUE EXPRESS -->
-    <!-- ============================= -->
-
-    <div
-        id="datosBlueExpress"
-        class="datos-envio"
-        style="display:none;"
-    >
-
-        <div class="form-group">
-
-            <label for="sucursalBlueExpress">
-                📦 Sucursal Blue Express
-            </label>
-
-            <input
-                type="text"
-                id="sucursalBlueExpress"
-                placeholder="Ej: Blue Express Maipú"
-            >
-
-        </div>
-
-    </div>
-
-</div>
-    <!-- ============================= -->
-    <!-- DATOS DOMICILIO -->
-    <!-- ============================= -->
-
-    <div
-        id="datosDomicilio"
-        class="datos-envio"
-        style="display:none;"
-    >
-
-        <div class="form-group">
-
-            <label for="direccionCliente">
-                📍 Dirección
-            </label>
-
-            <input
-                type="text"
-                id="direccionCliente"
-                placeholder="Calle y número"
-            >
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label for="comunaCliente">
-                🏙️ Comuna
-            </label>
-
-            <input
-                type="text"
-                id="comunaCliente"
-                placeholder="Ej: Maipú"
-            >
-
-        </div>
-
-    </div>
-    
-
-</div>
     <button
     type="button"
     class="full-btn checkout"
@@ -594,3 +440,5 @@
 </aside>
 </body>
 </html>
+
+

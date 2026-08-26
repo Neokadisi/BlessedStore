@@ -317,6 +317,145 @@ header {
   font:700 17px Arial;
   margin:7px 0 13px
 }
+
+/* =========================================
+   PRECIOS DE PRODUCTOS
+   ========================================= */
+
+.product-prices {
+  margin-top: 14px;
+}
+
+/* PRECIO NORMAL */
+
+.price-normal {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 10px;
+}
+
+.price-normal span {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.price-normal strong {
+  font-family: 'DM Serif Display', serif;
+  font-size: 19px;
+  font-weight: normal;
+  color: #555;
+}
+
+
+/* =========================================
+   PRECIO MAYORISTA
+   ========================================= */
+
+.wholesale-box {
+  position: relative;
+
+  padding: 11px 14px;
+
+  border-radius: 12px;
+
+  background: linear-gradient(
+    135deg,
+    #fff9fc,
+    #fff0f6
+  );
+
+  border: 1px solid #f1bfd5;
+
+  box-shadow: 0 4px 12px rgba(214, 51, 132, 0.08);
+
+  text-align: center;
+
+  overflow: hidden;
+}
+
+
+/* ETIQUETA */
+
+.wholesale-label {
+  display: block;
+
+  font-family: 'Montserrat', sans-serif;
+
+  font-size: 10px;
+
+  font-weight: 600;
+
+  color: #c94f82;
+
+  letter-spacing: 1.2px;
+
+  margin-bottom: 3px;
+}
+
+
+/* PRECIO */
+
+.wholesale-box strong {
+  display: block;
+
+  font-family: 'DM Serif Display', serif;
+
+  font-size: 25px;
+
+  font-weight: normal;
+
+  color: #c83f78;
+
+  line-height: 1.2;
+}
+
+
+/* DESDE 1 UNIDAD */
+
+.wholesale-box small {
+  display: block;
+
+  margin-top: 3px;
+
+  font-family: 'Montserrat', sans-serif;
+
+  font-size: 10px;
+
+  color: #999;
+}
+
+
+/* DETALLES DECORATIVOS */
+
+.wholesale-box::before {
+  content: "✦";
+
+  position: absolute;
+
+  top: 6px;
+  left: 9px;
+
+  font-size: 9px;
+
+  color: #e3a0bd;
+}
+
+.wholesale-box::after {
+  content: "✦";
+
+  position: absolute;
+
+  bottom: 5px;
+  right: 9px;
+
+  font-size: 9px;
+
+  color: #e3a0bd;
+}
 .product-btn {
   border:1px solid var(--pink);
   background:#fff;

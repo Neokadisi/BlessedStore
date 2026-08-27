@@ -1,5 +1,5 @@
-/* =========================================================
-           [2] CSS: aquí se controla todo el diseño visual
+﻿/* =========================================================
+           [2] CSS: aquÃ­ se controla todo el diseÃ±o visual
            ========================================================= */
 :root {
   --pink:#f85b8b;
@@ -45,17 +45,37 @@ img {
   background:linear-gradient(90deg,#f45b88,#ff759b);
   color:#fff;
   padding:10px 5%;
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  text-align:center;
+  display:block;
+  overflow:hidden;
+  white-space:nowrap;
   font-size:14px;
   font-weight:600;
 }
-.topbar span {
+
+.topbar-movimiento {
+  display:inline-flex;
+  align-items:center;
+  width:max-content;
+  animation:topbarCarrusel 28s linear infinite;
+}
+
+.topbar-movimiento span {
   display:flex;
   justify-content:center;
   gap:8px;
-  align-items:center
+  align-items:center;
+  margin-right:70px;
+  flex-shrink:0;
+}
+
+@keyframes topbarCarrusel {
+  0% {
+    transform:translateX(100vw);
+  }
+
+  100% {
+    transform:translateX(-100%);
+  }
 }
 header {
   position:sticky;
@@ -432,7 +452,7 @@ header {
 /* DETALLES DECORATIVOS */
 
 .wholesale-box::before {
-  content: "✦";
+  content: "âœ¦";
 
   position: absolute;
 
@@ -445,7 +465,7 @@ header {
 }
 
 .wholesale-box::after {
-  content: "✦";
+  content: "âœ¦";
 
   position: absolute;
 
@@ -912,7 +932,7 @@ footer {
   transform:translateY(-2px);
   opacity:.9
 }
-/* ===== AGENCIAS DE ENVÍO ===== */
+/* ===== AGENCIAS DE ENVÃO ===== */
 .shipping-agencies {
   margin:30px auto 0;
   max-width:900px;
@@ -1194,7 +1214,7 @@ body::after {
   letter-spacing: 3px;
   margin-bottom: 18px;
 }
-/* Título */
+/* TÃ­tulo */
 .hero h1 {
   max-width: 650px;
   margin: 0 0 20px;
@@ -1207,7 +1227,7 @@ body::after {
   color: #d63384;
   font-style: italic;
 }
-/* Descripción */
+/* DescripciÃ³n */
 .hero p {
   max-width: 520px;
   margin-bottom: 30px;
@@ -1215,7 +1235,7 @@ body::after {
   line-height: 1.6;
   color: #444;
 }
-/* Botón */
+/* BotÃ³n */
 .hero .primary {
   display: inline-block;
   padding: 15px 30px;
@@ -1666,7 +1686,7 @@ body {
   color: #e75480;
   margin: 15px 0;
 }
-/* Adaptación para celulares */
+/* AdaptaciÃ³n para celulares */
 @media (max-width: 600px) {
   .countdown {
     gap: 8px;
@@ -1743,7 +1763,7 @@ body {
     background: white;
 }
 
-/* DATOS DE ENVÍO */
+/* DATOS DE ENVÃO */
 
 .datos-pedido-box .datos-envio {
     margin-top: 10px;
@@ -1763,6 +1783,7 @@ body {
     height: 35px;
     font-size: 12px;
 }
+
 
 
 

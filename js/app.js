@@ -5,14 +5,14 @@ const products = [
 
   {id:1,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/24.jpg"},
   {id:2,name:"Cartera boutique brillo",price:7000,precioMayorista:5500,img:"img/imagen1.jpg"},
-  {id:3,name:"Bolso Premium 3",price:44990,precioMayorista:39990,img:"img/(13).jpg"},
+  {id:3,name:"Bolso Premium (sin stock)",price:44990,precioMayorista:39990,img:"img/(13).jpg"},
   {id:4,name:"Bolso Inspiracion",price:15000,precioMayorista:8500,img:"img/(9).jpg"},
   {id:5,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/(1).jpg"},
   {id:6,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/(2).jpg"},
   {id:7,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/(3).jpg"},
   {id:8,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/(4).jpg"},
   {id:9,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/(6).jpg"},
-  {id:10,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/(7).jpg"},
+  {id:10,name:"Cartera chanel (sin stock)",price:5000,precioMayorista:3500,img:"img/(7).jpg"},
   {id:11,name:"Cartera Pinko",price:12000,precioMayorista:7500,img:"img/(8).jpg"},
   {id:12,name:"Mini bags",price:5000,precioMayorista:3500,img:"img/(10).jpg"},
   {id:13,name:"Mochila Inspiracion",price:12000,precioMayorista:7500,img:"img/(11).jpg"},
@@ -26,11 +26,11 @@ const products = [
   {id:21,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/21.jpg"},
   {id:22,name:"Cartera de fiesta",price:8000,precioMayorista:5500,img:"img/22.jpg"},
   {id:23,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/23.jpg"},
-  {id:24,name:"Bolso Luxury",price:45990,precioMayorista:40990,img:"img/p24.jpg"},
-  {id:25,name:"Cartera Gold",price:37990,precioMayorista:32990,img:"img/p25.jpg"},
-  {id:26,name:"Bolso Flower",price:32990,precioMayorista:28990,img:"img/p26.jpg"},
-  {id:27,name:"Cartera Soft Pink",price:25990,precioMayorista:21990,img:"img/p27.jpg"},
-  {id:28,name:"Mochila Pink",price:31990,precioMayorista:27990,img:"img/p28.jpg",category:"mochilas"},
+  //{id:24,name:"Cartera inspiracion ",price:45990,precioMayorista:40990,img:"img/24 (1).jpg"},
+ // {id:25,name:"Cartera Gold",price:37990,precioMayorista:32990,img:"img/25.jpg"},
+  //{id:26,name:"Bolso Flower",price:32990,precioMayorista:28990,img:"img/26.jpg"},
+  //{id:27,name:"Cartera Soft Pink",price:25990,precioMayorista:21990,img:"img/27.jpg"},
+  //{id:28,name:"Mochila Pink",price:31990,precioMayorista:27990,img:"img/28.jpg",category:"mochilas"},
 ];
 
 let favorites = JSON.parse(localStorage.getItem("blessed_favorites") || "[]");

@@ -2,34 +2,35 @@
            [7] JAVASCRIPT: comportamiento y funcionalidades
            ========================================================= */
 const products = [
-  {id:1,name:"Porta Celulares ",price:5000,img:"img/24.jpg"},
-  {id:2,name:"Cartera bandolera 2",price:39990,img:"img/imagen1.jpg"},
-  {id:3,name:"Bolso Premium 3",price:44990,img:"img/(13).jpg"},
-  {id:4,name:"Bolso Elegance",price:24990,img:"img/(9).jpg"},
-  {id:5,name:"Bolso Classic",price:35990,img:"img/(1).jpg"},
-  {id:6,name:"Bolso Paris",price:42990,img:"img/(2).jpg"},
-  {id:7,name:"Bolso Milano",price:49990,img:"img/(3).jpg"},
-  {id:8,name:"Bolso Rose",price:27990,img:"img/(4).jpg"},
-  {id:9,name:"Bolso Royal",price:54990,img:"img/(6).jpg"},
-  {id:10,name:"Bolso Bella",price:31990,img:"img/(7).jpg"},
-  {id:11,name:"Bolso Chic",price:32990,img:"img/(8).jpg"},
-  {id:12,name:"Bolso Queen",price:38990,img:"img/(10).jpg"},
-  {id:13,name:"Cartera Sweet Pink",price:22990,img:"img/(11).jpg"},
-  {id:14,name:"Cartera Heart",price:29990,img:"img/(12).jpg"},
-  {id:15,name:"Cartera Clásica Beige",price:26990,img:"img/(14).jpg"},
-  {id:16,name:"Cartera Elegance Negra",price:24990,img:"img/(15).jpg"},
-  {id:17,name:"Mochila Mini Black",price:28990,img:"img/(16).jpg"},
-  {id:18,name:"Mochila Elegance",price:33990,img:"img/(17).jpg"},
-  {id:19,name:"Bolso Casual",price:27990,img:"img/18.jpg"},
-  {id:20,name:"Bolso Romantic",price:30990,img:"img/20.jpg"},
-  {id:21,name:"Cartera Paris Pink",price:34990,img:"img/21.jpg"},
-  {id:22,name:"Cartera Mini",price:21990,img:"img/22.jpg"},
-  {id:23,name:"Bolso Daily",price:29990,img:"img/23.jpg"},
-  {id:24,name:"Bolso Luxury",price:45990,img:"img/p24.jpg"},
-  {id:25,name:"Cartera Gold",price:37990,img:"img/p25.jpg"},
-  {id:26,name:"Bolso Flower",price:32990,img:"img/p26.jpg"},
-  {id:27,name:"Cartera Soft Pink",price:25990,img:"img/p27.jpg"},
-  {id:28,name:"Mochila Pink",price:31990,img:"img/p28.jpg",category:"mochilas"},
+
+  {id:1,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/24.jpg"},
+  {id:2,name:"Cartera boutique brillo",price:7000,precioMayorista:5500,img:"img/imagen1.jpg"},
+  {id:3,name:"Bolso Premium 3",price:44990,precioMayorista:39990,img:"img/(13).jpg"},
+  {id:4,name:"Bolso Inspiracion",price:15000,precioMayorista:8500,img:"img/(9).jpg"},
+  {id:5,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/(1).jpg"},
+  {id:6,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/(2).jpg"},
+  {id:7,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/(3).jpg"},
+  {id:8,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/(4).jpg"},
+  {id:9,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/(6).jpg"},
+  {id:10,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/(7).jpg"},
+  {id:11,name:"Cartera Pinko",price:12000,precioMayorista:7500,img:"img/(8).jpg"},
+  {id:12,name:"Mini bags",price:5000,precioMayorista:3500,img:"img/(10).jpg"},
+  {id:13,name:"Mochila Inspiracion",price:12000,precioMayorista:7500,img:"img/(11).jpg"},
+  {id:14,name:"Cartera Chanel",price:12000,precioMayorista:6500,img:"img/(12).jpg"},
+  {id:15,name:"Bolso notebook hombre",price:10000,precioMayorista:6000,img:"img/(14).jpg"},
+  {id:16,name:"Bandolera kipling + llavero",price:12000,precioMayorista:6000,img:"img/(15).jpg"},
+  {id:17,name:"Bolso hombre",price:6000,precioMayorista:3500,img:"img/(16).jpg"},
+  {id:18,name:"Cartera boutique",price:12000,precioMayorista:6500,img:"img/(17).jpg"},
+  {id:19,name:"Cartera nicol lee",price:6500,precioMayorista:3500,img:"img/18.jpg"},
+  {id:20,name:"Cross body",price:6000,precioMayorista:3500,img:"img/20.jpg"},
+  {id:21,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/21.jpg"},
+  {id:22,name:"Cartera de fiesta",price:8000,precioMayorista:5500,img:"img/22.jpg"},
+  {id:23,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/23.jpg"},
+  {id:24,name:"Bolso Luxury",price:45990,precioMayorista:40990,img:"img/p24.jpg"},
+  {id:25,name:"Cartera Gold",price:37990,precioMayorista:32990,img:"img/p25.jpg"},
+  {id:26,name:"Bolso Flower",price:32990,precioMayorista:28990,img:"img/p26.jpg"},
+  {id:27,name:"Cartera Soft Pink",price:25990,precioMayorista:21990,img:"img/p27.jpg"},
+  {id:28,name:"Mochila Pink",price:31990,precioMayorista:27990,img:"img/p28.jpg",category:"mochilas"},
 ];
 
 let favorites = JSON.parse(localStorage.getItem("blessed_favorites") || "[]");
@@ -94,12 +95,6 @@ function productCard(p){
 
       <!-- PRECIOS -->
       <div class="product-prices">
-
-        <div class="price-normal">
-          <span>Precio normal</span>
-          <strong>${money(p.price)}</strong>
-        </div>
-
         <div class="wholesale-box">
         <span class="wholesale-label">✦ ELIGE TU PRECIO</span>
 
@@ -124,7 +119,7 @@ function productCard(p){
   >
   <span>
     Precio mayorista
-    <strong>${money(p.wholesalePrice || p.price)}</strong>
+    <strong>${money(p.precioMayorista || p.price)}</strong>
   </span>
 </label>
 
@@ -171,7 +166,7 @@ function openProduct(id){
   const p=products.find(x=>x.id===id); if(!p)return;
   document.getElementById("modalProductImage").src=p.img;
   document.getElementById("modalProductName").textContent=p.name;
-  document.getElementById("modalProductCode").textContent=p.code?`Código: ${p.code}`:"Producto Blessed.Carteras";
+  document.getElementById("modalProductCode").textContent=p.code?`Código: ${p.code}`:"Producto BlessedCarteras";
   document.getElementById("modalProductMeasures").textContent=p.measures?`Medidas: ${p.measures}`:"Producto seleccionado de nuestra colección.";
   document.getElementById("modalProductPrice").textContent=money(p.price);
   document.getElementById("modalCartButton").onclick=()=>addToCart(p.id);
@@ -184,21 +179,32 @@ function addToCart(id) {
   const p = products.find(x => x.id === id);
   if (!p) return;
 
+  // Detectar qué precio seleccionó el cliente
   const selected = document.querySelector(`input[name="price_${id}"]:checked`);
   const tipoPrecio = selected ? selected.value : "normal";
-  const precioElegido = tipoPrecio === "wholesale" ? (p.wholesalePrice || p.price) : p.price;
 
-  const item = cart.find(x => x.id === id && x.tipoPrecio === tipoPrecio);
+  // Obtener SOLO el precio seleccionado
+  const precioDetalle =
+    tipoPrecio === "wholesale"
+      ? p.precioMayorista
+      : p.price;
+
+  const item = cart.find(
+    x => x.id === id && x.tipoPrecio === tipoPrecio
+  );
 
   if (item) {
     item.qty++;
   } else {
     cart.push({
       ...p,
-      price: precioElegido,
-      precioNormal: p.price,
-      precioMayorista: p.wholesalePrice || p.price,
+
+      // Este será el precio que utilizará el carrito
+      price: precioDetalle,
+
+      // Guardamos el tipo seleccionado
       tipoPrecio: tipoPrecio,
+
       qty: 1
     });
   }
@@ -237,7 +243,9 @@ function removeItem(id) {
 // [JS-05] CARRITO: actualiza visualmente los productos y el total.
 function renderCart() {
   const cartCountEl = document.getElementById("cartCount");
-  if (cartCountEl) cartCountEl.textContent = cart.reduce((s, x) => s + x.qty, 0);
+  if (cartCountEl) {
+    cartCountEl.textContent = cart.reduce((s, x) => s + x.qty, 0);
+  }
 
   const box = document.getElementById("cartItems");
   if (!box) return;
@@ -246,26 +254,43 @@ function renderCart() {
     box.innerHTML = '<p class="empty-cart">Tu carrito está vacío 💗</p>';
   } else {
     box.innerHTML = cart.map(x => {
-      const tipoPrecio = x.tipoPrecio === "wholesale" ? "✦ PRECIO MAYORISTA" : "PRECIO NORMAL";
+
+      // Tipo de precio seleccionado
+      const tipoPrecio = x.tipoPrecio === "wholesale"
+        ? "✦ PRECIO MAYORISTA"
+        : "✦ PRECIO DETALLE";
+
+      // Precio que realmente seleccionó el cliente
       const precioElegido = x.price;
-      const precioNormal = x.precioNormal || x.price;
-      const precioMayorista = x.precioMayorista || x.wholesalePrice || x.price;
+
+      // Subtotal
       const subtotal = precioElegido * x.qty;
 
       return `
         <div class="cart-item">
-          <img src="${x.img}" onerror="this.src='images/placeholder.jpg'" alt="${x.name}">
+
+          <img 
+            src="${x.img}" 
+            onerror="this.src='images/placeholder.jpg'" 
+            alt="${x.name}"
+          >
+
           <div class="cart-item-content">
+
             <strong>${x.name}</strong>
+
             <div class="cart-price-detail">
-              <div class="cart-price-type">${tipoPrecio}</div>
+
+              <!-- TIPO DE PRECIO -->
+              <div class="cart-price-type">
+                ${tipoPrecio}
+              </div>
+
+              <!-- SOLO MUESTRA EL PRECIO SELECCIONADO -->
               <div class="cart-selected-price">
-                Precio elegido: <strong>${money(precioElegido)}</strong>
+                Precio: <strong>${money(precioElegido)}</strong>
               </div>
-              <div class="cart-price-options">
-                <small>Precio normal: ${money(precioNormal)}</small>
-                <small>Precio mayorista: ${money(precioMayorista)}</small>
-              </div>
+
             </div>
 
             <div class="cart-subtotal">
@@ -273,22 +298,46 @@ function renderCart() {
             </div>
 
             <div class="qty">
-              <button onclick="changeQty(${x.id},-1)">−</button>
+
+              <button onclick="changeQty(${x.id},-1)">
+                −
+              </button>
+
               <span>${x.qty}</span>
-              <button onclick="changeQty(${x.id},1)">+</button>
-              <button class="remove-item" onclick="removeItem(${x.id})">🗑️</button>
+
+              <button onclick="changeQty(${x.id},1)">
+                +
+              </button>
+
+              <button 
+                class="remove-item" 
+                onclick="removeItem(${x.id})"
+              >
+                🗑️
+              </button>
+
             </div>
+
           </div>
+
         </div>
       `;
+
     }).join("");
   }
 
-  const total = cart.reduce((s, x) => s + (x.price * x.qty), 0);
-  const cartTotalEl = document.getElementById("cartTotal");
-  if (cartTotalEl) cartTotalEl.textContent = "Total: " + money(total);
-}
+  // TOTAL DEL CARRITO
+  const total = cart.reduce(
+    (s, x) => s + (x.price * x.qty),
+    0
+  );
 
+  const cartTotalEl = document.getElementById("cartTotal");
+
+  if (cartTotalEl) {
+    cartTotalEl.textContent = "Total: " + money(total);
+  }
+}
 function openCart() {
   document.getElementById("cartDrawer")?.classList.add("open");
   document.getElementById("backdrop")?.classList.add("open");
@@ -306,23 +355,46 @@ async function checkoutWhatsApp() {
     }
 
     let text = "Hola BlessedCarteras 💗\n\n";
-    text += "🛍️ QUIERO REALIZAR ESTE PEDIDO\n\n";
-    text += "📦 PRODUCTOS\n\n";
+
+    text += "🛍️ *QUIERO REALIZAR ESTE PEDIDO*\n\n";
+
+    text += "📦 *PRODUCTOS*\n\n";
 
     cart.forEach(x => {
+
         const subtotal = x.price * x.qty;
-        text += `• ${x.name}\n`;
-        text += `  Cantidad: ${x.qty}\n`;
-        text += `  Subtotal: ${money(subtotal)}\n\n`;
+
+        const tipoPrecio = x.tipoPrecio === "wholesale"
+            ? "✦ Precio Mayorista"
+            : "✦ Precio Detalle";
+
+        text += `👜 *${x.name}*\n`;
+        text += `   ${tipoPrecio}\n`;
+        text += `   Precio: ${money(x.price)}\n`;
+        text += `   Cantidad: ${x.qty}\n`;
+        text += `   Subtotal: ${money(subtotal)}\n\n`;
     });
 
-    const total = cart.reduce((s, x) => s + (x.price * x.qty), 0);
-    text += `💰 TOTAL: ${money(total)}\n\n`;
-    text += "💗 Gracias por comprar en BlessedCarteras.\n";
-    text += "Quedo atenta para coordinar el pago y envío.";
+    const total = cart.reduce(
+        (s, x) => s + (x.price * x.qty),
+        0
+    );
+
+    text += "━━━━━━━━━━━━━━\n";
+    text += `💰 *TOTAL: ${money(total)}*\n`;
+    text += "━━━━━━━━━━━━━━\n\n";
+
+    text += "💗 *Listo bella*, una vez confirmado su pedido me manda fotito de la transferencia o depósito y sus datos de envío, y estamos OK.\n\n";
+
+    text += "🥰 *Muchas gracias por comprar en BlessedCarteras.*";
 
     const numeroWhatsApp = "56968762137";
-    const url = `https://wa.me/${numeroWhatsApp}?text=` + encodeURIComponent(text);
+
+
+    const url =
+        `https://wa.me/${numeroWhatsApp}?text=` +
+        encodeURIComponent(text);
+
     window.open(url, "_blank");
 }
 

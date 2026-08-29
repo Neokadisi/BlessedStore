@@ -452,7 +452,7 @@ header {
 /* DETALLES DECORATIVOS */
 
 .wholesale-box::before {
-  content: "âœ¦";
+  content: "";
 
   position: absolute;
 
@@ -465,7 +465,7 @@ header {
 }
 
 .wholesale-box::after {
-  content: "âœ¦";
+  content: "";
 
   position: absolute;
 

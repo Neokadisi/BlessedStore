@@ -1803,3 +1803,497 @@ body {
 
 
 
+
+/* =========================================================
+   BLESSED - TARJETAS DE PRODUCTOS
+   DISEÑO APROBADO
+   ========================================================= */
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.product {
+  background: #fff;
+  border: 1px solid #f3dce6;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 5px 18px rgba(0,0,0,.05);
+}
+
+.product-img {
+  height: 280px;
+  background: #faf6f7;
+  position: relative;
+  overflow: hidden;
+}
+
+.product-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.product-info {
+  padding: 14px;
+}
+
+.product-info h3 {
+  font-size: 20px;
+  margin: 0 0 4px;
+  font-weight: 700;
+}
+
+.product-meta {
+  margin: 0 0 12px;
+}
+
+.product-code {
+  color: #ed4f91;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* ------------------------------
+   PRECIOS
+   ------------------------------ */
+
+.product-prices {
+  margin-top: 8px;
+}
+
+.wholesale-box {
+  background: #fff;
+  border: 1px solid #f3c9dc;
+  border-radius: 13px;
+  padding: 9px 12px;
+  box-shadow: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  align-items: center;
+  text-align: left;
+}
+
+.wholesale-label {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: #ed4f91;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+
+.price-option {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 42px;
+  padding: 5px 7px;
+  border: 1px solid #f1d4e1;
+  border-radius: 9px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.price-option input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  flex: 0 0 auto;
+  accent-color: #ed4f91;
+}
+
+.price-option span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  color: #666;
+}
+
+.price-option strong {
+  display: inline;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #222;
+}
+
+.wholesale-box small {
+  display: none;
+}
+
+/* ------------------------------
+   BOTONES
+   ------------------------------ */
+
+.product-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+  margin-top: 10px;
+}
+
+.product-btn,
+.details-btn {
+  min-height: 44px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.product-btn {
+  border: 1px solid #ed4f91;
+  background: #fff;
+  color: #ed4f91;
+}
+
+.product-btn:hover {
+  background: #ed4f91;
+  color: #fff;
+}
+
+.details-btn {
+  border: 1px solid #f1d4e1;
+  background: #fff;
+  color: #111;
+}
+
+/* ------------------------------
+   FAVORITO
+   ------------------------------ */
+
+.product-top {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 3;
+}
+
+.favorite-btn {
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,.96);
+  color: #ed4f91;
+  font-size: 27px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,.10);
+}
+
+/* =========================================================
+   CELULAR
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .products {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    max-width: 100%;
+  }
+
+  .product-img {
+    height: 190px;
+  }
+
+  .product-info {
+    padding: 9px;
+  }
+
+  .product-info h3 {
+    font-size: 14px;
+  }
+
+  .product-code {
+    font-size: 11px;
+  }
+
+  .wholesale-box {
+    padding: 7px;
+    gap: 5px;
+  }
+
+  .wholesale-label {
+    font-size: 8px;
+  }
+
+  .price-option {
+    min-height: 38px;
+    padding: 4px;
+    gap: 4px;
+  }
+
+  .price-option input {
+    width: 13px;
+    height: 13px;
+  }
+
+  .price-option span {
+    gap: 3px;
+    font-size: 8px;
+  }
+
+  .price-option strong {
+    font-size: 10px;
+  }
+
+  .product-actions {
+    gap: 5px;
+    margin-top: 7px;
+  }
+
+  .product-btn,
+  .details-btn {
+    min-height: 37px;
+    font-size: 11px;
+    padding: 5px 3px;
+  }
+
+  .favorite-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 380px) {
+
+  .product-img {
+    height: 165px;
+  }
+
+  .product-info h3 {
+    font-size: 13px;
+  }
+
+  .price-option span {
+    font-size: 7px;
+  }
+
+  .price-option strong {
+    font-size: 9px;
+  }
+}
+
+
+
+/* =========================================================
+   DISEÑO FINAL - 4 PRODUCTOS POR FILA
+   ========================================================= */
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.product {
+  border-radius: 16px;
+}
+
+.product-img {
+  height: 245px;
+}
+
+.product-info {
+  padding: 12px;
+}
+
+.product-info h3 {
+  font-size: 17px;
+  margin-bottom: 4px;
+}
+
+.product-code {
+  font-size: 12px;
+}
+
+/* PRECIOS */
+.wholesale-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  padding: 9px 7px;
+  border: 1px solid #f3c9dc;
+  border-radius: 11px;
+  background: #fff;
+  text-align: center;
+}
+
+.wholesale-label {
+  grid-column: 1 / -1;
+  font-size: 9px;
+  margin-bottom: 5px;
+}
+
+.price-option {
+  min-width: 0;
+  min-height: 45px;
+  padding: 4px 6px;
+  border: 0;
+  border-radius: 0;
+  justify-content: center;
+}
+
+.price-option:first-of-type {
+  border-right: 1px solid #f1c4d8;
+}
+
+.price-option input {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.price-option span {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.price-option strong {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.product-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+  margin-top: 9px;
+}
+
+.product-btn,
+.details-btn {
+  min-height: 42px;
+  padding: 6px 4px;
+  font-size: 13px;
+  border-radius: 9px;
+}
+
+/* FAVORITO */
+.favorite-btn {
+  width: 40px;
+  height: 40px;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .products {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+}
+
+/* =========================================================
+   CELULAR
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .products {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .product-img {
+    height: 180px;
+  }
+
+  .product-info {
+    padding: 8px;
+  }
+
+  .product-info h3 {
+    font-size: 13px;
+  }
+
+  .wholesale-box {
+    padding: 6px 4px;
+  }
+
+  .wholesale-label {
+    font-size: 7px;
+  }
+
+  .price-option {
+    padding: 3px;
+  }
+
+  .price-option input {
+    width: 13px;
+    height: 13px;
+  }
+
+  .price-option span {
+    font-size: 7px;
+  }
+
+  .price-option strong {
+    font-size: 10px;
+  }
+
+  .product-actions {
+    gap: 5px;
+  }
+
+  .product-btn,
+  .details-btn {
+    min-height: 36px;
+    font-size: 10px;
+  }
+
+  .favorite-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+}
+
+
+/* =========================================================
+   BOTÓN VER - MISMO EFECTO QUE AGREGAR
+   ========================================================= */
+
+.details-btn {
+  border: 1px solid #ed4f91;
+  background: #fff;
+  color: #ed4f91;
+  transition: all .2s ease;
+}
+
+.details-btn:hover {
+  background: #ed4f91;
+  color: #fff;
+  border-color: #ed4f91;
+  transform: translateY(-1px);
+}
+
+.details-btn:active {
+  transform: translateY(0);
+}
+

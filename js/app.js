@@ -106,7 +106,7 @@ function productCard(p){
     checked
   >
   <span>
-    Valor detalle
+    Precio Detalle
     <strong>${money(p.price)}</strong>
   </span>
 </label>
@@ -133,7 +133,7 @@ function productCard(p){
           class="product-btn" 
           onclick="addToCart(${p.id})"
         >
-          Añadir al carrito 🛍️
+          Agregar 🛍️
         </button>
 
         <button 

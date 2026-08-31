@@ -20,9 +20,30 @@ const products = [
     {img:"img/23.jpg",color:"Modelo 8"}
   ]
 },
-  {id:2,name:"Cartera boutique brillo",price:7000,precioMayorista:5500,img:"img/imagen1.jpg"},
-  {id:3,name:"Bolso Premium (sin stock)",price:44990,precioMayorista:39990,img:"img/(13).jpg"},
-  {id:4,name:"Bolso Inspiracion",price:15000,precioMayorista:8500,img:"img/(9).jpg"},
+
+{id:2,
+  name:"Cartera boutique brillo",
+  price:7000,
+  precioMayorista:5500,
+  img:"img/imagen1.jpg",
+  variantes:[
+    {img:"img/imagen1.jpg",color:"modelo 01"},
+    {img:"img/brillo.jpg",color:"Modelo 02"},
+  ]
+},
+  
+{id:3,
+  name:"Bolso Inspiracion",
+  price:15000,
+  precioMayorista:8500,
+  img:"img/(9).jpg",
+  variantes:[
+    {img:"img/(9).jpg",color:"Modelo 03"},
+    {img:"img/inspiracion.jpg",color:"Modelo 04"},
+    {img:"img/inspiracion2.jpg",color:"Modelo 05"},
+  ] 
+    },
+
   {id:10,name:"Cartera chanel (sin stock)",price:5000,precioMayorista:3500,img:"img/(7).jpg"},
   {id:11,name:"Cartera Pinko",price:12000,precioMayorista:7500,img:"img/(8).jpg"},
   {id:12,name:"Mini bags",price:5000,precioMayorista:3500,img:"img/(10).jpg"},

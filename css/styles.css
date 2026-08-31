@@ -2561,3 +2561,75 @@ body {
     right: 10px;
   }
 }
+
+/* =========================================================
+   GALERIA PORTA CELULARES - CELULAR
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .product-img {
+    position: relative;
+  }
+
+  /* Flechas de la tarjeta */
+  .gallery-arrow {
+    width: 34px;
+    height: 34px;
+
+    font-size: 25px;
+    line-height: 34px;
+
+    top: 50%;
+
+    box-shadow: 0 2px 7px rgba(0,0,0,0.20);
+  }
+
+  .gallery-prev {
+    left: 7px;
+  }
+
+  .gallery-next {
+    right: 7px;
+  }
+
+  /* Puntos */
+ .gallery-dots {
+    position: absolute;
+
+    top: 50%;
+    bottom: auto;
+
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    z-index: 10;
+}
+
+  .gallery-dot {
+    width: 6px;
+    height: 6px;
+
+    flex-shrink: 0;
+  }
+
+  .gallery-dot.active {
+    transform: scale(1.35);
+  }
+
+  /* Imagen */
+  .product-img img {
+    width: 100%;
+    height: auto;
+
+    object-fit: contain;
+  }
+
+}

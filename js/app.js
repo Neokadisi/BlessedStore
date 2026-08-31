@@ -10,14 +10,15 @@ const products = [
   precioMayorista:3500,
   img:"img/24.jpg",
   variantes:[
-    {img:"img/24.jpg",color:"Modelo 1"},
-    {img:"img/(1).jpg",color:"Modelo 2"},
-    {img:"img/(2).jpg",color:"Modelo 3"},
-    {img:"img/(3).jpg",color:"Modelo 4"},
-    {img:"img/(4).jpg",color:"Modelo 5"},
-    {img:"img/(6).jpg",color:"Modelo 6"},
-    {img:"img/21.jpg",color:"Modelo 7"},
-    {img:"img/23.jpg",color:"Modelo 8"}
+    {img:"img/24.jpg",color:"Color beige"},
+    {img:"img/(1).jpg",color:"Color celeste"},
+    {img:"img/(2).jpg",color:"Color rojo"},
+    {img:"img/(3).jpg",color:"Color gris"},
+    {img:"img/(4).jpg",color:"Color beige1"},
+    {img:"img/(6).jpg",color:"Color burdeo"},
+    {img:"img/21.jpg",color:"Color verde agua"},
+    {img:"img/23.jpg",color:"Color celeste1"},
+    {img:"img/19.jpg",color:"Color rosado"},
   ]
 },
 
@@ -27,8 +28,8 @@ const products = [
   precioMayorista:5500,
   img:"img/imagen1.jpg",
   variantes:[
-    {img:"img/imagen1.jpg",color:"modelo 01"},
-    {img:"img/brillo.jpg",color:"Modelo 02"},
+    {img:"img/imagen1.jpg",color:"Color rojo brillo"},
+    {img:"img/brillo.jpg",color:"Color blanco brillo"},
   ]
 },
   
@@ -38,11 +39,22 @@ const products = [
   precioMayorista:8500,
   img:"img/(9).jpg",
   variantes:[
-    {img:"img/(9).jpg",color:"Modelo 03"},
-    {img:"img/inspiracion.jpg",color:"Modelo 04"},
-    {img:"img/inspiracion2.jpg",color:"Modelo 05"},
+    {img:"img/(9).jpg",color:"Color negro"},
+    {img:"img/inspiracion.jpg",color:"Color-gris"},
+    {img:"img/inspiracion2.jpg",color:"Color-azul"},
   ] 
     },
+
+  {id:4,name:"Bandolera Impremiable",
+    price:5000,
+    precioMayorista:3000,
+    img:"img/26.jpg",
+    variantes:[
+      {img:"img/26.jpg",color:"Modelo 06"},
+      {img:"img/bandolera.jpg",color:"Modelo 07"},
+    ]
+  },
+  
 
   {id:10,name:"Cartera chanel (sin stock)",price:5000,precioMayorista:3500,img:"img/(7).jpg"},
   {id:11,name:"Cartera Pinko",price:12000,precioMayorista:7500,img:"img/(8).jpg"},
@@ -248,18 +260,30 @@ function addToCart(id) {
   const p = products.find(x => x.id === id);
   if (!p) return;
 
-  // Detectar qué precio seleccionó el cliente
   const selected = document.querySelector(`input[name="price_${id}"]:checked`);
   const tipoPrecio = selected ? selected.value : "normal";
 
-  // Obtener SOLO el precio seleccionado
   const precioDetalle =
     tipoPrecio === "wholesale"
       ? p.precioMayorista
       : p.price;
 
+  // Detectar la variante/color actualmente seleccionado
+  const varianteIndex = p.variantes
+    ? (window.productGalleryIndex?.[id] || 0)
+    : 0;
+
+  const variante = p.variantes?.[varianteIndex];
+
+  const colorSeleccionado = variante?.color || "";
+  const imagenSeleccionada = variante?.img || p.img;
+
+  // Producto + color + precio
   const item = cart.find(
-    x => x.id === id && x.tipoPrecio === tipoPrecio
+    x =>
+      x.id === id &&
+      x.tipoPrecio === tipoPrecio &&
+      (x.colorSeleccionado || "") === colorSeleccionado
   );
 
   if (item) {
@@ -267,13 +291,10 @@ function addToCart(id) {
   } else {
     cart.push({
       ...p,
-
-      // Este será el precio que utilizará el carrito
+      img: imagenSeleccionada,
       price: precioDetalle,
-
-      // Guardamos el tipo seleccionado
       tipoPrecio: tipoPrecio,
-
+      colorSeleccionado: colorSeleccionado,
       qty: 1
     });
   }
@@ -348,7 +369,13 @@ function renderCart() {
 
             <strong>${x.name}</strong>
 
-            <div class="cart-price-detail">
+        ${
+            x.colorSeleccionado
+            ? `<div class="cart-selected-color">🎨 Color: <strong>${x.colorSeleccionado}</strong></div>`
+           : ""
+          }
+
+           <div class="cart-price-detail"> 
 
               <!-- TIPO DE PRECIO -->
               <div class="cart-price-type">
@@ -437,8 +464,13 @@ async function checkoutWhatsApp() {
             ? "✦ Precio Mayorista"
             : "✦ Precio Detalle";
 
-        text += `👜 *${x.name}*\n`;
-        text += `   ${tipoPrecio}\n`;
+         text += `👜 *${x.name}*\n`;
+
+         if (x.colorSeleccionado) {
+          text += `   🎨 Color: ${x.colorSeleccionado}\n`;
+        }
+
+text += `   ${tipoPrecio}\n`; 
         text += `   Precio: ${money(x.price)}\n`;
         text += `   Cantidad: ${x.qty}\n`;
         text += `   Subtotal: ${money(subtotal)}\n\n`;

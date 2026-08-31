@@ -3,15 +3,26 @@
            ========================================================= */
 const products = [
 
-  {id:1,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/24.jpg"},
+ {
+  id:1,
+  name:"Porta Celulares boutique",
+  price:5000,
+  precioMayorista:3500,
+  img:"img/24.jpg",
+  variantes:[
+    {img:"img/24.jpg",color:"Modelo 1"},
+    {img:"img/(1).jpg",color:"Modelo 2"},
+    {img:"img/(2).jpg",color:"Modelo 3"},
+    {img:"img/(3).jpg",color:"Modelo 4"},
+    {img:"img/(4).jpg",color:"Modelo 5"},
+    {img:"img/(6).jpg",color:"Modelo 6"},
+    {img:"img/21.jpg",color:"Modelo 7"},
+    {img:"img/23.jpg",color:"Modelo 8"}
+  ]
+},
   {id:2,name:"Cartera boutique brillo",price:7000,precioMayorista:5500,img:"img/imagen1.jpg"},
   {id:3,name:"Bolso Premium (sin stock)",price:44990,precioMayorista:39990,img:"img/(13).jpg"},
   {id:4,name:"Bolso Inspiracion",price:15000,precioMayorista:8500,img:"img/(9).jpg"},
-  {id:5,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/(1).jpg"},
-  {id:6,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/(2).jpg"},
-  {id:7,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/(3).jpg"},
-  {id:8,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/(4).jpg"},
-  {id:9,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/(6).jpg"},
   {id:10,name:"Cartera chanel (sin stock)",price:5000,precioMayorista:3500,img:"img/(7).jpg"},
   {id:11,name:"Cartera Pinko",price:12000,precioMayorista:7500,img:"img/(8).jpg"},
   {id:12,name:"Mini bags",price:5000,precioMayorista:3500,img:"img/(10).jpg"},
@@ -23,9 +34,7 @@ const products = [
   {id:18,name:"Cartera boutique",price:12000,precioMayorista:6500,img:"img/(17).jpg"},
   {id:19,name:"Cartera nicol lee",price:6500,precioMayorista:3500,img:"img/18.jpg"},
   {id:20,name:"Cross body",price:6000,precioMayorista:3500,img:"img/20.jpg"},
-  {id:21,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/21.jpg"},
   {id:22,name:"Cartera de fiesta",price:8000,precioMayorista:5500,img:"img/22.jpg"},
-  {id:23,name:"Porta Celulares boutique",price:5000,precioMayorista:3500,img:"img/23.jpg"},
   //{id:24,name:"Cartera inspiracion ",price:45990,precioMayorista:40990,img:"img/24 (1).jpg"},
  // {id:25,name:"Cartera Gold",price:37990,precioMayorista:32990,img:"img/25.jpg"},
   //{id:26,name:"Bolso Flower",price:32990,precioMayorista:28990,img:"img/26.jpg"},
@@ -65,7 +74,7 @@ function productCard(p){
   const saved = favorites.includes(p.id);
 
   return `<article class="product">
-    <div class="product-img" onclick="openProduct(${p.id})">
+   <div class="product-img" onclick="${p.variantes ? `openProductImage(${p.id})` : `openProduct(${p.id})`}">
       <div class="product-top">
         <button 
           class="favorite-btn ${saved ? "saved" : ""}" 
@@ -76,12 +85,51 @@ function productCard(p){
         </button>
       </div>
 
-      <img 
-        src="${p.img}" 
-        alt="${p.name}"
-        onerror="this.onerror=null; this.src='images/placeholder.jpg';"
-      >
+    <img 
+        src="${
+          p.variantes
+          ? p.variantes[window.productGalleryIndex?.[p.id] || 0].img
+          : p.img
+       }"
+         alt="${p.name}"
+      onerror="this.onerror=null; this.src='images/placeholder.jpg';"
+    >
     </div>
+
+    ${
+  p.variantes
+    ? `
+      <button
+        type="button"
+        class="gallery-arrow gallery-prev"
+        onclick="event.stopPropagation(); changeProductGallery(${p.id}, -1)"
+      >
+        ‹
+      </button>
+
+      <button
+        type="button"
+        class="gallery-arrow gallery-next"
+        onclick="event.stopPropagation(); changeProductGallery(${p.id}, 1)"
+      >
+        ›
+      </button>
+
+      <div class="gallery-dots">
+        ${p.variantes.map((v, index) => `
+          <span
+            class="gallery-dot ${
+              index === (window.productGalleryIndex?.[p.id] || 0)
+                ? "active"
+                : ""
+            }"
+            onclick="event.stopPropagation(); setProductGallery(${p.id}, ${index})"
+          ></span>
+        `).join("")}
+      </div>
+    `
+    : ""
+}
 
     <div class="product-info">
 
@@ -497,3 +545,208 @@ function clearCart() {
 
 // Escuchar el evento clic en el botón de vaciar carrito
 document.getElementById("emptyCartBtn")?.addEventListener("click", clearCart);
+window.productGalleryIndex = window.productGalleryIndex || {};
+
+function changeProductGallery(id, direction) {
+  const product = products.find(p => p.id === id);
+
+  if (!product || !product.variantes) return;
+
+  let index = window.productGalleryIndex[id] || 0;
+
+  index += direction;
+
+  if (index < 0) {
+    index = product.variantes.length - 1;
+  }
+
+  if (index >= product.variantes.length) {
+    index = 0;
+  }
+
+  window.productGalleryIndex[id] = index;
+
+  renderProducts();
+}
+
+function setProductGallery(id, index) {
+  const product = products.find(p => p.id === id);
+
+  if (!product || !product.variantes) return;
+
+  window.productGalleryIndex[id] = index;
+
+  renderProducts();
+}
+
+/* =========================================================
+   ZOOM - PORTA CELULARES
+   ========================================================= */
+
+function openProductImage(id) {
+
+  const product = products.find(p => p.id === id);
+
+  if (!product) return;
+
+  const images = product.variantes
+    ? product.variantes
+    : [{ img: product.img, color: "" }];
+
+  const currentIndex =
+    window.productGalleryIndex?.[id] || 0;
+
+  let modal = document.getElementById("product-image-modal");
+
+  if (!modal) {
+
+    modal = document.createElement("div");
+
+    modal.id = "product-image-modal";
+
+    modal.innerHTML = `
+      <div class="zoom-overlay" onclick="closeProductImage(event)">
+
+        <button
+          type="button"
+          class="zoom-close"
+          onclick="closeProductImage(event)"
+        >
+          ×
+        </button>
+
+        <button
+          type="button"
+          class="zoom-arrow zoom-prev"
+          onclick="changeZoomImage(event, -1)"
+        >
+          ‹
+        </button>
+
+        <div
+          class="zoom-content"
+          onclick="event.stopPropagation()"
+        >
+          <img
+            id="zoom-product-image"
+            src=""
+            alt=""
+          >
+
+          <div
+            id="zoom-product-name"
+            class="zoom-product-name"
+          ></div>
+        </div>
+
+        <button
+          type="button"
+          class="zoom-arrow zoom-next"
+          onclick="changeZoomImage(event, 1)"
+        >
+          ›
+        </button>
+
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+  }
+
+  modal.dataset.productId = id;
+
+  window.zoomGalleryIndex = currentIndex;
+
+  updateZoomImage(id);
+
+  modal.classList.add("active");
+
+  document.body.style.overflow = "hidden";
+}
+
+
+function updateZoomImage(id) {
+
+  const product = products.find(p => p.id === id);
+
+  if (!product) return;
+
+  const images = product.variantes
+    ? product.variantes
+    : [{ img: product.img, color: "" }];
+
+  let index = window.zoomGalleryIndex || 0;
+
+  if (index < 0) index = images.length - 1;
+
+  if (index >= images.length) index = 0;
+
+  window.zoomGalleryIndex = index;
+
+  const image = document.getElementById("zoom-product-image");
+  const name = document.getElementById("zoom-product-name");
+
+  if (image) {
+    image.src = images[index].img;
+    image.alt = product.name;
+  }
+
+  if (name) {
+    name.textContent =
+      `${product.name} · ${images[index].color || ""}`;
+  }
+}
+
+
+function changeZoomImage(event, direction) {
+
+  if (event) {
+    event.stopPropagation();
+  }
+
+  const modal = document.getElementById("product-image-modal");
+
+  if (!modal) return;
+
+  const id = Number(modal.dataset.productId);
+
+  const product = products.find(p => p.id === id);
+
+  if (!product) return;
+
+  const images = product.variantes
+    ? product.variantes
+    : [{ img: product.img }];
+
+  let index = window.zoomGalleryIndex || 0;
+
+  index += direction;
+
+  if (index < 0) {
+    index = images.length - 1;
+  }
+
+  if (index >= images.length) {
+    index = 0;
+  }
+
+  window.zoomGalleryIndex = index;
+
+  updateZoomImage(id);
+}
+
+
+function closeProductImage(event) {
+
+  if (event) {
+    event.stopPropagation();
+  }
+
+  const modal = document.getElementById("product-image-modal");
+
+  if (!modal) return;
+
+  modal.classList.remove("active");
+
+  document.body.style.overflow = "";
+}

@@ -1763,7 +1763,7 @@ body {
     background: white;
 }
 
-/* DATOS DE ENVÃO */
+/* DATOS DE ENVÍO */
 
 .datos-pedido-box .datos-envio {
     margin-top: 10px;
@@ -1783,25 +1783,6 @@ body {
     height: 35px;
     font-size: 12px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /* =========================================================
@@ -2297,3 +2278,286 @@ body {
   transform: translateY(0);
 }
 
+/* =========================================================
+   GALERIA PORTA CELULARES
+   ========================================================= */
+
+.product-img {
+  position: relative;
+  overflow: hidden;
+}
+
+.gallery-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 38px;
+  height: 38px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: rgba(255,255,255,0.90);
+  color: #333;
+
+  font-size: 28px;
+  line-height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  z-index: 10;
+
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+
+  padding: 0;
+}
+
+.gallery-arrow:hover {
+  transform: translateY(-50%) scale(1.08);
+}
+
+.gallery-prev {
+  left: 10px;
+}
+
+.gallery-next {
+  right: 10px;
+}
+
+/* =========================================================
+   PUNTOS DE LA GALERÍA - PORTA CELULARES
+   ========================================================= */
+
+.gallery-dots {
+  position: absolute;
+
+  /* Centrado vertical */
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  z-index: 10;
+
+  pointer-events: auto;
+}
+
+.gallery-dot {
+  width: 7px;
+  height: 7px;
+
+  padding: 0;
+  margin: 0;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.85);
+
+  border: 1px solid rgba(0, 0, 0, 0.20);
+
+  cursor: pointer;
+
+  transition: transform 0.2s ease;
+}
+
+.gallery-dot.active {
+  transform: scale(1.35);
+
+  background: #e56b9f;
+}
+
+.gallery-dot.active {
+  transform: scale(1.35);
+  background: #e56b9f;
+}
+
+/* =========================================================
+   ZOOM DE PRODUCTO
+   ========================================================= */
+
+#product-image-modal {
+  display: none;
+}
+
+#product-image-modal.active {
+  display: block;
+}
+
+.zoom-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0, 0, 0, 0.82);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 99999;
+}
+
+.zoom-content {
+  position: relative;
+
+  max-width: 85vw;
+  max-height: 85vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#zoom-product-image {
+  display: block;
+
+  max-width: 80vw;
+  max-height: 78vh;
+
+  width: auto;
+  height: auto;
+
+  object-fit: contain;
+
+  border-radius: 12px;
+
+  background: white;
+
+  box-shadow:
+    0 15px 50px rgba(0,0,0,0.40);
+}
+
+.zoom-product-name {
+  margin-top: 12px;
+
+  padding: 7px 16px;
+
+  border-radius: 20px;
+
+  background: rgba(255,255,255,0.95);
+
+  color: #333;
+
+  font-size: 14px;
+}
+
+/* BOTÓN CERRAR */
+
+.zoom-close {
+  position: absolute;
+
+  top: 20px;
+  right: 25px;
+
+  width: 44px;
+  height: 44px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: white;
+
+  color: #333;
+
+  font-size: 32px;
+  line-height: 40px;
+
+  cursor: pointer;
+
+  z-index: 20;
+
+  box-shadow: 0 3px 12px rgba(0,0,0,0.30);
+}
+
+/* FLECHAS */
+
+.zoom-arrow {
+  position: absolute;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  width: 50px;
+  height: 50px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: rgba(255,255,255,0.95);
+
+  color: #333;
+
+  font-size: 38px;
+  line-height: 45px;
+
+  cursor: pointer;
+
+  z-index: 20;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 3px 15px rgba(0,0,0,0.30);
+
+  transition: transform 0.2s ease;
+}
+
+.zoom-arrow:hover {
+  transform: translateY(-50%) scale(1.08);
+}
+
+.zoom-prev {
+  left: 25px;
+}
+
+.zoom-next {
+  right: 25px;
+}
+
+
+/* MÓVIL */
+
+@media (max-width: 600px) {
+
+  #zoom-product-image {
+    max-width: 90vw;
+    max-height: 75vh;
+  }
+
+  .zoom-arrow {
+    width: 42px;
+    height: 42px;
+
+    font-size: 30px;
+  }
+
+  .zoom-prev {
+    left: 10px;
+  }
+
+  .zoom-next {
+    right: 10px;
+  }
+
+  .zoom-close {
+    top: 10px;
+    right: 10px;
+  }
+}

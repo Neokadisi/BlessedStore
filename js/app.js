@@ -4,14 +4,14 @@
 
 const products = [
   // ===== PRODUCTOS NUEVOS (precios y colores por definir) =====
-  { id: 101, name: "Producto nuevo 01", price: 0, precioMayorista: 0, category: "carteras",   img: "img/nueva-01.jpg", pendiente: true },
-  { id: 102, name: "Producto nuevo 02", price: 0, precioMayorista: 0, category: "carteras",   img: "img/nueva-02.jpg", pendiente: true },
-  { id: 103, name: "Producto nuevo 03", price: 0, precioMayorista: 0, category: "bolsos",     img: "img/nueva-03.jpg", pendiente: true },
-  { id: 104, name: "Producto nuevo 04", price: 0, precioMayorista: 0, category: "mochilas",   img: "img/nueva-04.jpg", pendiente: true },
-  { id: 105, name: "Producto nuevo 05", price: 0, precioMayorista: 0, category: "bandoleras", img: "img/nueva-05.jpg", pendiente: true },
-  { id: 106, name: "Producto nuevo 06", price: 0, precioMayorista: 0, category: "carteras",   img: "img/nueva-06.jpg", pendiente: true },
-  { id: 107, name: "Producto nuevo 07", price: 0, precioMayorista: 0, category: "bolsos",     img: "img/nueva-07.jpg", pendiente: true },
-  { id: 108, name: "Producto nuevo 08", price: 0, precioMayorista: 0, category: "mochilas",   img: "img/nueva-08.jpg", pendiente: true },
+  { id: 101, name: "Billeteras artesanal 01", price: 2000, precioMayorista: 1200, category: "billeteras",   img: "img/nueva-01.jpg", pendiente: true },
+  { id: 102, name: "Estuche Cosmetiquero 02", price: 3000, precioMayorista: 2000, category: "cosmetiqueros",   img: "img/nueva-02.jpg", pendiente: true },
+  { id: 103, name: "Cross Body 03", price: 7000, precioMayorista: 5000, category: "cross body",     img: "img/nueva-03.jpg", pendiente: true },
+  { id: 104, name: "Cross Body 04", price: 7000, precioMayorista: 5000, category: "cross body",   img: "img/nueva-04.jpg", pendiente: true },
+  { id: 105, name: "Cartera Sobre 05", price: 4000, precioMayorista: 2500, category: "cartera sobre", img: "img/nueva-05.jpg", pendiente: true },
+  { id: 106, name: "Estuche Cosmetiquero Vintage 06", price: 1500, precioMayorista: 1000, category: "cosmetiqueros",   img: "img/nueva-06.jpg", pendiente: true },
+  { id: 107, name: "Estuche Cosmetiquero XL 07", price: 3000, precioMayorista: 2000, category: "cosmetiqueros",   img: "img/nueva-07.jpg", pendiente: true },
+  { id: 108, name: "Estuche Cosmetiquero XL 08", price: 3000, precioMayorista: 2000, category: "cosmetiqueros",   img: "img/nueva-08.jpg", pendiente: true },
 
   // ===== CATÁLOGO EXISTENTE =====
   {

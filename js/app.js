@@ -703,6 +703,9 @@ const launchDate = new Date(2026, 8, 4, 22, 0, 0).getTime();
 
 let countdownDone = false;
 
+// Mientras no se haya lanzado, ocultamos los links y el carrito del header
+document.body.classList.add("prelaunch");
+
 function updateCountdown() {
   const now = Date.now();
   const diff = launchDate - now;
@@ -725,7 +728,10 @@ function updateCountdown() {
       contentEl.hidden = false;
       countdownSection.style.display = "none";
       countdownDone = true;
+      document.body.classList.remove("prelaunch");
       renderProducts();
+      renderCart();
+      renderReviews();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
     return;

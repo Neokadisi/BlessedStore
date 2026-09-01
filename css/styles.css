@@ -1470,3 +1470,6 @@ body::after {
   .countdown-num { font-size: 30px; }
   .countdown-unit small { font-size: 9px; letter-spacing: 1px; }
 }
+
+/* ===== MODO PRE-LANZAMIENTO ===== */
+.prelaunch .prelaunch-only { display: none !important; }

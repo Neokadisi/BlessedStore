@@ -60,14 +60,14 @@
 
     <nav class="navlinks" id="navlinks">
       <a class="active" href="#inicio">Inicio</a>
-      <a href="#destacados">Colecciones</a>
-      <a href="#proceso">Proceso de compra y envío</a>
-      <a href="#inspiracion">Inspiración</a>
-      <a href="#opiniones">Opiniones</a>
+      <a class="prelaunch-only" href="#destacados" data-cat="colecciones">Colecciones</a>
+      <a class="prelaunch-only" href="#proceso">Proceso de compra y envío</a>
+      <a class="prelaunch-only" href="#inspiracion">Inspiración</a>
+      <a class="prelaunch-only" href="#opiniones">Opiniones</a>
     </nav>
 
     <div class="actions">
-      <button class="icon-btn" title="Carrito" onclick="openCart()">🛒<span class="cart-badge" id="cartCount">0</span></button>
+      <button class="icon-btn prelaunch-only" id="cartBtn" title="Carrito" onclick="openCart()">🛒<span class="cart-badge" id="cartCount">0</span></button>
       <button class="menu-btn" onclick="toggleMenu()" aria-label="Menú">☰</button>
     </div>
   </div>

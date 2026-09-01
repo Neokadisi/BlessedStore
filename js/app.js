@@ -696,8 +696,74 @@ const yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 /* =========================================================
+   CUENTA REGRESIVA - LANZAMIENTO
+   ========================================================= */
+// Viernes 4 de septiembre de 2026 a las 22:00 hrs (hora local del visitante)
+const launchDate = new Date(2026, 8, 4, 22, 0, 0).getTime();
+
+let countdownDone = false;
+
+function updateCountdown() {
+  const now = Date.now();
+  const diff = launchDate - now;
+
+  const ids = ["cd-dias", "cd-horas", "cd-minutos", "cd-segundos"];
+  const msgEl = document.getElementById("countdown-message");
+  const gridEl = document.getElementById("countdown-grid");
+  const contentEl = document.getElementById("lanzamiento-contenido");
+  const countdownSection = document.getElementById("cuenta-regresiva");
+
+  if (diff <= 0) {
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = "0";
+    });
+    if (msgEl) msgEl.innerHTML = "🎉 ¡Ya estamos en vivo! Visítanos y descubre toda nuestra colección 💗";
+    if (gridEl) gridEl.classList.add("countdown-launched");
+
+    if (!countdownDone && contentEl) {
+      contentEl.hidden = false;
+      countdownSection.style.display = "none";
+      countdownDone = true;
+      renderProducts();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    return;
+  }
+
+  const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const horas = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutos = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const segundos = Math.floor((diff % (1000 * 60)) / 1000);
+
+  const set = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = String(val).padStart(2, "0");
+  };
+  set("cd-dias", dias);
+  set("cd-horas", horas);
+  set("cd-minutos", minutos);
+  set("cd-segundos", segundos);
+
+  if (msgEl) {
+    if (dias === 0 && horas < 1) {
+      msgEl.innerHTML = `⏰ ¡Faltan menos de ${horas * 60 + minutos} minutos! 💗`;
+    } else if (dias === 0) {
+      msgEl.innerHTML = `🔥 ¡Hoy es el gran día! Nos vemos a las 22:00 hrs 💗`;
+    } else if (dias === 1) {
+      msgEl.innerHTML = `💫 ¡Mañana abrimos las puertas de BlessedCarteras!`;
+    } else {
+      msgEl.innerHTML = `💗 ¡Los esperamos con mucha ilusión!`;
+    }
+  }
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+/* =========================================================
    RENDER INICIAL
    ========================================================= */
-renderProducts();
+// Solo renderizamos carrito y reviews (productos no se muestran hasta el lanzamiento)
 renderCart();
 renderReviews();

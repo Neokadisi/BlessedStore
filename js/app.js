@@ -216,7 +216,7 @@ function productCard(p) {
                 onclick="event.stopPropagation(); toggleFavorite(${p.id})"
                 aria-label="Favorito">${saved ? "♥" : "♡"}</button>
       </div>
-      ${p.pendiente ? '<span class="badge-new">NUEVO</span>' : ""}
+      ${p.pendiente && !p.price ? '<span class="badge-new">NUEVO</span>' : ""}
       <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(p.name)}" onerror="placeholderImg(this)">
     </div>
     ${galleryHtml}
@@ -225,7 +225,7 @@ function productCard(p) {
       <div class="product-meta">
         <span class="product-code">${p.code ? "Código " + escapeHtml(p.code) : "Blessed"}</span>
       </div>
-      ${p.pendiente ? `
+      ${p.pendiente && !p.price ? `
       <div class="product-prices">
         <div class="pending-box">
           <span class="pending-label">✦ PRÓXIMAMENTE</span>
@@ -249,7 +249,7 @@ function productCard(p) {
       </div>
     `}
       <div class="product-actions">
-        ${p.pendiente
+        ${p.pendiente && !p.price
           ? '<button class="product-btn" disabled style="opacity:.55;cursor:not-allowed">Próximamente</button>'
           : `<button class="product-btn" onclick="addToCart(${p.id})">Agregar 🛍️</button>`}
         <button class="details-btn" onclick="openProduct(${p.id})">Ver</button>
@@ -297,10 +297,10 @@ function openProduct(id) {
   document.getElementById("modalProductName").textContent = p.name;
   document.getElementById("modalProductCode").textContent = p.code ? `Código: ${p.code}` : "Producto BlessedCarteras";
   document.getElementById("modalProductMeasures").textContent = p.measures ? `Medidas: ${p.measures}` : "Producto seleccionado de nuestra colección.";
-  document.getElementById("modalProductPrice").textContent = p.pendiente ? "Precio por definir" : money(p.price);
+  document.getElementById("modalProductPrice").textContent = (p.pendiente && !p.price) ? "Precio por definir" : money(p.price);
 
   const cartBtn = document.getElementById("modalCartButton");
-  if (p.pendiente) {
+  if (p.pendiente && !p.price) {
     cartBtn.textContent = "💗 Consultar por WhatsApp";
     cartBtn.onclick = () => {
       window.open("https://wa.me/56968762137?text=" + encodeURIComponent(`Hola BlessedCarteras 💗 quiero consultar por "${p.name}"`), "_blank");
@@ -339,7 +339,7 @@ function addToCart(id) {
   const p = products.find(x => x.id === id);
   if (!p) return;
 
-  if (p.pendiente) {
+  if (p.pendiente && !p.price) {
     alert("Este producto está próximo a publicarse. Contáctanos por WhatsApp 💗");
     return;
   }

@@ -1,13 +1,13 @@
 ﻿<!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/jpeg" href="img/Logo_blessed.jpg">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/jpeg" href="img/Logo_blessed.jpg">
     <title>BlessedCarteras | Moda y más</title>
-    <meta name="description" content="BlessedCarteras - Carteras, bolsos y accesorios. Moda, dedicación y amor en cada detalle.">
-    <meta name="theme-color" content="#f85b8b">
-    <link rel="stylesheet" href="css/styles.css">
+	<meta name="description" content="BlessedCarteras - Carteras, bolsos y accesorios. Moda, dedicación y amor en cada detalle.">
+	<meta name="theme-color" content="#f85b8b">
+	<link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
@@ -54,7 +54,7 @@
 <header>
   <div class="nav">
     <a class="brand" href="#inicio" aria-label="Blessed.Carteras inicio">
-      <img class="logo" src="img/Logo_blessed.jpg" alt="BlessedCarteras">
+		<img class="logo" src="img/Logo_blessed.jpg" alt="BlessedCarteras">
       <div class="brand-name"><span class="pink">Blessed</span>Carteras</div>
     </a>
 
@@ -81,7 +81,7 @@
     <div class="eyebrow">EDICIÓN LIMITADA</div>
     <h1>Estilo que te <em>acompaña</em></h1>
     <p>Carteras únicas para mujeres que brillan todos los días.</p>
-    <a class="primary" href="#destacados">Comprar ahora&nbsp; →</a>
+    <a class="primary" href="#destacados">Comprar ahora →</a>
     <div class="slider-dots"></div>
   </div>
 </section>
@@ -162,7 +162,8 @@
     <p>Lo más amado por nuestras clientas</p>
   </div>
   <div class="shop-tools">
-    <div class="search-box"><span>🔎</span><input id="productSearch" type="search" placeholder="Buscar cartera, bolso o mochila..." oninput="filterProducts()" aria-label="Buscar productos"></div>
+    	<div class="search-box"><span>🔎</span><input id="productSearch" type="search" placeholder="Buscar cartera, bolso o mochila..." oninput="filterProducts()" aria-label="Buscar productos">
+	</div>
     <div class="filters" role="group" aria-label="Filtrar productos">
       <button class="filter active" data-cat="todos" onclick="setCategory('todos')">Todos</button>
       <button class="filter" data-cat="carteras" onclick="setCategory('carteras')">Carteras</button>
@@ -196,11 +197,14 @@
     <p class="shipping-subtitle">Realizamos nuestros despachos mediante agencias confiables. Cuando tu pedido sea enviado, te entregaremos tu número de seguimiento.</p>
     <div class="shipping-logos">
       <a class="shipping-card starken-card" href="https://www.starken.cl/seguimiento" target="_blank" rel="noopener" aria-label="Seguimiento Starken">
-        <div class="carrier-logo starken-logo"><img src="https://rastreocorreos.com/img/logos/starken-logo.jpg" alt="Logo oficial de Starken"></div>
+        <div class="carrier-logo starken-logo">
+			<img src="https://rastreocorreos.com/img/logos/starken-logo.jpg" alt="Logo oficial de Starken">
+		</div>
         <div><strong>Starken</strong><small>Ver seguimiento →</small></div>
       </a>
       <a class="shipping-card blue-card" href="https://www.blue.cl/" target="_blank" rel="noopener" aria-label="Seguimiento Blue Express">
-        <div class="carrier-logo blue-logo"><img src="https://asset.brandfetch.io/idETQy3845/idN6w8_NIx.png" alt="Logo de Blue Express"></div>
+        <div class="carrier-logo blue-logo">
+			<img src="https://asset.brandfetch.io/idETQy3845/idN6w8_NIx.png" alt="Logo de Blue Express"></div>
         <div><strong>Blue Express</strong><small>Ver seguimiento →</small></div>
       </a>
     </div>
@@ -254,16 +258,16 @@
   <div class="reviews">
     <div class="panel">
       <h3>⭐ Déjanos tu opinión</h3>
-      <form class="review-form" id="reviewForm">
-        <input id="reviewName" maxlength="50" placeholder="Tu nombre" required>
+       <form class="review-form" id="reviewForm">
+		  <input id="reviewName" maxlength="50" placeholder="Tu nombre" required>
         <div class="stars">
           <input id="s5" type="radio" name="rating" value="5" required><label for="s5">★</label>
-          <input id="s4" type="radio" name="rating" value="4"><label for="s4">★</label>
-          <input id="s3" type="radio" name="rating" value="3"><label for="s3">★</label>
-          <input id="s2" type="radio" name="rating" value="2"><label for="s2">★</label>
-          <input id="s1" type="radio" name="rating" value="1"><label for="s1">★</label>
+			<input id="s4" type="radio" name="rating" value="4"><label for="s4">★</label>
+			<input id="s3" type="radio" name="rating" value="3"><label for="s3">★</label>
+			<input id="s2" type="radio" name="rating" value="2"><label for="s2">★</label>
+			<input id="s1" type="radio" name="rating" value="1"><label for="s1">★</label>
         </div>
-        <textarea id="reviewComment" maxlength="500" placeholder="Escribe tu comentario..." required></textarea>
+		  <textarea id="reviewComment" maxlength="500" placeholder="Escribe tu comentario..." required></textarea>
         <button class="primary" type="submit">Publicar opinión</button>
       </form>
     </div>
@@ -318,7 +322,9 @@
 <div class="product-modal" id="productModal" onclick="closeProductModal(event)">
   <div class="product-modal-card" onclick="event.stopPropagation()">
     <button class="modal-close" onclick="closeProductModal()" aria-label="Cerrar">×</button>
-    <div class="modal-image-wrap"><img id="modalProductImage" src="" alt="Producto ampliado"></div>
+    <div class="modal-image-wrap">
+		<img id="modalProductImage" src="" alt="Producto ampliado">
+	</div>
     <div class="modal-details">
       <span class="modal-tag">BLESSEDCARTERAS</span>
       <h2 id="modalProductName"></h2>
@@ -346,6 +352,6 @@
 
 </main>
 
-<script src="js/app.js" defer></script>
+	<script src="js/app.js" defer></script>
 </body>
 </html>

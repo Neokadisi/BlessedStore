@@ -68,7 +68,36 @@
 
     <div class="actions">
       <button class="icon-btn prelaunch-only" id="cartBtn" title="Carrito" onclick="openCart()">🛒<span class="cart-badge" id="cartCount">0</span></button>
+      <button class="login-trigger" id="loginBtn" title="Mi cuenta" onclick="handleLoginClick()" aria-label="Mi cuenta">
+        <span class="login-trigger-ring">
+          <svg class="login-trigger-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4.5"></circle>
+            <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+          </svg>
+        </span>
+      </button>
       <button class="menu-btn" onclick="toggleMenu()" aria-label="Menú">☰</button>
+    </div>
+
+    <div class="user-dropdown" id="userDropdown">
+      <div class="user-dropdown-card" id="userDropdownCard">
+        <div class="user-dropdown-header">
+          <div class="user-avatar" id="userAvatar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="4.5"></circle>
+              <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+            </svg>
+          </div>
+          <div>
+            <div class="user-name" id="userNameDisplay">Invitado</div>
+            <div class="user-email" id="userEmailDisplay"></div>
+          </div>
+        </div>
+        <div class="user-dropdown-body">
+          <button class="user-dropdown-item" id="btnMiCuenta" onclick="abrirMiCuenta()">👤 Mi cuenta</button>
+          <button class="user-dropdown-item" onclick="logout()">🚪 Cerrar sesión</button>
+        </div>
+      </div>
     </div>
   </div>
 </header>
@@ -145,7 +174,7 @@
   </div>
 </section>
 
-<div id="lanzamiento-contenido" hidden>
+<div id="lanzamiento-contenido">
 
 <section class="benefits">
   <div class="benefit-grid">
@@ -175,7 +204,7 @@
   </div>
   <div class="products" id="productGrid"></div>
   <p id="productCount" class="product-count"></p>
-  <div class="load-more-wrap"><button id="loadMoreBtn" class="load-more-btn" onclick="loadMoreProducts()">Ver más productos</button></div>
+  <nav class="pagination" id="pagination" aria-label="Paginación de productos"></nav>
 </section>
 
 <section class="section" id="proceso">
@@ -349,6 +378,84 @@
     <button class="full-btn clear" onclick="clearCart()">Vaciar carrito</button>
   </div>
 </aside>
+
+<div class="login-modal" id="loginModal" onclick="closeLoginModal(event)">
+  <div class="login-modal-card" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeLoginModal()" aria-label="Cerrar">×</button>
+
+    <div class="login-tabs">
+      <button class="login-tab active" id="tabLogin" onclick="switchTab('login')">Iniciar Sesión</button>
+      <button class="login-tab" id="tabRegistro" onclick="switchTab('registro')">Registrarse</button>
+    </div>
+
+    <form id="loginForm" class="login-form" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" placeholder="tu@email.com" required autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label for="loginPassword">Contraseña</label>
+        <input type="password" id="loginPassword" placeholder="Tu contraseña" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="primary full-btn" id="loginSubmitBtn">Ingresar</button>
+      <p class="login-error" id="loginError"></p>
+    </form>
+
+    <form id="registroForm" class="login-form hidden" onsubmit="handleRegistro(event)">
+      <div class="form-group">
+        <label for="registroNombre">Nombre completo</label>
+        <input type="text" id="registroNombre" placeholder="Tu nombre" required autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label for="registroEmail">Email</label>
+        <input type="email" id="registroEmail" placeholder="tu@email.com" required autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label for="registroPassword">Contraseña</label>
+        <input type="password" id="registroPassword" placeholder="Mínimo 6 caracteres" required minlength="6" autocomplete="new-password">
+      </div>
+      <button type="submit" class="primary full-btn" id="registroSubmitBtn">Crear cuenta</button>
+      <p class="login-error" id="registroError"></p>
+    </form>
+  </div>
+</div>
+
+<div class="login-modal" id="profileModal" onclick="closeProfileModal(event)">
+  <div class="login-modal-card profile-modal-card" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeProfileModal()" aria-label="Cerrar">×</button>
+
+    <div class="profile-header">
+      <div class="profile-avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:36px;height:36px;">
+          <circle cx="12" cy="8" r="4.5"></circle>
+          <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+        </svg>
+      </div>
+      <h3 class="profile-name" id="profileName">Mi cuenta</h3>
+      <p class="profile-email" id="profileEmail"></p>
+    </div>
+
+    <div class="profile-body">
+      <div class="profile-info-row">
+        <span class="profile-label">Nombre</span>
+        <span class="profile-value" id="profileNombre"></span>
+      </div>
+      <div class="profile-info-row">
+        <span class="profile-label">Email</span>
+        <span class="profile-value" id="profileEmailRow"></span>
+      </div>
+      <div class="profile-info-row">
+        <span class="profile-label">Rol</span>
+        <span class="profile-value" id="profileRol"></span>
+      </div>
+    </div>
+
+    <div class="profile-foot">
+      <button class="primary full-btn" onclick="closeProfileModal()">Cerrar</button>
+      <button class="full-btn clear" onclick="logoutFromProfile()">Cerrar sesión</button>
+    </div>
+  </div>
+</div>
 
 </main>
 

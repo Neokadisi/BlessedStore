@@ -100,7 +100,8 @@ const products = [
 let favorites = JSON.parse(localStorage.getItem("blessed_favorites") || "[]");
 let activeCategory = "todos";
 let searchTerm = "";
-let visibleCount = 8;
+let currentPage = 1;
+const productsPerPage = 8;
 let cart = JSON.parse(localStorage.getItem("blessed_cart") || "[]");
 window.productGalleryIndex = window.productGalleryIndex || {};
 window.zoomGalleryIndex = window.zoomGalleryIndex || 0;
@@ -157,13 +158,19 @@ function renderProducts(list = getFilteredProducts(), target = "productGrid") {
 
   if (!list.length) {
     grid.innerHTML = '<div class="panel empty-results">💗 No encontramos productos con esa búsqueda.</div>';
-    const moreBtn = document.getElementById("loadMoreBtn");
-    if (moreBtn) moreBtn.style.display = "none";
+    const pagination = document.getElementById("pagination");
+    if (pagination) pagination.innerHTML = "";
     return;
   }
 
   if (target === "productGrid") {
-    const visible = list.slice(0, visibleCount);
+    const totalPages = Math.ceil(list.length / productsPerPage);
+    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
+
+    const start = (currentPage - 1) * productsPerPage;
+    const end = start + productsPerPage;
+    const visible = list.slice(start, end);
     grid.innerHTML = visible.map(productCard).join("");
 
     const count = document.getElementById("productCount");
@@ -171,24 +178,54 @@ function renderProducts(list = getFilteredProducts(), target = "productGrid") {
       count.textContent = `${list.length} modelo${list.length === 1 ? "" : "s"} disponible${list.length === 1 ? "" : "s"} · Compra mínima $20.000`;
     }
 
-    const moreBtn = document.getElementById("loadMoreBtn");
-    if (moreBtn) {
-      if (visibleCount >= list.length) {
-        moreBtn.style.display = "none";
-      } else {
-        moreBtn.style.display = "inline-block";
-        const remaining = list.length - visibleCount;
-        moreBtn.textContent = `Ver más productos (${remaining})`;
-      }
-    }
+    renderPagination(totalPages);
   } else {
     grid.innerHTML = list.map(productCard).join("");
   }
 }
 
-function loadMoreProducts() {
-  visibleCount += 8;
+function renderPagination(totalPages) {
+  const pagination = document.getElementById("pagination");
+  if (!pagination) return;
+
+  if (totalPages <= 1) {
+    pagination.innerHTML = "";
+    return;
+  }
+
+  let html = "";
+  const maxVisiblePages = 5;
+  let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+  let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+  if (endPage - startPage + 1 < maxVisiblePages) {
+    startPage = Math.max(1, endPage - maxVisiblePages + 1);
+  }
+
+  if (startPage > 1) {
+    html += `<button class="page-btn" onclick="goToPage(1)" aria-label="Primera página">«</button>`;
+    html += `<button class="page-btn" onclick="goToPage(${currentPage - 1})" aria-label="Página anterior">‹</button>`;
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})" aria-label="Página ${i}">${i}</button>`;
+  }
+
+  if (endPage < totalPages) {
+    html += `<button class="page-btn" onclick="goToPage(${currentPage + 1})" aria-label="Página siguiente">›</button>`;
+    html += `<button class="page-btn" onclick="goToPage(${totalPages})" aria-label="Última página">»</button>`;
+  }
+
+  pagination.innerHTML = html;
+}
+
+function goToPage(page) {
+  currentPage = page;
   renderProducts();
+  const productsSection = document.getElementById("destacados-section");
+  if (productsSection) {
+    productsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 }
 
 function productCard(p) {
@@ -260,13 +297,13 @@ function productCard(p) {
 
 function filterProducts() {
   searchTerm = document.getElementById("productSearch").value.trim();
-  visibleCount = 8;
+  currentPage = 1;
   renderProducts();
 }
 
 function setCategory(cat) {
   activeCategory = cat;
-  visibleCount = 8;
+  currentPage = 1;
   document.querySelectorAll(".filter").forEach(b => {
     b.classList.toggle("active", b.dataset.cat === cat);
   });
@@ -703,9 +740,6 @@ const launchDate = new Date(2026, 8, 4, 22, 0, 0).getTime();
 
 let countdownDone = false;
 
-// Mientras no se haya lanzado, ocultamos los links y el carrito del header
-document.body.classList.add("prelaunch");
-
 function updateCountdown() {
   const now = Date.now();
   const diff = launchDate - now;
@@ -716,7 +750,7 @@ function updateCountdown() {
   const contentEl = document.getElementById("lanzamiento-contenido");
   const countdownSection = document.getElementById("cuenta-regresiva");
 
-  if (diff <= 0) {
+  if (diff <= 0 || true) {
     ids.forEach(id => {
       const el = document.getElementById(id);
       if (el) el.textContent = "0";
@@ -726,7 +760,7 @@ function updateCountdown() {
 
     if (!countdownDone && contentEl) {
       contentEl.hidden = false;
-      countdownSection.style.display = "none";
+      if (countdownSection) countdownSection.style.display = "none";
       countdownDone = true;
       document.body.classList.remove("prelaunch");
       renderProducts();
@@ -770,6 +804,388 @@ setInterval(updateCountdown, 1000);
 /* =========================================================
    RENDER INICIAL
    ========================================================= */
-// Solo renderizamos carrito y reviews (productos no se muestran hasta el lanzamiento)
-renderCart();
-renderReviews();
+// Asegurar que los productos se rendericen al cargar la página
+document.addEventListener("DOMContentLoaded", () => {
+  renderProducts();
+  renderCart();
+  renderReviews();
+  actualizarBotonLogin();
+});
+
+/* =========================================================
+   LOGIN Y REGISTRO
+   ========================================================= */
+let currentUser = JSON.parse(localStorage.getItem("blessed_user") || "null");
+let loginToken = localStorage.getItem("blessed_token") || null;
+
+function getLocalUsers() {
+  try {
+    return JSON.parse(localStorage.getItem("blessed_users") || "[]");
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveLocalUser(usuario) {
+  const users = getLocalUsers();
+  users.push(usuario);
+  localStorage.setItem("blessed_users", JSON.stringify(users));
+}
+
+function findLocalUser(email) {
+  return getLocalUsers().find(u => u.email === email);
+}
+
+function actualizarBotonLogin() {
+  const btn = document.getElementById("loginBtn");
+  if (!btn) return;
+  if (currentUser) {
+    btn.innerHTML = `👤`;
+    btn.title = `Mi cuenta (${escapeHtml(currentUser.nombre)})`;
+    btn.onclick = toggleUserMenu;
+  } else {
+    btn.innerHTML = `👤`;
+    btn.title = "Mi cuenta";
+    btn.onclick = () => { closeUserMenu(); openLoginModal(); };
+  }
+  actualizarDropdown();
+}
+
+function actualizarDropdown() {
+  const dropdown = document.getElementById("userDropdown");
+  const card = document.getElementById("userDropdownCard");
+  const nameEl = document.getElementById("userNameDisplay");
+  const emailEl = document.getElementById("userEmailDisplay");
+  const avatarEl = document.getElementById("userAvatar");
+
+  if (!dropdown || !card || !nameEl || !emailEl || !avatarEl) return;
+
+  const iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4.5"></circle><path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path></svg>`;
+
+  if (currentUser) {
+    nameEl.textContent = currentUser.nombre || "Usuario";
+    emailEl.textContent = currentUser.email || "";
+    avatarEl.innerHTML = iconSvg;
+    card.classList.remove("guest");
+    card.classList.add("signed-in");
+  } else {
+    nameEl.textContent = "Invitado";
+    emailEl.textContent = "Inicia sesión para ver tu cuenta";
+    avatarEl.innerHTML = iconSvg;
+card.classList.add("guest");
+    card.classList.remove("signed-in");
+  }
+}
+
+function toggleUserMenu(e) {
+  if (e) e.stopPropagation();
+  const dropdown = document.getElementById("userDropdown");
+  if (!dropdown) return;
+  const isOpen = dropdown.classList.contains("open");
+  if (isOpen) {
+    closeUserMenu();
+  } else {
+    dropdown.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+}
+
+function closeUserMenu() {
+  const dropdown = document.getElementById("userDropdown");
+  if (dropdown) {
+    dropdown.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+}
+
+function abrirMiCuenta() {
+  closeUserMenu();
+  const user = currentUser;
+  if (!user) {
+    openLoginModal();
+    return;
+  }
+
+  const nombreEl = document.getElementById("profileNombre");
+  const emailRowEl = document.getElementById("profileEmailRow");
+  const emailEl = document.getElementById("profileEmail");
+  const nameEl = document.getElementById("profileName");
+  const rolEl = document.getElementById("profileRol");
+
+  if (nombreEl) nombreEl.textContent = user.nombre || "";
+  if (emailRowEl) emailRowEl.textContent = user.email || "";
+  if (emailEl) emailEl.textContent = user.email || "";
+  if (nameEl) nameEl.textContent = user.nombre || "Mi cuenta";
+  if (rolEl) rolEl.textContent = user.rol === "admin" ? "Administrador" : "Cliente";
+
+  const modal = document.getElementById("profileModal");
+  if (modal) {
+    modal.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+}
+
+function closeProfileModal(e) {
+  if (e && e.target && e.target.id !== "profileModal") return;
+  const modal = document.getElementById("profileModal");
+  if (modal) {
+    modal.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+}
+
+function logoutFromProfile() {
+  closeProfileModal();
+  logout();
+}
+
+function refrescarPerfilBackend() {
+  if (!currentUser) return;
+  fetch(apiUrl(`/api/perfil/${currentUser.id}`))
+    .then(res => res.ok ? res.json() : Promise.resolve(null))
+    .then(data => {
+      if (data && data.success && data.usuario) {
+        currentUser = { ...currentUser, ...data.usuario };
+        localStorage.setItem("blessed_user", JSON.stringify(currentUser));
+        actualizarBotonLogin();
+      }
+    })
+    .catch(() => {});
+}
+
+function openLoginModal() {
+  const modal = document.getElementById("loginModal");
+  if (modal) {
+    modal.classList.add("open");
+    document.body.style.overflow = "hidden";
+    switchTab('login');
+    limpiarErrores();
+  }
+}
+
+function closeLoginModal(e) {
+  if (e && e.target && e.target.id !== "loginModal") return;
+  const modal = document.getElementById("loginModal");
+  if (modal) {
+    modal.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+}
+
+function switchTab(tab) {
+  const tabLogin = document.getElementById("tabLogin");
+  const tabRegistro = document.getElementById("tabRegistro");
+  const loginForm = document.getElementById("loginForm");
+  const registroForm = document.getElementById("registroForm");
+
+  if (tab === 'login') {
+    tabLogin.classList.add('active');
+    tabRegistro.classList.remove('active');
+    loginForm.classList.remove('hidden');
+    registroForm.classList.add('hidden');
+  } else {
+    tabLogin.classList.remove('active');
+    tabRegistro.classList.add('active');
+    loginForm.classList.add('hidden');
+    registroForm.classList.remove('hidden');
+  }
+  limpiarErrores();
+}
+
+function limpiarErrores() {
+  const loginError = document.getElementById("loginError");
+  const registroError = document.getElementById("registroError");
+  if (loginError) loginError.textContent = "";
+  if (registroError) registroError.textContent = "";
+}
+
+function apiUrl(path) {
+  const base = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
+  return `${base}${path}`;
+}
+
+async function tryLoginBackend(email, password) {
+  try {
+    const response = await fetch(apiUrl('/api/login'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    return response.ok ? await response.json() : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+async function tryRegistroBackend(nombre, email, password) {
+  try {
+    const response = await fetch(apiUrl('/api/registro'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre, email, password })
+    });
+    return response.ok ? await response.json() : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+async function handleLogin(e) {
+  e.preventDefault();
+  limpiarErrores();
+
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
+  const btn = document.getElementById("loginSubmitBtn");
+
+  if (!email || !password) {
+    document.getElementById("loginError").textContent = "Completa todos los campos";
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "Verificando...";
+
+  try {
+    const data = await tryLoginBackend(email, password);
+    if (data && data.success) {
+      currentUser = data.usuario;
+      localStorage.setItem("blessed_user", JSON.stringify(currentUser));
+      closeLoginModal();
+      actualizarBotonLogin();
+      refrescarPerfilBackend();
+      alert(`¡Bienvenida ${data.usuario.nombre}! 💗`);
+      document.getElementById("loginForm").reset();
+      return;
+    }
+  } catch (err) {
+    console.error('Error en login:', err);
+  }
+
+  const localUser = findLocalUser(email);
+  if (localUser && localUser.password === password) {
+    currentUser = { id: localUser.id, nombre: localUser.nombre, email: localUser.email, rol: localUser.rol };
+    localStorage.setItem("blessed_user", JSON.stringify(currentUser));
+    closeLoginModal();
+    actualizarBotonLogin();
+    alert(`¡Bienvenida ${currentUser.nombre}! 💗`);
+    document.getElementById("loginForm").reset();
+    return;
+  }
+
+  document.getElementById("loginError").textContent = "Email o contraseña incorrectos";
+  btn.disabled = false;
+  btn.textContent = "Ingresar";
+}
+
+async function handleRegistro(e) {
+  e.preventDefault();
+  limpiarErrores();
+
+  const nombre = document.getElementById("registroNombre").value.trim();
+  const email = document.getElementById("registroEmail").value.trim();
+  const password = document.getElementById("registroPassword").value;
+  const btn = document.getElementById("registroSubmitBtn");
+
+  if (!nombre || !email || !password) {
+    document.getElementById("registroError").textContent = "Completa todos los campos";
+    return;
+  }
+
+  if (password.length < 6) {
+    document.getElementById("registroError").textContent = "La contraseña debe tener al menos 6 caracteres";
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "Creando cuenta...";
+
+  try {
+    const data = await tryRegistroBackend(nombre, email, password);
+    if (data && data.success) {
+      const loginData = await tryLoginBackend(email, password);
+      if (loginData && loginData.success) {
+        currentUser = loginData.usuario;
+        localStorage.setItem("blessed_user", JSON.stringify(currentUser));
+        closeLoginModal();
+        actualizarBotonLogin();
+        refrescarPerfilBackend();
+        alert(`¡Bienvenida ${currentUser.nombre}! Tu cuenta ha sido creada 💗`);
+        document.getElementById("registroForm").reset();
+        switchTab('login');
+        return;
+      }
+      alert("¡Cuenta creada exitosamente! Ahora inicia sesión 💗");
+      document.getElementById("registroForm").reset();
+      switchTab('login');
+      return;
+    }
+  } catch (err) {
+    console.error('Backend no disponible, se usará almacenamiento local:', err);
+  }
+
+  const localUser = findLocalUser(email);
+  if (localUser) {
+    document.getElementById("registroError").textContent = "Este email ya está registrado localmente";
+    btn.disabled = false;
+    btn.textContent = "Crear cuenta";
+    return;
+  }
+
+  const nuevoUsuario = {
+    id: Date.now(),
+    nombre,
+    email,
+    password,
+    rol: 'cliente',
+    activo: true,
+    fecha_creacion: new Date().toISOString()
+  };
+
+  saveLocalUser(nuevoUsuario);
+  currentUser = { id: nuevoUsuario.id, nombre: nuevoUsuario.nombre, email: nuevoUsuario.email, rol: nuevoUsuario.rol };
+  localStorage.setItem("blessed_user", JSON.stringify(currentUser));
+  closeLoginModal();
+  actualizarBotonLogin();
+  alert(`¡Bienvenida ${currentUser.nombre}! Tu cuenta ha sido creada 💗`);
+  document.getElementById("registroForm").reset();
+  switchTab('login');
+  btn.disabled = false;
+  btn.textContent = "Crear cuenta";
+}
+
+function logout() {
+  if (confirm("¿Cerrar sesión?")) {
+    currentUser = null;
+    localStorage.removeItem("blessed_user");
+    actualizarBotonLogin();
+    closeUserMenu();
+    alert("Sesión cerrada. ¡Vuelve pronto! 💗");
+  }
+}
+
+function handleLoginClick() {
+  if (currentUser) {
+    toggleUserMenu();
+  } else {
+    closeUserMenu();
+    openLoginModal();
+  }
+}
+
+document.addEventListener("click", e => {
+  const dropdown = document.getElementById("userDropdown");
+  const btn = document.getElementById("loginBtn");
+  if (!dropdown || !btn) return;
+  if (!dropdown.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+    closeUserMenu();
+  }
+});
+
+window.addEventListener("beforeunload", () => {
+  if (currentUser) {
+    localStorage.setItem("blessed_user", JSON.stringify(currentUser));
+  }
+});
+
+refrescarPerfilBackend();

@@ -559,27 +559,37 @@ document.querySelectorAll(".navlinks a").forEach(a => {
 /* =========================================================
    OPINIONES
    ========================================================= */
-function renderReviews() {
-  const reviews = JSON.parse(localStorage.getItem("blessed_reviews") || "[]");
+async function renderReviews() {
   const box = document.getElementById("reviewsList");
   if (!box) return;
 
-  if (!reviews.length) {
-    box.innerHTML = '<p class="empty-reviews">Todavía no hay opiniones. ¡Sé la primera en recomendar BlessedCarteras! 💗</p>';
-    return;
-  }
+  box.innerHTML = '<p class="empty-reviews">Cargando opiniones... 💗</p>';
 
-  box.innerHTML = reviews.map(r => `
-    <div class="review">
-      <strong>${escapeHtml(r.name)}</strong>
-      <div class="r-stars">${"★".repeat(Number(r.rating) || 0)}${"☆".repeat(5 - (Number(r.rating) || 0))}</div>
-      <p>${escapeHtml(r.comment)}</p>
-      <small class="review-date">${escapeHtml(r.date)}</small>
-    </div>
-  `).join("");
+  try {
+    const response = await fetch(apiUrl('/api/opiniones'));
+    const data = await response.json();
+
+    if (!data.success || !data.opiniones?.length) {
+      box.innerHTML = '<p class="empty-reviews">Todavía no hay opiniones. ¡Sé la primera en recomendar BlessedCarteras! 💗</p>';
+      return;
+    }
+
+    box.innerHTML = data.opiniones.map(r => `
+      <div class="review">
+        <strong>${escapeHtml(r.nombre)}</strong>
+        <div class="r-stars">${"★".repeat(Number(r.calificacion) || 0)}${"☆".repeat(5 - (Number(r.calificacion) || 0))}</div>
+        <p>${escapeHtml(r.comentario)}</p>
+        <small class="review-date">${escapeHtml(new Date(r.fecha_creacion).toLocaleDateString("es-CL"))}</small>
+      </div>
+    `).join("");
+
+  } catch (err) {
+    console.error('Error cargando opiniones:', err);
+    box.innerHTML = '<p class="empty-reviews">Error cargando opiniones. Intenta recargar la página. 💗</p>';
+  }
 }
 
-document.getElementById("reviewForm")?.addEventListener("submit", e => {
+document.getElementById("reviewForm")?.addEventListener("submit", async e => {
   e.preventDefault();
 
   const name = document.getElementById("reviewName").value.trim();
@@ -588,18 +598,38 @@ document.getElementById("reviewForm")?.addEventListener("submit", e => {
 
   if (!name || !ratingEl || !comment) return;
 
-  const reviews = JSON.parse(localStorage.getItem("blessed_reviews") || "[]");
-  reviews.unshift({
-    name: name,
-    rating: Number(ratingEl.value),
-    comment: comment,
-    date: new Date().toLocaleDateString("es-CL")
-  });
+  const btn = e.target.querySelector('button[type="submit"]');
+  btn.disabled = true;
+  btn.textContent = "Publicando...";
 
-  localStorage.setItem("blessed_reviews", JSON.stringify(reviews.slice(0, 20)));
-  e.target.reset();
-  renderReviews();
-  alert("¡Gracias por compartir tu experiencia con BlessedCarteras! 💗");
+  try {
+    const response = await fetch(apiUrl('/api/opiniones'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nombre: name,
+        email: currentUser?.email || 'anonimo@blessedcarteras.cl',
+        calificacion: Number(ratingEl.value),
+        comentario: comment
+      })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      e.target.reset();
+      renderReviews();
+      alert("¡Gracias por compartir tu experiencia con BlessedCarteras! 💗");
+    } else {
+      alert(data.message || "Error al publicar la opinión");
+    }
+  } catch (err) {
+    console.error('Error publicando opinión:', err);
+    alert("Error de conexión. Intenta más tarde. 💗");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Publicar opinión";
+  }
 });
 
 /* =========================================================

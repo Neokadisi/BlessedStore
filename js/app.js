@@ -12,6 +12,26 @@ const products = [
   { id: 106, name: "Estuche Cosmetiquero Vintage 06", price: 1500, precioMayorista: 1000, category: "cosmetiqueros",   img: "img/nueva-06.jpg", pendiente: true },
   { id: 107, name: "Estuche Cosmetiquero XL 07", price: 3000, precioMayorista: 2000, category: "cosmetiqueros",   img: "img/nueva-07.jpg", pendiente: true },
   { id: 108, name: "Estuche Cosmetiquero XL 08", price: 3000, precioMayorista: 2000, category: "cosmetiqueros",   img: "img/nueva-08.jpg", pendiente: true },
+  { id: 144, name: "Producto nuevo 01", pendiente: true, img: "img/producto_01.jpg", category: "billeteras" },
+  { id: 145, name: "Producto nuevo 02", pendiente: true, img: "img/producto_02.jpg", category: "billeteras" },
+  { id: 146, name: "Producto nuevo 03", pendiente: true, img: "img/producto_03.jpg", category: "billeteras" },
+  { id: 147, name: "Producto nuevo 04", pendiente: true, img: "img/producto_04.jpg", category: "billeteras" },
+  { id: 148, name: "Producto nuevo 05", pendiente: true, img: "img/producto_05.jpg", category: "billeteras" },
+  { id: 149, name: "Producto nuevo 06", pendiente: true, img: "img/producto_06.jpg", category: "billeteras" },
+  { id: 150, name: "Producto nuevo 07", pendiente: true, img: "img/producto_07.jpg", category: "billeteras" },
+  { id: 151, name: "Producto nuevo 08", pendiente: true, img: "img/producto_08.jpg", category: "billeteras" },
+  { id: 152, name: "Producto nuevo 09", pendiente: true, img: "img/producto_09.jpg", category: "billeteras" },
+  { id: 153, name: "Producto nuevo 10", pendiente: true, img: "img/producto_10.jpg", category: "billeteras" },
+  { id: 154, name: "Producto nuevo 11", pendiente: true, img: "img/producto_11.jpg", category: "billeteras" },
+  { id: 155, name: "Producto nuevo 12", pendiente: true, img: "img/producto_12.jpg", category: "billeteras" },
+  { id: 156, name: "Producto nuevo 13", pendiente: true, img: "img/producto_13.jpg", category: "billeteras" },
+  { id: 157, name: "Producto nuevo 14", pendiente: true, img: "img/producto_14.jpg", category: "billeteras" },
+  { id: 158, name: "Producto nuevo 15", pendiente: true, img: "img/producto_15.jpg", category: "billeteras" },
+  { id: 159, name: "Producto nuevo 16", pendiente: true, img: "img/producto_16.jpg", category: "billeteras" },
+  { id: 160, name: "Producto nuevo 17", pendiente: true, img: "img/producto_17.jpg", category: "billeteras" },
+  { id: 161, name: "Producto nuevo 18", pendiente: true, img: "img/producto_18.jpg", category: "billeteras" },
+  { id: 162, name: "Producto nuevo 19", pendiente: true, img: "img/producto_19.jpg", category: "billeteras" },
+  { id: 163, name: "Producto nuevo 20", pendiente: true, img: "img/producto_20.jpg", category: "billeteras" },
 
   // ===== CATÁLOGO EXISTENTE =====
   {
@@ -222,10 +242,14 @@ function renderPagination(totalPages) {
 function goToPage(page) {
   currentPage = page;
   renderProducts();
-  const productsSection = document.getElementById("destacados-section");
-  if (productsSection) {
-    productsSection.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
+  setTimeout(() => {
+    const productsSection = document.getElementById("destacados");
+    if (productsSection) {
+      productsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, 100);
 }
 
 function productCard(p) {
@@ -299,6 +323,10 @@ function filterProducts() {
   searchTerm = document.getElementById("productSearch").value.trim();
   currentPage = 1;
   renderProducts();
+  setTimeout(() => {
+    const el = document.getElementById("destacados");
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 100);
 }
 
 function setCategory(cat) {
@@ -308,6 +336,10 @@ function setCategory(cat) {
     b.classList.toggle("active", b.dataset.cat === cat);
   });
   renderProducts();
+  setTimeout(() => {
+    const el = document.getElementById("destacados");
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 100);
 }
 
 function toggleFavorite(id) {

@@ -1,4 +1,4 @@
-require('dotenv').config();
+﻿require('dotenv').config();
 const express = require('express');
 const Database = require('better-sqlite3');
 const cors = require('cors');
@@ -42,7 +42,7 @@ app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({ success: false, message: 'Email y contraseña son requeridos' });
+    return res.status(400).json({ success: false, message: 'Email y contraseÃ±a son requeridos' });
   }
 
   try {
@@ -83,13 +83,13 @@ app.post('/api/registro', async (req, res) => {
   }
 
   if (password.length < 6) {
-    return res.status(400).json({ success: false, message: 'La contraseña debe tener al menos 6 caracteres' });
+    return res.status(400).json({ success: false, message: 'La contraseÃ±a debe tener al menos 6 caracteres' });
   }
 
   try {
     const existe = db.prepare('SELECT id FROM Usuarios WHERE email = ?').get(email);
     if (existe) {
-      return res.status(400).json({ success: false, message: 'El email ya está registrado' });
+      return res.status(400).json({ success: false, message: 'El email ya estÃ¡ registrado' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -158,7 +158,7 @@ app.post('/api/opiniones', (req, res) => {
   }
 
   if (calificacion < 1 || calificacion > 5) {
-    return res.status(400).json({ success: false, message: 'La calificación debe ser entre 1 y 5' });
+    return res.status(400).json({ success: false, message: 'La calificaciÃ³n debe ser entre 1 y 5' });
   }
 
   try {
@@ -168,11 +168,11 @@ app.post('/api/opiniones', (req, res) => {
 
     res.json({
       success: true,
-      message: 'Opinión publicada correctamente',
+      message: 'OpiniÃ³n publicada correctamente',
       opinionId: info.lastInsertRowid
     });
   } catch (err) {
-    console.error('Error publicando opinión:', err);
+    console.error('Error publicando opiniÃ³n:', err);
     res.status(500).json({ success: false, message: 'Error del servidor' });
   }
 });

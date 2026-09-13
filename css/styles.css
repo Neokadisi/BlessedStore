@@ -47,6 +47,7 @@ img { max-width: 100%; display: block; }
   position: sticky;
   top: 0;
   z-index: 1001;
+  box-shadow: 0 2px 12px rgba(248, 91, 139, .22);
 }
 .offer-banner a {
   display: inline-flex;
@@ -58,12 +59,16 @@ img { max-width: 100%; display: block; }
   font-size: 14px;
   font-weight: 700;
   animation: bannerPulse 3s ease-in-out infinite alternate;
+  display: block;
+  width: 100%;
 }
 .offer-banner__sparkle {
   position: absolute;
   font-size: 16px;
   opacity: 0.85;
   animation: sparkle1 2s ease-in-out infinite;
+  left: 14px;
+  top: 10px;
 }
 @keyframes bannerPulse {
   0% { opacity: 0.95; }
@@ -72,6 +77,34 @@ img { max-width: 100%; display: block; }
 @keyframes sparkle1 {
   0%, 100% { transform: scale(0.9); opacity: 0.6; }
   50% { transform: scale(1.2); opacity: 1; }
+}
+
+/* Mobile-style offer banner */
+@media (max-width: 640px) {
+  .offer-banner {
+    padding: 11px 14px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .offer-banner a {
+    display: inline-flex;
+    width: auto;
+    font-size: 12px;
+    gap: 5px;
+    padding: 4px 0;
+  }
+  .offer-banner__sparkle {
+    font-size: 14px;
+    left: 10px;
+    top: 8px;
+  }
+  .offer-banner__text {
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 /* ===== TOPBAR ===== */

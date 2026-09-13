@@ -1192,11 +1192,26 @@ body::after {
   .product-img { height: 280px; }
 }
 
-/* ===== PRODUCTO NUEVO / PENDIENTE ===== */
-.badge-new {
-  position: absolute;
-  top: 12px;
-  left: 12px;
+  /* ===== NUMERACIÓN DE TARJETA DE PRODUCTO ===== */
+  .product-num {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    background: linear-gradient(135deg, var(--pink), var(--pink2));
+    color: #fff;
+    border-radius: 20px;
+    padding: 4px 10px;
+    font: 700 11px Arial;
+    letter-spacing: 1px;
+    z-index: 4;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .10);
+  }
+
+  /* ===== PRODUCTO NUEVO / PENDIENTE ===== */
+  .badge-new {
+    position: absolute;
+    top: 48px;
+    left: 12px;
   background: linear-gradient(135deg, #ff5b8c, #ff8faf);
   color: #fff;
   border-radius: 20px;

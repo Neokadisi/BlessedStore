@@ -12,31 +12,31 @@ const products = [
   { id: 106, name: "Estuche Cosmetiquero Vintage 06", price: 1500, precioMayorista: 1000, category: "cosmetiqueros",   img: "img/nueva-06.jpg", pendiente: true },
   { id: 107, name: "Estuche Cosmetiquero XL 07", price: 3000, precioMayorista: 2000, category: "cosmetiqueros",   img: "img/nueva-07.jpg", pendiente: true },
   { id: 108, name: "Estuche Cosmetiquero XL 08", price: 3000, precioMayorista: 2000, category: "cosmetiqueros",   img: "img/nueva-08.jpg", pendiente: true },
-  { id: 144, name: "Producto nuevo 01", pendiente: true, img: "img/producto_01.jpg", category: "billeteras" },
-  { id: 145, name: "Producto nuevo 02", pendiente: true, img: "img/producto_02.jpg", category: "billeteras" },
-  { id: 146, name: "Producto nuevo 03", pendiente: true, img: "img/producto_03.jpg", category: "billeteras" },
-  { id: 147, name: "Producto nuevo 04", pendiente: true, img: "img/producto_04.jpg", category: "billeteras" },
-  { id: 148, name: "Producto nuevo 05", pendiente: true, img: "img/producto_05.jpg", category: "billeteras" },
-  { id: 149, name: "Producto nuevo 06", pendiente: true, img: "img/producto_06.jpg", category: "billeteras" },
-  { id: 150, name: "Producto nuevo 07", pendiente: true, img: "img/producto_07.jpg", category: "billeteras" },
-  { id: 151, name: "Producto nuevo 08", pendiente: true, img: "img/producto_08.jpg", category: "billeteras" },
-  { id: 152, name: "Producto nuevo 09", pendiente: true, img: "img/producto_09.jpg", category: "billeteras" },
-  { id: 153, name: "Producto nuevo 10", pendiente: true, img: "img/producto_10.jpg", category: "billeteras" },
-  { id: 154, name: "Producto nuevo 11", pendiente: true, img: "img/producto_11.jpg", category: "billeteras" },
-  { id: 155, name: "Producto nuevo 12", pendiente: true, img: "img/producto_12.jpg", category: "billeteras" },
-  { id: 156, name: "Producto nuevo 13", pendiente: true, img: "img/producto_13.jpg", category: "billeteras" },
-  { id: 157, name: "Producto nuevo 14", pendiente: true, img: "img/producto_14.jpg", category: "billeteras" },
-  { id: 158, name: "Producto nuevo 15", pendiente: true, img: "img/producto_15.jpg", category: "billeteras" },
-  { id: 159, name: "Producto nuevo 16", pendiente: true, img: "img/producto_16.jpg", category: "billeteras" },
-  { id: 160, name: "Producto nuevo 17", pendiente: true, img: "img/producto_17.jpg", category: "billeteras" },
-  { id: 161, name: "Producto nuevo 18", pendiente: true, img: "img/producto_18.jpg", category: "billeteras" },
-  { id: 162, name: "Producto nuevo 19", pendiente: true, img: "img/producto_19.jpg", category: "billeteras" },
-  { id: 163, name: "Producto nuevo 20", pendiente: true, img: "img/producto_20.jpg", category: "billeteras" },
+  { id: 144, name: "Producto nuevo 09", pendiente: true, img: "img/producto_01.jpg", category: "billeteras" },
+  { id: 145, name: "Producto nuevo 10", pendiente: true, img: "img/producto_02.jpg", category: "billeteras" },
+  { id: 146, name: "Producto nuevo 11", pendiente: true, img: "img/producto_03.jpg", category: "billeteras" },
+  { id: 147, name: "Producto nuevo 12", pendiente: true, img: "img/producto_04.jpg", category: "billeteras" },
+  { id: 148, name: "Producto nuevo 13", pendiente: true, img: "img/producto_05.jpg", category: "billeteras" },
+  { id: 149, name: "Producto nuevo 14", pendiente: true, img: "img/producto_06.jpg", category: "billeteras" },
+  { id: 150, name: "Producto nuevo 15", pendiente: true, img: "img/producto_07.jpg", category: "billeteras" },
+  { id: 151, name: "Producto nuevo 16", pendiente: true, img: "img/producto_08.jpg", category: "billeteras" },
+  { id: 152, name: "Producto nuevo 17", pendiente: true, img: "img/producto_09.jpg", category: "billeteras" },
+  { id: 153, name: "Producto nuevo 18", pendiente: true, img: "img/producto_10.jpg", category: "billeteras" },
+  { id: 154, name: "Producto nuevo 19", pendiente: true, img: "img/producto_11.jpg", category: "billeteras" },
+  { id: 155, name: "Producto nuevo 20", pendiente: true, img: "img/producto_12.jpg", category: "billeteras" },
+  { id: 156, name: "Producto nuevo 21", pendiente: true, img: "img/producto_13.jpg", category: "billeteras" },
+  { id: 157, name: "Producto nuevo 22", pendiente: true, img: "img/producto_14.jpg", category: "billeteras" },
+  { id: 158, name: "Producto nuevo 23", pendiente: true, img: "img/producto_15.jpg", category: "billeteras" },
+  { id: 159, name: "Producto nuevo 24", pendiente: true, img: "img/producto_16.jpg", category: "billeteras" },
+  { id: 160, name: "Producto nuevo 25", pendiente: true, img: "img/producto_17.jpg", category: "billeteras" },
+  { id: 161, name: "Producto nuevo 26", pendiente: true, img: "img/producto_18.jpg", category: "billeteras" },
+  { id: 162, name: "Producto nuevo 27", pendiente: true, img: "img/producto_19.jpg", category: "billeteras" },
+  { id: 163, name: "Producto nuevo 28", pendiente: true, img: "img/producto_20.jpg", category: "billeteras" },
 
   // ===== CATÁLOGO EXISTENTE =====
   {
     id: 1,
-    name: "Porta Celulares boutique",
+    name: "Porta Celulares boutique 29",
     price: 5000,
     precioMayorista: 3500,
     category: "carteras",
@@ -55,7 +55,7 @@ const products = [
   },
   {
     id: 2,
-    name: "Cartera boutique brillo",
+    name: "Cartera boutique brillo 30",
     price: 7000,
     precioMayorista: 5500,
     category: "carteras",
@@ -67,7 +67,7 @@ const products = [
   },
   {
     id: 3,
-    name: "Bolso Inspiracion",
+    name: "Bolso Inspiracion 31",
     price: 15000,
     precioMayorista: 8500,
     category: "bolsos",
@@ -80,7 +80,7 @@ const products = [
   },
   {
     id: 4,
-    name: "Bandolera Impermiable",
+    name: "Bandolera Impermiable 32",
     price: 5000,
     precioMayorista: 3000,
     category: "bandoleras",
@@ -92,7 +92,7 @@ const products = [
   },
   {
     id: 5,
-    name: "2 en 1 Cartera Mochila",
+    name: "2 en 1 Cartera Mochila 33",
     price: 8000,
     precioMayorista: 5000,
     category: "mochilas",
@@ -104,17 +104,17 @@ const products = [
       { img: "img/.27.jpg", color: "Burdeo"        }
     ]
   },
-  { id: 11, name: "Cartera Pinko",            price: 12000, precioMayorista: 7500, category: "carteras",   img: "img/(8).jpg"  },
-  { id: 12, name: "Mini bags",                price: 5000,  precioMayorista: 3500, category: "carteras",   img: "img/(10).jpg" },
-  { id: 13, name: "Mochila Inspiracion",      price: 12000, precioMayorista: 7500, category: "mochilas",   img: "img/(11).jpg" },
-  { id: 14, name: "Cartera Chanel",           price: 12000, precioMayorista: 6500, category: "carteras",   img: "img/(12).jpg" },
-  { id: 15, name: "Bolso notebook hombre",    price: 10000, precioMayorista: 6000, category: "bolsos",     img: "img/(14).jpg" },
-  { id: 16, name: "Bandolera kipling + llavero", price: 12000, precioMayorista: 6000, category: "bandoleras", img: "img/(15).jpg" },
-  { id: 17, name: "Bolso hombre",             price: 6000,  precioMayorista: 3500, category: "bolsos",     img: "img/(16).jpg" },
-  { id: 18, name: "Cartera boutique",         price: 12000, precioMayorista: 6500, category: "carteras",   img: "img/(17).jpg" },
-  { id: 19, name: "Cartera nicol lee",        price: 6500,  precioMayorista: 3500, category: "carteras",   img: "img/18.jpg"   },
-  { id: 20, name: "Cross body",               price: 6000,  precioMayorista: 3500, category: "bandoleras", img: "img/20.jpg"   },
-  { id: 22, name: "Cartera de fiesta",        price: 8000,  precioMayorista: 5500, category: "carteras",   img: "img/22.jpg"   }
+  { id: 11, name: "Cartera Pinko 34",            price: 12000, precioMayorista: 7500, category: "carteras",   img: "img/(8).jpg"  },
+  { id: 12, name: "Mini bags 35",                price: 5000,  precioMayorista: 3500, category: "carteras",   img: "img/(10).jpg" },
+  { id: 13, name: "Mochila Inspiracion 36",      price: 12000, precioMayorista: 7500, category: "mochilas",   img: "img/(11).jpg" },
+  { id: 14, name: "Cartera Chanel 37",           price: 12000, precioMayorista: 6500, category: "carteras",   img: "img/(12).jpg" },
+  { id: 15, name: "Bolso notebook hombre 38",    price: 10000, precioMayorista: 6000, category: "bolsos",     img: "img/(14).jpg" },
+  { id: 16, name: "Bandolera kipling + llavero 39", price: 12000, precioMayorista: 6000, category: "bandoleras", img: "img/(15).jpg" },
+  { id: 17, name: "Bolso hombre 40",             price: 6000,  precioMayorista: 3500, category: "bolsos",     img: "img/(16).jpg" },
+  { id: 18, name: "Cartera boutique 41",         price: 12000, precioMayorista: 6500, category: "carteras",   img: "img/(17).jpg" },
+  { id: 19, name: "Cartera nicol lee 42",        price: 6500,  precioMayorista: 3500, category: "carteras",   img: "img/18.jpg"   },
+  { id: 20, name: "Cross body 43",               price: 6000,  precioMayorista: 3500, category: "bandoleras", img: "img/20.jpg"   },
+  { id: 22, name: "Cartera de fiesta 44",        price: 8000,  precioMayorista: 5500, category: "carteras",   img: "img/22.jpg"   }
 ];
 
 let favorites = JSON.parse(localStorage.getItem("blessed_favorites") || "[]");
@@ -191,7 +191,7 @@ function renderProducts(list = getFilteredProducts(), target = "productGrid") {
     const start = (currentPage - 1) * productsPerPage;
     const end = start + productsPerPage;
     const visible = list.slice(start, end);
-    grid.innerHTML = visible.map(productCard).join("");
+    grid.innerHTML = visible.map((p, i) => productCard(p, start + i + 1)).join("");
 
     const count = document.getElementById("productCount");
     if (count) {
@@ -200,7 +200,7 @@ function renderProducts(list = getFilteredProducts(), target = "productGrid") {
 
     renderPagination(totalPages);
   } else {
-    grid.innerHTML = list.map(productCard).join("");
+    grid.innerHTML = list.map((p, i) => productCard(p, i + 1)).join("");
   }
 }
 
@@ -252,10 +252,11 @@ function goToPage(page) {
   }, 100);
 }
 
-function productCard(p) {
+function productCard(p, index) {
   const saved = favorites.includes(p.id);
   const currentIndex = window.productGalleryIndex[p.id] || 0;
   const imgSrc = p.variantes ? p.variantes[currentIndex].img : p.img;
+  const num = String(index).padStart(2, "0");
 
   const galleryHtml = p.variantes ? `
       <button type="button" class="gallery-arrow gallery-prev"
@@ -277,6 +278,7 @@ function productCard(p) {
                 onclick="event.stopPropagation(); toggleFavorite(${p.id})"
                 aria-label="Favorito">${saved ? "♥" : "♡"}</button>
       </div>
+      <span class="product-num">${num}</span>
       ${p.pendiente && !p.price ? '<span class="badge-new">NUEVO</span>' : ""}
       <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(p.name)}" onerror="placeholderImg(this)">
     </div>

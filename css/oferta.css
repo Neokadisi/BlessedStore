@@ -14,7 +14,7 @@
 
 body {
   margin: 0;
-  padding: 40px;
+  padding: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,7 +31,8 @@ body {
 
 .tarjeta {
   position: relative;
-  width: 540px;
+  width: 100%;
+  max-width: 540px;
   aspect-ratio: 1 / 1;
   background: linear-gradient(to bottom, var(--bg-top), var(--bg-bottom));
   border: 3px solid var(--color-borde);
@@ -218,4 +219,44 @@ body {
 
 .volver-inicio:hover {
   transform: scale(1.08);
+}
+
+@media (max-width: 600px) {
+  body { padding: 16px; }
+  .tarjeta { border-radius: 20px; padding: 20px 16px 16px; }
+  .tarjeta::before { inset: 8px; border-radius: 16px; }
+  .logo-contenedor { width: 160px; height: 160px; border-width: 4px; outline-width: 1.5px; margin-bottom: 10px; }
+  .cinta { font-size: 13px; padding: 8px 18px; gap: 8px; }
+  .corazon-lateral { font-size: 18px; }
+  .fila-cinta { gap: 10px; margin-bottom: 8px; }
+  .descuento { font-size: 48px; margin: 2px 0 4px; }
+  .subtitulo { font-size: 16px; margin-bottom: 4px; }
+  .condicion { font-size: 13px; margin-bottom: 10px; }
+  .caja-codigo { padding: 8px 24px; border-radius: 10px; margin-bottom: 10px; }
+  .caja-codigo span { font-size: 20px; letter-spacing: 1.5px; }
+  .ayuda-codigo { font-size: 11px; margin-bottom: 4px; }
+  .sitio-web { font-size: 15px; margin-bottom: 10px; }
+  .redes { gap: 8px 16px; }
+  .red-item { font-size: 12px; gap: 6px; }
+  .icono { width: 22px; height: 22px; font-size: 11px; }
+  .destello { font-size: 14px; }
+  .volver-inicio { top: 12px; left: 12px; width: 40px; height: 40px; font-size: 18px; }
+}
+
+@media (max-width: 420px) {
+  body { padding: 12px; align-items: flex-start; min-height: auto; padding-top: 60px; }
+  .tarjeta { aspect-ratio: auto; min-height: 100vh; border-radius: 0; border-left: none; border-right: none; max-width: 100%; }
+  .tarjeta::before { display: none; }
+  .logo-contenedor { width: 140px; height: 140px; margin-bottom: 8px; }
+  .cinta { font-size: 12px; padding: 7px 16px; }
+  .descuento { font-size: 42px; }
+  .subtitulo { font-size: 15px; }
+  .condicion { font-size: 12px; }
+  .caja-codigo { padding: 7px 20px; }
+  .caja-codigo span { font-size: 18px; letter-spacing: 1px; }
+  .sitio-web { font-size: 14px; }
+  .redes { gap: 8px 14px; }
+  .red-item { font-size: 11px; }
+  .icono { width: 20px; height: 20px; font-size: 10px; }
+  .volver-inicio { top: 10px; left: 10px; width: 38px; height: 38px; font-size: 16px; }
 }

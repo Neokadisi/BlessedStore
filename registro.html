@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/jpeg" href="img/Logo_blessed.jpg">
+    <title>Crear cuenta | BlessedCarteras</title>
+	<meta name="description" content="Crea tu cuenta en BlessedCarteras y disfruta de una experiencia de compra personalizada.">
+	<meta name="theme-color" content="#f85b8b">
+	<link rel="stylesheet" href="css/styles.css">
+	<style>
+		/* ===== ESTILOS PROPIOS DE LA PÁGINA DE REGISTRO ===== */
+		.registro-wrap {
+			max-width: 460px;
+			margin: 60px auto 90px;
+			padding: 0 20px;
+		}
+		.registro-card {
+			background: rgba(255, 255, 255, .95);
+			border: 1px solid var(--border);
+			border-radius: 22px;
+			padding: 40px 34px;
+			box-shadow: var(--shadow);
+			backdrop-filter: blur(5px);
+			text-align: center;
+		}
+		.registro-card .heart {
+			font-size: 34px;
+			color: var(--pink);
+			margin-bottom: 6px;
+		}
+		.registro-card h1 {
+			font-size: 28px;
+			margin-bottom: 6px;
+		}
+		.registro-card h1 span { color: var(--pink); }
+		.registro-card > p {
+			color: var(--muted);
+			font-size: 15px;
+			margin-bottom: 26px;
+		}
+		.campo {
+			text-align: left;
+			margin-bottom: 18px;
+		}
+		.campo label {
+			display: block;
+			font-size: 13px;
+			font-weight: 700;
+			color: #a6385b;
+			margin-bottom: 6px;
+			letter-spacing: .3px;
+		}
+		.campo input {
+			width: 100%;
+			border: 1px solid var(--border);
+			border-radius: 12px;
+			padding: 13px 16px;
+			font-size: 15px;
+			font-family: inherit;
+			background: #fff;
+			outline: none;
+			transition: .2s;
+		}
+		.campo input:focus {
+			border-color: var(--pink);
+			box-shadow: 0 0 0 3px rgba(248, 91, 139, .12);
+		}
+		.registro-btn {
+			width: 100%;
+			border: 0;
+			background: var(--pink);
+			color: #fff;
+			border-radius: 30px;
+			padding: 14px;
+			font-size: 16px;
+			font-weight: 700;
+			cursor: pointer;
+			box-shadow: 0 8px 20px rgba(248, 91, 139, .25);
+			transition: .2s;
+			margin-top: 8px;
+		}
+		.registro-btn:hover { background: #ed4678; transform: translateY(-1px); }
+		.registro-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+		.registro-msg {
+			margin-top: 18px;
+			padding: 12px 16px;
+			border-radius: 12px;
+			font-size: 14px;
+			font-weight: 600;
+			display: none;
+		}
+		.registro-msg.ok {
+			display: block;
+			background: #e9f9ef;
+			color: #1c8a45;
+			border: 1px solid #bdeccd;
+		}
+		.registro-msg.error {
+			display: block;
+			background: #fff0f4;
+			color: #c8355e;
+			border: 1px solid #f6c9d6;
+		}
+		.registro-footer {
+			margin-top: 22px;
+			font-size: 14px;
+			color: var(--muted);
+		}
+		.registro-footer a {
+			color: var(--pink);
+			font-weight: 700;
+		}
+	</style>
+</head>
+
+<body>
+
+<div class="fondo-carteritas" aria-hidden="true">
+    <span>👜</span><span>👛</span><span>👜</span><span>👝</span>
+    <span>👜</span><span>👛</span><span>👝</span><span>👜</span>
+    <span>👛</span><span>👜</span><span>👝</span><span>👜</span>
+</div>
+
+<div class="topbar">
+  <div class="topbar-movimiento">
+    <span>🚚 Envíos a todo Chile por Starken y Bluexpress</span>
+    <span>✨ Mínimo de compra: 20.000</span>
+    <span>♡ Productos con amor</span>
+    <span>🛍️ !Ofertas especiales¡</span>
+  </div>
+</div>
+
+<header>
+  <div class="nav">
+    <a class="brand" href="index.html" aria-label="Blessed.Carteras inicio">
+		<img class="logo" src="img/Logo_blessed.jpg" alt="BlessedCarteras">
+      <div class="brand-name"><span class="pink">Blessed</span>Carteras</div>
+    </a>
+  </div>
+</header>
+
+<main>
+  <div class="registro-wrap">
+    <div class="registro-card">
+      <div class="heart">♡</div>
+      <h1>Crea tu <span>cuenta</span></h1>
+      <p>Regístrate para vivir una experiencia de compra hecha con amor.</p>
+
+      <form id="formRegistro">
+        <div class="campo">
+          <label for="nombre_completo">Nombre completo</label>
+          <input type="text" id="nombre_completo" name="nombre_completo" placeholder="Tu nombre y apellido" required>
+        </div>
+
+        <div class="campo">
+          <label for="email">Correo electrónico</label>
+          <input type="email" id="email" name="email" placeholder="tucorreo@ejemplo.com" required>
+        </div>
+
+        <div class="campo">
+          <label for="contrasena">Contraseña</label>
+          <input type="password" id="contrasena" name="contrasena" placeholder="Crea una contraseña segura" minlength="6" required>
+        </div>
+
+        <div class="campo">
+          <label for="confirmar_contrasena">Confirmar contraseña</label>
+          <input type="password" id="confirmar_contrasena" name="confirmar_contrasena" placeholder="Repite tu contraseña" minlength="6" required>
+        </div>
+
+        <button type="submit" class="registro-btn" id="btnRegistro">Crear cuenta ✨</button>
+
+        <div class="registro-msg" id="registroMsg"></div>
+      </form>
+
+      <div class="registro-footer">
+        ¿Ya tienes cuenta? <a href="#">Inicia sesión</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-bottom">© <span id="year"></span> BlessedCarteras. Todos los derechos reservados. | Hecho con ♡ para ti</div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const form = document.getElementById('formRegistro');
+  const btn = document.getElementById('btnRegistro');
+  const msg = document.getElementById('registroMsg');
+
+  // Cambia esta URL cuando subas tu servidor a internet (por ahora apunta a tu servidor local)
+  const API_URL = '/api/registro';
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    msg.className = 'registro-msg';
+    msg.textContent = '';
+    btn.disabled = true;
+    btn.textContent = 'Creando cuenta...';
+
+    const contrasena = document.getElementById('contrasena').value;
+    const confirmar = document.getElementById('confirmar_contrasena').value;
+
+    if (contrasena !== confirmar) {
+      msg.className = 'registro-msg error';
+      msg.textContent = 'Las contraseñas no coinciden.';
+      btn.disabled = false;
+      btn.textContent = 'Crear cuenta ✨';
+      return;
+    }
+
+    const datos = {
+      nombre_completo: document.getElementById('nombre_completo').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      contrasena: contrasena
+    };
+
+    try {
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datos)
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        msg.className = 'registro-msg ok';
+        msg.textContent = '¡Cuenta creada con éxito! Bienvenida/o a BlessedCarteras 💗';
+        localStorage.setItem('ultimo_email', datos.email);
+        form.reset();
+      } else {
+        msg.className = 'registro-msg error';
+        msg.textContent = data.error || 'Ocurrió un error al crear tu cuenta.';
+      }
+    } catch (err) {
+      msg.className = 'registro-msg error';
+      msg.textContent = 'No se pudo conectar con el servidor. Intenta más tarde.';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Crear cuenta ✨';
+    }
+  });
+</script>
+
+</body>
+</html>

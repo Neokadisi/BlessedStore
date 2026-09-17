@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Iniciando sesión...</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <p style="text-align:center; margin-top: 100px; font-size: 18px;">Iniciando sesión... ✨</p>
+  <script>
+    fetch('/api/me')
+      .then(res => res.json())
+      .then(data => {
+        if (data.usuario) {
+          sessionStorage.setItem('usuario', JSON.stringify(data.usuario));
+          localStorage.setItem('ultimo_email', data.usuario.email);
+        }
+        window.location.href = 'index.html';
+      })
+      .catch(() => {
+        window.location.href = 'login.html';
+      });
+  </script>
+</body>
+</html>

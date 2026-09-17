@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/jpeg" href="img/Logo_blessed.jpg">
+    <title>Iniciar sesión | BlessedCarteras</title>
+	<meta name="theme-color" content="#f85b8b">
+	<link rel="stylesheet" href="css/styles.css">
+	<style>
+		.registro-wrap { max-width: 460px; margin: 60px auto 90px; padding: 0 20px; }
+		.registro-card {
+			background: rgba(255, 255, 255, .95);
+			border: 1px solid var(--border);
+			border-radius: 22px;
+			padding: 40px 34px;
+			box-shadow: var(--shadow);
+			backdrop-filter: blur(5px);
+			text-align: center;
+		}
+		.registro-card .heart { font-size: 34px; color: var(--pink); margin-bottom: 6px; }
+		.registro-card h1 { font-size: 28px; margin-bottom: 6px; }
+		.registro-card h1 span { color: var(--pink); }
+		.registro-card > p { color: var(--muted); font-size: 15px; margin-bottom: 26px; }
+		.campo { text-align: left; margin-bottom: 18px; }
+		.campo label { display: block; font-size: 13px; font-weight: 700; color: #a6385b; margin-bottom: 6px; letter-spacing: .3px; }
+		.campo input {
+			width: 100%; border: 1px solid var(--border); border-radius: 12px;
+			padding: 13px 16px; font-size: 15px; font-family: inherit; background: #fff; outline: none; transition: .2s;
+		}
+		.campo input:focus { border-color: var(--pink); box-shadow: 0 0 0 3px rgba(248, 91, 139, .12); }
+		.registro-btn {
+			width: 100%; border: 0; background: var(--pink); color: #fff; border-radius: 30px;
+			padding: 14px; font-size: 16px; font-weight: 700; cursor: pointer;
+			box-shadow: 0 8px 20px rgba(248, 91, 139, .25); transition: .2s; margin-top: 8px;
+		}
+		.registro-btn:hover { background: #ed4678; transform: translateY(-1px); }
+		.registro-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+		.registro-msg { margin-top: 18px; padding: 12px 16px; border-radius: 12px; font-size: 14px; font-weight: 600; display: none; }
+		.registro-msg.ok { display: block; background: #e9f9ef; color: #1c8a45; border: 1px solid #bdeccd; }
+		.registro-msg.error { display: block; background: #fff0f4; color: #c8355e; border: 1px solid #f6c9d6; }
+		.registro-footer { margin-top: 22px; font-size: 14px; color: var(--muted); display: flex; justify-content: space-between; }
+		.registro-footer a { color: var(--pink); font-weight: 700; }
+		.separador-o {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			margin: 22px 0;
+			color: var(--muted);
+			font-size: 13px;
+		}
+		.separador-o::before, .separador-o::after {
+			content: "";
+			flex: 1;
+			height: 1px;
+			background: var(--border);
+		}
+		.google-btn {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 10px;
+			width: 100%;
+			border: 1px solid var(--border);
+			background: #fff;
+			color: var(--dark);
+			border-radius: 30px;
+			padding: 13px;
+			font-size: 15px;
+			font-weight: 700;
+			cursor: pointer;
+			transition: .2s;
+		}
+		.google-btn:hover {
+			border-color: #ccc;
+			box-shadow: 0 4px 14px rgba(0,0,0,.08);
+		}
+		.cuenta-recordada {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			border: 1px solid var(--border);
+			border-radius: 14px;
+			padding: 12px 14px;
+			margin-bottom: 20px;
+			background: #fff9fb;
+		}
+		.cuenta-avatar {
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			background: linear-gradient(135deg, #fff0f5, #ffe4ee);
+			border: 1px solid #f5c9db;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 19px;
+			flex-shrink: 0;
+		}
+		.cuenta-info {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 3px;
+			overflow: hidden;
+		}
+		.cuenta-email {
+			font-size: 14px;
+			font-weight: 700;
+			color: var(--dark);
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			max-width: 260px;
+		}
+		.cuenta-info button {
+			border: 0;
+			background: none;
+			padding: 0;
+			color: var(--pink);
+			font-size: 13px;
+			font-weight: 700;
+			cursor: pointer;
+		}
+		.cuenta-info button:hover { text-decoration: underline; }
+	</style>
+</head>
+
+<body>
+
+<div class="fondo-carteritas" aria-hidden="true">
+    <span>👜</span><span>👛</span><span>👜</span><span>👝</span>
+    <span>👜</span><span>👛</span><span>👝</span><span>👜</span>
+    <span>👛</span><span>👜</span><span>👝</span><span>👜</span>
+</div>
+
+<div class="topbar">
+  <div class="topbar-movimiento">
+    <span>🚚 Envíos a todo Chile por Starken y Bluexpress</span>
+    <span>✨ Mínimo de compra: 20.000</span>
+    <span>♡ Productos con amor</span>
+    <span>🛍️ !Ofertas especiales¡</span>
+  </div>
+</div>
+
+<header>
+  <div class="nav">
+    <a class="brand" href="index.html" aria-label="Blessed.Carteras inicio">
+		<img class="logo" src="img/Logo_blessed.jpg" alt="BlessedCarteras">
+      <div class="brand-name"><span class="pink">Blessed</span>Carteras</div>
+    </a>
+  </div>
+</header>
+
+<main>
+  <div class="registro-wrap">
+    <div class="registro-card">
+      <div class="heart">♡</div>
+      <h1>Inicia <span>sesión</span></h1>
+      <p>Qué bueno tenerte de vuelta.</p>
+
+      <form id="formLogin">
+        <!-- Vista cuando ya hay un correo guardado -->
+        <div class="cuenta-recordada" id="cuentaRecordada" style="display:none;">
+          <div class="cuenta-avatar">👤</div>
+          <div class="cuenta-info">
+            <span class="cuenta-email" id="cuentaEmailTexto"></span>
+            <button type="button" id="btnCambiarCuenta">Cambiar cuenta</button>
+          </div>
+        </div>
+
+        <div class="campo" id="campoEmail">
+          <label for="email">Correo electrónico</label>
+          <input type="email" id="email" name="email" placeholder="tucorreo@ejemplo.com" required>
+        </div>
+
+        <div class="campo">
+          <label for="contrasena">Contraseña</label>
+          <input type="password" id="contrasena" name="contrasena" placeholder="Tu contraseña" required>
+        </div>
+
+        <button type="submit" class="registro-btn" id="btnLogin">Iniciar sesión ✨</button>
+
+        <div class="registro-msg" id="loginMsg"></div>
+      </form>
+
+      <div class="separador-o">o</div>
+
+      <a href="/auth/google" class="google-btn">
+        <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" width="20" height="20">
+        Continuar con Google
+      </a>
+
+      <div class="registro-footer" style="margin-top:22px;">
+        <a href="olvide-contrasena.html">¿Olvidaste tu contraseña?</a>
+        <a href="registro.html">Crear cuenta</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-bottom">© <span id="year"></span> BlessedCarteras. Todos los derechos reservados. | Hecho con ♡ para ti</div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const form = document.getElementById('formLogin');
+  const btn = document.getElementById('btnLogin');
+  const msg = document.getElementById('loginMsg');
+  const campoEmail = document.getElementById('campoEmail');
+  const emailInput = document.getElementById('email');
+  const cuentaRecordada = document.getElementById('cuentaRecordada');
+  const cuentaEmailTexto = document.getElementById('cuentaEmailTexto');
+  const btnCambiarCuenta = document.getElementById('btnCambiarCuenta');
+
+  const API_URL = '/api/login';
+
+  // Si hay un correo guardado de una sesión o registro anterior, lo mostramos fijo
+  function mostrarCuentaRecordada(email) {
+    emailInput.value = email;
+    cuentaEmailTexto.textContent = email;
+    cuentaRecordada.style.display = 'flex';
+    campoEmail.style.display = 'none';
+    document.getElementById('contrasena').focus();
+  }
+
+  function mostrarFormularioCompleto() {
+    cuentaRecordada.style.display = 'none';
+    campoEmail.style.display = 'block';
+    emailInput.value = '';
+    emailInput.focus();
+  }
+
+  const emailGuardado = localStorage.getItem('ultimo_email');
+  if (emailGuardado) {
+    mostrarCuentaRecordada(emailGuardado);
+  }
+
+  btnCambiarCuenta.addEventListener('click', () => {
+    localStorage.removeItem('ultimo_email');
+    mostrarFormularioCompleto();
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    msg.className = 'registro-msg';
+    msg.textContent = '';
+    btn.disabled = true;
+    btn.textContent = 'Entrando...';
+
+    const datos = {
+      email: document.getElementById('email').value.trim(),
+      contrasena: document.getElementById('contrasena').value
+    };
+
+    try {
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datos)
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        msg.className = 'registro-msg ok';
+        msg.textContent = `¡Bienvenida/o de nuevo, ${data.usuario.nombre_completo}! 💗`;
+        // Guarda una sesión simple en el navegador (mejorable más adelante)
+        sessionStorage.setItem('usuario', JSON.stringify(data.usuario));
+        localStorage.setItem('ultimo_email', datos.email);
+        setTimeout(() => { window.location.href = 'index.html'; }, 1200);
+      } else {
+        msg.className = 'registro-msg error';
+        msg.textContent = data.error || 'No se pudo iniciar sesión.';
+      }
+    } catch (err) {
+      msg.className = 'registro-msg error';
+      msg.textContent = 'No se pudo conectar con el servidor. Intenta más tarde.';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Iniciar sesión ✨';
+    }
+  });
+</script>
+
+</body>
+</html>

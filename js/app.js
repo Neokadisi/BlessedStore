@@ -541,6 +541,17 @@ function checkoutWhatsApp() {
   }
 
   let text = "Hola BlessedCarteras 💗\n\n";
+
+  // Si el cliente inició sesión, agregamos su nombre al mensaje
+  try {
+    const usuarioGuardado = JSON.parse(sessionStorage.getItem("usuario") || "null");
+    if (usuarioGuardado && usuarioGuardado.nombre_completo) {
+      text += `👤 *Cliente:* ${usuarioGuardado.nombre_completo}\n\n`;
+    }
+  } catch (e) {
+    // si algo falla leyendo el usuario, seguimos sin el nombre
+  }
+
   text += "🛍️ *QUIERO REALIZAR ESTE PEDIDO*\n\n";
   text += "📦 *PRODUCTOS*\n\n";
 

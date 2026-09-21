@@ -233,6 +233,8 @@
         msg.textContent = '¡Cuenta creada con éxito! Bienvenida/o a BlessedCarteras 💗';
         localStorage.setItem('ultimo_email', datos.email);
         form.reset();
+
+        setTimeout(() => { window.location.href = 'login.html'; }, 1500);
       } else {
         msg.className = 'registro-msg error';
         msg.textContent = data.error || 'Ocurrió un error al crear tu cuenta.';

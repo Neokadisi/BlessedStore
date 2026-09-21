@@ -573,7 +573,7 @@ function checkoutWhatsApp() {
   text += "━━━━━━━━━━━━━━\n";
   text += `💰 *TOTAL: ${money(total)}*\n`;
   text += "━━━━━━━━━━━━━━\n\n";
-  text += "💗 *Listo bella*, una vez confirmado su pedido me manda fotito de la transferencia o depósito y sus datos de envío, y estamos OK.\n\n";
+  text += "💗 *Listo bella*, una vez confirmado su pedido envia fotito de la transferencia o depósito y sus datos de envío, y estamos OK.\n\n";
   text += "🥰 *Muchas gracias por comprar en BlessedCarteras.*";
 
   const numeroWhatsApp = "56968762137";

@@ -573,7 +573,9 @@ function checkoutWhatsApp() {
   text += "━━━━━━━━━━━━━━\n";
   text += `💰 *TOTAL: ${money(total)}*\n`;
   text += "━━━━━━━━━━━━━━\n\n";
-  text += "💗 *Listo bella*, una vez confirmado su pedido envia fotito de la transferencia o depósito y sus datos de envío, y estamos OK.\n\n";
+  text += "💗 *¡Listo!*, una vez confirmado su pedido envíanos fotito del depósito o transferencia y tus datos de envío.\n\n";
+  text += "🚚 *Enviaremos tu pedido por Starken o Bluexpress y te compartiremos el número de seguimiento.*\n";
+  text += "✦ *WhatsApp: +56 9 6876 2137* | Mínimo de compra: \$20.000\n\n";
   text += "🥰 *Muchas gracias por comprar en BlessedCarteras.*";
 
   const numeroWhatsApp = "56968762137";

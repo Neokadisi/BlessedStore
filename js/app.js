@@ -164,6 +164,25 @@ function wholesalePrice(p) {
   return p.precioMayorista || p.price;
 }
 
+/* ===== CYBER: helpers (usan las funciones de cyber.js; si no cargó, todo funciona con precio normal) ===== */
+function cyberOn() {
+  return typeof cyberActivo === "function" && cyberActivo();
+}
+
+function unitPrice(base) {
+  return typeof precioCyber === "function" ? precioCyber(base) : base;
+}
+
+function priceHTML(base) {
+  return typeof precioHTML === "function" ? precioHTML(base) : money(base);
+}
+
+function cartTotals() {
+  const normal = cart.reduce((s, x) => s + x.price * x.qty, 0);
+  const total = cart.reduce((s, x) => s + unitPrice(x.price) * x.qty, 0);
+  return { normal, total, ahorro: normal - total };
+}
+
 /* =========================================================
    PRODUCTOS: filtrado + renderizado
    ========================================================= */
@@ -173,7 +192,7 @@ function getFilteredProducts() {
     if (activeCategory === "todos") {
       matchesCategory = true;
     } else if (activeCategory === "ofertas") {
-      matchesCategory = p.onSale === true;
+      matchesCategory = p.onSale === true || cyberOn();
     } else {
       matchesCategory = p.category === activeCategory;
     }
@@ -296,6 +315,7 @@ function productCard(p, index) {
       </div>
       <span class="product-num">${num}</span>
       ${needsPrice(p) ? '<span class="badge-new">POR DEFINIR</span>' : ""}
+      ${cyberOn() && !needsPrice(p) ? `<span class="badge-cyber">⚡ -${CYBER.descuento}%</span>` : ""}
       <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(p.name)}" onerror="placeholderImg(this)">
     </div>
     ${galleryHtml}
@@ -307,7 +327,7 @@ function productCard(p, index) {
       <div class="product-prices">
         <div class="wholesale-box">
           <span class="wholesale-label">✦ PRECIO MAYORISTA</span>
-          <strong class="wholesale-price">${money(wholesalePrice(p))}</strong>
+          <strong class="wholesale-price">${priceHTML(wholesalePrice(p))}</strong>
         </div>
       </div>
       <div class="product-actions">
@@ -367,7 +387,7 @@ function openProduct(id) {
   document.getElementById("modalProductName").textContent = p.name;
   document.getElementById("modalProductCode").textContent = p.code ? `Código: ${p.code}` : "Producto BlessedCarteras";
   document.getElementById("modalProductMeasures").textContent = p.measures ? `Medidas: ${p.measures}` : "Producto seleccionado de nuestra colección.";
-  document.getElementById("modalProductPrice").textContent = needsPrice(p) ? "Precio por definir" : money(wholesalePrice(p));
+  document.getElementById("modalProductPrice").innerHTML = needsPrice(p) ? "Precio por definir" : priceHTML(wholesalePrice(p));
 
   const cartBtn = document.getElementById("modalCartButton");
   if (needsPrice(p)) {
@@ -489,7 +509,7 @@ function renderCart() {
   } else {
     box.innerHTML = cart.map(x => {
       const tipoPrecio = x.tipoPrecio === "wholesale" ? "✦ PRECIO MAYORISTA" : "✦ PRECIO DETALLE";
-      const subtotal = x.price * x.qty;
+      const subtotal = unitPrice(x.price) * x.qty;
 
       return `
         <div class="cart-item">
@@ -501,7 +521,7 @@ function renderCart() {
               : ""}
             <div class="cart-price-detail">
               <div class="cart-price-type">${tipoPrecio}</div>
-              <div class="cart-selected-price">Precio: <strong>${money(x.price)}</strong></div>
+              <div class="cart-selected-price">Precio: <strong>${priceHTML(x.price)}</strong></div>
             </div>
             <div class="cart-subtotal">Subtotal: <strong>${money(subtotal)}</strong></div>
             <div class="qty">
@@ -516,9 +536,9 @@ function renderCart() {
     }).join("");
   }
 
-  const total = cart.reduce((s, x) => s + x.price * x.qty, 0);
+  const { total, ahorro } = cartTotals();
   const totalEl = document.getElementById("cartTotal");
-  if (totalEl) totalEl.textContent = "Total: " + money(total);
+  if (totalEl) totalEl.textContent = "Total: " + money(total) + (ahorro > 0 ? ` · ⚡ Ahorras ${money(ahorro)}` : "");
 }
 
 function openCart() {
@@ -552,11 +572,12 @@ function checkoutWhatsApp() {
     // si algo falla leyendo el usuario, seguimos sin el nombre
   }
 
+  if (cyberOn()) text += `⚡ *PEDIDO CYBER (-${CYBER.descuento}%)*\n\n`;
   text += "🛍️ *QUIERO REALIZAR ESTE PEDIDO*\n\n";
   text += "📦 *PRODUCTOS*\n\n";
 
   cart.forEach(x => {
-    const subtotal = x.price * x.qty;
+    const subtotal = unitPrice(x.price) * x.qty;
     const tipoPrecio = x.tipoPrecio === "wholesale" ? "✦ Precio Mayorista" : "✦ Precio Detalle";
 
     text += `👜 *${x.name}*\n`;
@@ -564,14 +585,15 @@ function checkoutWhatsApp() {
       text += `   🎨 Color: ${x.colorSeleccionado}\n`;
     }
     text += `   ${tipoPrecio}\n`;
-    text += `   Precio: ${money(x.price)}\n`;
+    text += `   Precio: ${money(unitPrice(x.price))}` + (cyberOn() ? ` ⚡ (antes ${money(x.price)})` : "") + "\n";
     text += `   Cantidad: ${x.qty}\n`;
     text += `   Subtotal: ${money(subtotal)}\n\n`;
   });
 
-  const total = cart.reduce((s, x) => s + x.price * x.qty, 0);
+  const { total, ahorro } = cartTotals();
   text += "━━━━━━━━━━━━━━\n";
   text += `💰 *TOTAL: ${money(total)}*\n`;
+  if (ahorro > 0) text += `⚡ *Ahorro Cyber: ${money(ahorro)}*\n`;
   text += "━━━━━━━━━━━━━━\n\n";
   text += "💗 *¡Listo!*, una vez confirmado su pedido envíanos fotito del depósito o transferencia y tus datos de envío.\n\n";
   text += "🚚 *Enviaremos tu pedido por Starken o Bluexpress y te compartiremos el número de seguimiento.*\n";
@@ -793,7 +815,7 @@ function updateZoomImage(id) {
   }
   if (price) {
     price.textContent = hasProductPrice(product)
-      ? `✦ PRECIO MAYORISTA · ${money(wholesalePrice(product))}`
+      ? `✦ PRECIO MAYORISTA · ${money(unitPrice(wholesalePrice(product)))}${cyberOn() ? " · ⚡ Cyber" : ""}`
       : "Precio por definir";
   }
 }

@@ -1,0 +1,59 @@
+/* =========================================================
+   CYBER · estilos (cargar después de styles.css)
+   ========================================================= */
+#cyber-banner {
+  display: none; /* lo muestra cyber.js solo cuando corresponde */
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  padding: 10px 12px;
+  background: linear-gradient(90deg, #1b1b1f, #3a1a2b);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+}
+#cyber-banner strong { color: #ffd166; letter-spacing: 1px; }
+.cyber-reloj { display: inline-flex; align-items: center; gap: 8px; }
+.cyber-reloj small { font-size: 12px; opacity: .85; text-transform: uppercase; letter-spacing: .5px; }
+#cyber-timer {
+  background: #f85b8b;
+  color: #fff;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Precios */
+.precio-antes {
+  text-decoration: line-through;
+  color: #999;
+  font-weight: 500;
+  font-size: .8em;
+  margin-right: 6px;
+}
+.precio-cyber { color: #d63384; font-weight: 800; }
+.wholesale-price .precio-antes { display: block; font-size: 11px; margin: 0 0 2px; }
+
+/* Etiqueta sobre la foto del producto */
+.badge-cyber {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 4;
+  background: #1b1b1f;
+  color: #ffd166;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font: 700 12px Arial;
+  letter-spacing: .5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, .25);
+}
+
+@media (max-width: 480px) {
+  #cyber-banner { font-size: 12px; padding: 8px 10px; gap: 4px 10px; }
+  .wholesale-price .precio-antes { font-size: 10px; }
+  .badge-cyber { font-size: 11px; padding: 3px 9px; }
+}

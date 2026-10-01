@@ -126,6 +126,79 @@ window.productGalleryIndex = window.productGalleryIndex || {};
 window.zoomGalleryIndex = window.zoomGalleryIndex || 0;
 
 /* =========================================================
+   STOCK
+   Número = unidades disponibles | 0 = AGOTADO | null = sin control (se muestra normal)
+   Para actualizar: cambia los números y vuelve a subir app.js
+   ========================================================= */
+const LOW_STOCK = 5; // con este número o menos se muestra "¡Quedan N!"
+
+const STOCK = {
+  101: 0, // Billeteras artesanal 01
+  102: null, // Estuche Cosmetiquero 02
+  103: null, // Cross Body 03
+  104: null, // Cross Body 04
+  105: null, // Cartera Sobre 05
+  106: null, // Estuche Cosmetiquero Vintage 06
+  107: null, // Estuche Cosmetiquero XL 07
+  108: null, // Estuche Cosmetiquero XL 08
+  144: null, // Porta Celular 09
+  145: null, // Billetera Peluda 10
+  146: null, // Billetera estilo Sobre 11
+  147: null, // Billetera Grande 12
+  148: null, // Mini Estuche unicornio 13
+  149: null, // Billetra de Hombre 14
+  150: null, // Billetera Nicol Lee 15
+  151: null, // Estuche Cosmetiquero 16
+  152: null, // Estuche Cosmetiquero 17
+  153: null, // Billetera Elefante 18
+  154: null, // Estuche Cosmetiquero 19
+  155: null, // Estuche Cosmetiquero 20
+  157: null, // Mini Billetera Lentejuela 21
+  158: null, // Billetera Peluda 22
+  159: null, // Billetera peluda Mariposa 23
+  160: null, // Billetera Peluda 24
+  161: null, // Billetera Peluda Gatito 25
+  162: null, // Billetera Boutique 26
+  1: null, // Porta Celulares boutique 27
+  2: null, // Cartera boutique brillo 28
+  3: null, // Bolso Inspiracion 29
+  4: null, // Bandolera Impermiable 30
+  5: null, // 2 en 1 Cartera Mochila 31
+  11: null, // Cartera Pinko 32
+  12: null, // Mini bags 33
+  13: null, // Mochila Inspiracion 34
+  14: null, // Cartera Chanel 35
+  15: null, // Bolso notebook hombre 36
+  16: null, // Bandolera kipling + llavero 37
+  17: null, // Bolso hombre 38
+  18: null, // Cartera boutique 39
+  19: null, // Cartera nicol lee 40
+  20: null, // Cross body 41
+  22: null, // Cartera de fiesta 42
+};
+
+function getStock(p) {
+  const s = STOCK[p.id];
+  return (s === undefined || s === null) ? null : Number(s);
+}
+
+function isSoldOut(p) {
+  return getStock(p) === 0;
+}
+
+function cartQtyFor(id) {
+  return cart.filter(x => x.id === id).reduce((s, x) => s + x.qty, 0);
+}
+
+function stockLabelHTML(p) {
+  const s = getStock(p);
+  if (s === null) return "";
+  if (s === 0) return '<span class="stock-tag stock-out">Agotado</span>';
+  if (s <= LOW_STOCK) return `<span class="stock-tag stock-low">¡Quedan ${s}!</span>`;
+  return '<span class="stock-tag stock-ok">✓ Disponible</span>';
+}
+
+/* =========================================================
    UTILIDADES
    ========================================================= */
 function money(n) {
@@ -289,6 +362,7 @@ function goToPage(page) {
 function productCard(p, index) {
   const saved = favorites.includes(p.id);
   const productNeedsPrice = needsPrice(p);
+  const soldOut = isSoldOut(p);
   const currentIndex = window.productGalleryIndex[p.id] || 0;
   const imgSrc = p.variantes ? p.variantes[currentIndex].img : p.img;
   const num = String(index).padStart(2, "0");
@@ -306,7 +380,7 @@ function productCard(p, index) {
       </div>
   ` : "";
 
-  return `<article class="product">
+  return `<article class="product${soldOut ? " agotado" : ""}">
     <div class="product-img" onclick="${p.variantes ? `openProductImage(${p.id})` : `openProduct(${p.id})`}">
       <div class="product-top">
         <button class="favorite-btn ${saved ? "saved" : ""}"
@@ -315,14 +389,15 @@ function productCard(p, index) {
       </div>
       <span class="product-num">${num}</span>
       ${needsPrice(p) ? '<span class="badge-new">POR DEFINIR</span>' : ""}
-      ${cyberOn() && !needsPrice(p) ? `<span class="badge-cyber">⚡ -${CYBER.descuento}%</span>` : ""}
+      ${cyberOn() && !needsPrice(p) && !soldOut ? `<span class="badge-cyber">⚡ -${CYBER.descuento}%</span>` : ""}
+      ${soldOut ? '<span class="badge-agotado">AGOTADO</span>' : ""}
       <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(p.name)}" onerror="placeholderImg(this)">
     </div>
     ${galleryHtml}
     <div class="product-info">
       <h3>${escapeHtml(p.name)}</h3>
       <div class="product-meta">
-        <span class="product-code">${p.code ? "Código " + escapeHtml(p.code) : "Blessed"}</span>
+        <span class="product-code">${p.code ? "Código " + escapeHtml(p.code) : "Blessed"}</span>${stockLabelHTML(p)}
       </div>
       <div class="product-prices">
         <div class="wholesale-box">
@@ -333,7 +408,9 @@ function productCard(p, index) {
       <div class="product-actions">
         ${productNeedsPrice
           ? '<button class="product-btn" disabled style="opacity:.55;cursor:not-allowed">Próximamente</button>'
-          : `<button class="product-btn" onclick="addToCart(${p.id})">Agregar 🛍️</button>`}
+          : soldOut
+            ? '<button class="product-btn" disabled style="opacity:.55;cursor:not-allowed">Agotado</button>'
+            : `<button class="product-btn" onclick="addToCart(${p.id})">Agregar 🛍️</button>`}
         <button class="details-btn" onclick="openProduct(${p.id})">Ver</button>
       </div>
     </div>
@@ -390,11 +467,15 @@ function openProduct(id) {
   document.getElementById("modalProductPrice").innerHTML = needsPrice(p) ? "Precio por definir" : priceHTML(wholesalePrice(p));
 
   const cartBtn = document.getElementById("modalCartButton");
+  cartBtn.disabled = isSoldOut(p) && !needsPrice(p);
   if (needsPrice(p)) {
     cartBtn.textContent = "💗 Consultar por WhatsApp";
     cartBtn.onclick = () => {
       window.open("https://wa.me/56968762137?text=" + encodeURIComponent(`Hola BlessedCarteras 💗 quiero consultar por "${p.name}"`), "_blank");
     };
+  } else if (isSoldOut(p)) {
+    cartBtn.textContent = "Agotado";
+    cartBtn.onclick = null;
   } else {
     cartBtn.textContent = "🛍️ Agregar al carrito";
     cartBtn.onclick = () => addToCart(p.id);
@@ -431,6 +512,17 @@ function addToCart(id) {
 
   if (needsPrice(p)) {
     alert("Este producto está próximo a publicarse. Contáctanos por WhatsApp 💗");
+    return;
+  }
+
+  if (isSoldOut(p)) {
+    alert("Este producto está agotado por ahora 💗");
+    return;
+  }
+
+  const stockDisponible = getStock(p);
+  if (stockDisponible !== null && cartQtyFor(id) + 1 > stockDisponible) {
+    alert(`Solo quedan ${stockDisponible} unidad${stockDisponible === 1 ? "" : "es"} de este producto 💗`);
     return;
   }
 
@@ -473,6 +565,15 @@ function saveCart() {
 function changeQty(id, delta) {
   const item = cart.find(x => x.id === id);
   if (!item) return;
+
+  if (delta > 0) {
+    const prod = products.find(x => x.id === id);
+    const stockMax = prod ? getStock(prod) : null;
+    if (stockMax !== null && cartQtyFor(id) + delta > stockMax) {
+      alert(`Solo quedan ${stockMax} unidad${stockMax === 1 ? "" : "es"} de este producto 💗`);
+      return;
+    }
+  }
 
   item.qty += delta;
 
@@ -557,6 +658,19 @@ function closeCart() {
 function checkoutWhatsApp() {
   if (!cart.length) {
     alert("Tu carrito está vacío 💗");
+    return;
+  }
+
+  const sinStock = [...new Set(cart.map(x => x.id))]
+    .map(id => products.find(p => p.id === id))
+    .filter(p => p && getStock(p) !== null && cartQtyFor(p.id) > getStock(p));
+
+  if (sinStock.length) {
+    alert(
+      "Algunos productos de tu carrito ya no tienen stock suficiente 💗\n\n" +
+      sinStock.map(p => `• ${p.name}: ${getStock(p) === 0 ? "agotado" : "quedan " + getStock(p)}`).join("\n") +
+      "\n\nAjusta las cantidades y vuelve a intentar."
+    );
     return;
   }
 

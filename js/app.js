@@ -737,15 +737,6 @@ document.querySelectorAll(".navlinks a").forEach(a => {
   });
 });
 
-/* =========================================================
-   OPINIONES
-   ========================================================= */
-async function renderReviews() {
-  const box = document.getElementById("reviewsList");
-  if (!box) return;
-
-  box.innerHTML = '<p class="empty-reviews">Cargando opiniones... 💗</p>';
-
   // Intentar cargar desde backend
   try {
     const response = await fetch(apiUrl('/api/opiniones'));

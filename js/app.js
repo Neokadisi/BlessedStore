@@ -2,6 +2,12 @@
    JAVASCRIPT: comportamiento y funcionalidades de BlessedCarteras
    ========================================================= */
 
+// URL base del backend (vacío = mismo dominio). Si tu backend está en otro dominio, ponlo aquí.
+const API_BASE = "";
+function apiUrl(path) {
+  return API_BASE + path;
+}
+
 const products = [
   // ===== PRODUCTOS NUEVOS (precios y colores por definir) =====
   { id: 101, name: "Billeteras artesanal 01", price: 1200, precioMayorista: 1200, category: "billeteras",   img: "img/nueva-01.jpg", pendiente: true },
@@ -197,6 +203,35 @@ function stockLabelHTML(p) {
   if (s <= LOW_STOCK) return `<span class="stock-tag stock-low">¡Quedan ${s}!</span>`;
   return '<span class="stock-tag stock-ok">✓ Disponible</span>';
 }
+
+/* =========================================================
+   ESTILOS DE STOCK (etiqueta AGOTADO, "Quedan N", etc.)
+   ========================================================= */
+(function injectStockStyles() {
+  if (document.getElementById("stock-style")) return;
+  const st = document.createElement("style");
+  st.id = "stock-style";
+  st.textContent = `
+    .product .badge-agotado{
+      position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+      background:rgba(40,40,40,.82); color:#fff;
+      padding:8px 22px; border-radius:30px;
+      font-size:.85rem; font-weight:800; letter-spacing:2px;
+      z-index:3; pointer-events:none; white-space:nowrap;
+      box-shadow:0 4px 14px rgba(0,0,0,.25);
+    }
+    .product.agotado .product-img img{ filter:grayscale(.85); opacity:.55; }
+    .product.agotado .product-info h3{ color:#777; }
+    .product.agotado .wholesale-price{ text-decoration:line-through; color:#999; }
+    .product .stock-tag{
+      font-size:.72rem; font-weight:700; padding:3px 9px; border-radius:20px; white-space:nowrap;
+    }
+    .product .stock-out{ background:#eee; color:#777; }
+    .product .stock-low{ background:#fff0d6; color:#b25e00; }
+    .product .stock-ok { background:#e3f7e8; color:#1f7a3a; }
+  `;
+  document.head.appendChild(st);
+})();
 
 /* =========================================================
    UTILIDADES
@@ -640,6 +675,8 @@ function renderCart() {
   const { total, ahorro } = cartTotals();
   const totalEl = document.getElementById("cartTotal");
   if (totalEl) totalEl.textContent = "Total: " + money(total) + (ahorro > 0 ? ` · ⚡ Ahorras ${money(ahorro)}` : "");
+
+  renderShippingLink();
 }
 
 function openCart() {
@@ -650,6 +687,230 @@ function openCart() {
 function closeCart() {
   document.getElementById("cartDrawer")?.classList.remove("open");
   document.getElementById("backdrop")?.classList.remove("open");
+}
+
+/* =========================================================
+   DATOS DE ENVÍO (se piden en el carrito antes de enviar el pedido)
+   ========================================================= */
+const REGIONES = [
+  "Arica y Parinacota", "Tarapacá", "Antofagasta", "Atacama", "Coquimbo",
+  "Valparaíso", "Metropolitana de Santiago", "Libertador General Bernardo O'Higgins",
+  "Maule", "Ñuble", "Biobío", "La Araucanía", "Los Ríos", "Los Lagos",
+  "Aysén del General Carlos Ibáñez del Campo", "Magallanes y de la Antártica Chilena"
+];
+
+const METODOS_ENVIO = {
+  starken:    "Starken (retiro en agencia)",
+  bluexpress: "Bluexpress (retiro en agencia)",
+  domicilio:  "Despacho a domicilio"
+};
+
+function getShipping() {
+  try { return JSON.parse(localStorage.getItem("blessed_shipping") || "null"); }
+  catch (e) { return null; }
+}
+
+function shippingComplete(s) {
+  if (!s || !s.nombre || !s.telefono || !s.metodo || !s.region || !s.comuna) return false;
+  return s.metodo === "domicilio" ? !!s.direccion : !!s.agencia;
+}
+
+function ensureShippingUI() {
+  if (!document.getElementById("shipping-style")) {
+    const st = document.createElement("style");
+    st.id = "shipping-style";
+    st.textContent = `
+      #shippingLinkBox{margin:0 0 10px;text-align:center}
+      #shippingLinkBox .ship-link{background:none;border:0;color:#f85b8b;font-weight:700;font-size:.95rem;text-decoration:underline;cursor:pointer;padding:6px}
+      #shippingLinkBox .ship-summary{font-size:.85rem;color:#444;margin-bottom:4px;line-height:1.35}
+      #shippingLinkBox .ship-pending{font-size:.85rem;color:#b3261e;margin-bottom:2px}
+      #shippingModal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:10000;padding:14px}
+      #shippingModal.open{display:flex}
+      #shippingModal .ship-card{background:#fff;border-radius:18px;width:100%;max-width:440px;max-height:92vh;overflow-y:auto;padding:20px;box-shadow:0 10px 40px rgba(0,0,0,.3);position:relative}
+      #shippingModal h2{margin:0 0 4px;font-size:1.25rem;color:#f85b8b}
+      #shippingModal .ship-sub{margin:0 0 14px;font-size:.85rem;color:#666}
+      #shippingModal label{display:block;font-size:.85rem;font-weight:600;margin:10px 0 4px;color:#333}
+      #shippingModal input[type=text],#shippingModal input[type=tel],#shippingModal select,#shippingModal textarea{width:100%;box-sizing:border-box;padding:10px;border:1.5px solid #e5c6d1;border-radius:10px;font-size:1rem;font-family:inherit}
+      #shippingModal .ship-methods label{display:flex;align-items:center;gap:8px;font-weight:500;border:1.5px solid #e5c6d1;border-radius:10px;padding:10px;margin:6px 0;cursor:pointer}
+      #shippingModal .ship-methods input{accent-color:#f85b8b}
+      #shippingModal .ship-error{color:#b3261e;font-size:.85rem;margin-top:10px;min-height:1em}
+      #shippingModal .ship-actions{display:flex;gap:8px;margin-top:14px}
+      #shippingModal .ship-actions button{flex:1;padding:12px;border-radius:12px;border:0;font-weight:700;font-size:1rem;cursor:pointer}
+      #shippingModal .ship-save{background:#f85b8b;color:#fff}
+      #shippingModal .ship-cancel{background:#f3e3e9;color:#333}
+      #shippingModal .ship-close{position:absolute;top:8px;right:12px;background:none;border:0;font-size:1.6rem;cursor:pointer;color:#888}
+    `;
+    document.head.appendChild(st);
+  }
+
+  if (!document.getElementById("shippingLinkBox")) {
+    const foot = document.querySelector(".cart-foot");
+    if (foot) {
+      const linkBox = document.createElement("div");
+      linkBox.id = "shippingLinkBox";
+      const checkout = foot.querySelector(".checkout");
+      foot.insertBefore(linkBox, checkout || foot.firstChild);
+    }
+  }
+
+  if (!document.getElementById("shippingModal")) {
+    const modal = document.createElement("div");
+    modal.id = "shippingModal";
+    modal.innerHTML = `
+      <div class="ship-card" onclick="event.stopPropagation()">
+        <button type="button" class="ship-close" onclick="closeShippingForm()" aria-label="Cerrar">×</button>
+        <h2>📦 Datos de envío</h2>
+        <p class="ship-sub">Completa tus datos para coordinar el despacho de tu pedido.</p>
+        <form id="shippingForm" novalidate>
+          <label for="shipNombre">Nombre completo</label>
+          <input type="text" id="shipNombre" autocomplete="name" placeholder="Ej: María González Pérez">
+
+          <label for="shipTelefono">Teléfono / WhatsApp</label>
+          <input type="tel" id="shipTelefono" autocomplete="tel" placeholder="Ej: +56 9 1234 5678">
+
+          <label>¿Cómo quieres recibir tu pedido?</label>
+          <div class="ship-methods">
+            <label><input type="radio" name="shipMetodo" value="starken"> 🚚 Agencia Starken</label>
+            <label><input type="radio" name="shipMetodo" value="bluexpress"> 🚚 Agencia Bluexpress</label>
+            <label><input type="radio" name="shipMetodo" value="domicilio"> 🏠 Despacho a domicilio</label>
+          </div>
+
+          <label for="shipRegion">Región</label>
+          <select id="shipRegion">
+            <option value="">Selecciona tu región</option>
+            ${REGIONES.map(r => `<option value="${escapeHtml(r)}">${escapeHtml(r)}</option>`).join("")}
+          </select>
+
+          <label for="shipComuna">Comuna</label>
+          <input type="text" id="shipComuna" autocomplete="address-level2" placeholder="Ej: Maipú">
+
+          <div id="shipAgenciaWrap" style="display:none">
+            <label for="shipAgencia">Agencia / sucursal de retiro</label>
+            <input type="text" id="shipAgencia" placeholder="Ej: Sucursal Maipú centro">
+          </div>
+
+          <div id="shipDireccionWrap" style="display:none">
+            <label for="shipDireccion">Dirección (calle, número, depto/casa)</label>
+            <input type="text" id="shipDireccion" autocomplete="street-address" placeholder="Ej: Av. Las Rosas 1234, depto 56">
+          </div>
+
+          <label for="shipNotas">Observaciones (opcional)</label>
+          <textarea id="shipNotas" rows="2" placeholder="Ej: horario de entrega, referencias..."></textarea>
+
+          <div class="ship-error" id="shipError"></div>
+          <div class="ship-actions">
+            <button type="button" class="ship-cancel" onclick="closeShippingForm()">Cancelar</button>
+            <button type="submit" class="ship-save">Guardar datos</button>
+          </div>
+        </form>
+      </div>
+    `;
+    modal.addEventListener("click", closeShippingForm);
+    document.body.appendChild(modal);
+
+    modal.querySelectorAll('input[name="shipMetodo"]').forEach(r => {
+      r.addEventListener("change", toggleShippingFields);
+    });
+    modal.querySelector("#shippingForm").addEventListener("submit", saveShippingForm);
+  }
+
+  renderShippingLink();
+}
+
+function toggleShippingFields() {
+  const checked = document.querySelector('input[name="shipMetodo"]:checked');
+  const metodo = checked ? checked.value : "";
+  const ag = document.getElementById("shipAgenciaWrap");
+  const dir = document.getElementById("shipDireccionWrap");
+  if (ag)  ag.style.display  = (metodo === "starken" || metodo === "bluexpress") ? "block" : "none";
+  if (dir) dir.style.display = (metodo === "domicilio") ? "block" : "none";
+}
+
+function renderShippingLink() {
+  const box = document.getElementById("shippingLinkBox");
+  if (!box) return;
+
+  if (!cart.length) {
+    box.innerHTML = "";
+    return;
+  }
+
+  const s = getShipping();
+  if (shippingComplete(s)) {
+    const lugar = `${escapeHtml(s.comuna)}, ${escapeHtml(s.region)}`;
+    box.innerHTML = `
+      <div class="ship-summary">📦 <strong>${escapeHtml(METODOS_ENVIO[s.metodo] || "")}</strong><br>${lugar}</div>
+      <button type="button" class="ship-link" onclick="openShippingForm()">✏️ Editar datos de envío</button>`;
+  } else {
+    box.innerHTML = `
+      <div class="ship-pending">Falta completar tus datos de envío</div>
+      <button type="button" class="ship-link" onclick="openShippingForm()">📦 Completar datos de envío</button>`;
+  }
+}
+
+function openShippingForm() {
+  ensureShippingUI();
+  const s = getShipping() || {};
+
+  let nombrePorDefecto = "";
+  try {
+    const u = JSON.parse(sessionStorage.getItem("usuario") || "null");
+    if (u && u.nombre_completo) nombrePorDefecto = u.nombre_completo;
+  } catch (e) {}
+
+  document.getElementById("shipNombre").value    = s.nombre    || nombrePorDefecto;
+  document.getElementById("shipTelefono").value  = s.telefono  || "";
+  document.getElementById("shipRegion").value    = s.region    || "";
+  document.getElementById("shipComuna").value    = s.comuna    || "";
+  document.getElementById("shipAgencia").value   = s.agencia   || "";
+  document.getElementById("shipDireccion").value = s.direccion || "";
+  document.getElementById("shipNotas").value     = s.notas     || "";
+  document.querySelectorAll('input[name="shipMetodo"]').forEach(r => {
+    r.checked = (r.value === s.metodo);
+  });
+  document.getElementById("shipError").textContent = "";
+  toggleShippingFields();
+
+  document.getElementById("shippingModal").classList.add("open");
+}
+
+function closeShippingForm() {
+  const m = document.getElementById("shippingModal");
+  if (m) m.classList.remove("open");
+}
+
+function saveShippingForm(e) {
+  e.preventDefault();
+  const checked = document.querySelector('input[name="shipMetodo"]:checked');
+  const data = {
+    nombre:    document.getElementById("shipNombre").value.trim(),
+    telefono:  document.getElementById("shipTelefono").value.trim(),
+    metodo:    checked ? checked.value : "",
+    region:    document.getElementById("shipRegion").value,
+    comuna:    document.getElementById("shipComuna").value.trim(),
+    agencia:   document.getElementById("shipAgencia").value.trim(),
+    direccion: document.getElementById("shipDireccion").value.trim(),
+    notas:     document.getElementById("shipNotas").value.trim()
+  };
+
+  const err = document.getElementById("shipError");
+  const digitos = data.telefono.replace(/\D/g, "");
+
+  if (data.nombre.length < 3)  { err.textContent = "Escribe tu nombre completo."; return; }
+  if (digitos.length < 8)      { err.textContent = "Escribe un teléfono válido."; return; }
+  if (!data.metodo)            { err.textContent = "Elige cómo quieres recibir tu pedido."; return; }
+  if (!data.region)            { err.textContent = "Selecciona tu región."; return; }
+  if (!data.comuna)            { err.textContent = "Escribe tu comuna."; return; }
+  if (data.metodo === "domicilio" && !data.direccion) { err.textContent = "Escribe tu dirección de despacho."; return; }
+  if (data.metodo !== "domicilio" && !data.agencia)   { err.textContent = "Indica la agencia o sucursal donde retirarás."; return; }
+
+  // Solo guardamos lo que corresponde al método elegido
+  if (data.metodo === "domicilio") data.agencia = "";
+  else data.direccion = "";
+
+  localStorage.setItem("blessed_shipping", JSON.stringify(data));
+  renderShippingLink();
+  closeShippingForm();
 }
 
 /* =========================================================
@@ -671,6 +932,13 @@ function checkoutWhatsApp() {
       sinStock.map(p => `• ${p.name}: ${getStock(p) === 0 ? "agotado" : "quedan " + getStock(p)}`).join("\n") +
       "\n\nAjusta las cantidades y vuelve a intentar."
     );
+    return;
+  }
+
+  const envio = getShipping();
+  if (!shippingComplete(envio)) {
+    alert("Antes de enviar tu pedido, completa tus datos de envío 📦");
+    openShippingForm();
     return;
   }
 
@@ -709,7 +977,17 @@ function checkoutWhatsApp() {
   text += `💰 *TOTAL: ${money(total)}*\n`;
   if (ahorro > 0) text += `⚡ *Ahorro Cyber: ${money(ahorro)}*\n`;
   text += "━━━━━━━━━━━━━━\n\n";
-  text += "💗 *¡Listo!*, una vez confirmado su pedido envíanos fotito del depósito o transferencia y tus datos de envío.\n\n";
+  text += "📦 *DATOS DE ENVÍO*\n";
+  text += `   👤 Nombre: ${envio.nombre}\n`;
+  text += `   📱 Teléfono: ${envio.telefono}\n`;
+  text += `   🚚 Entrega: ${METODOS_ENVIO[envio.metodo]}\n`;
+  text += `   📍 Región: ${envio.region}\n`;
+  text += `   📍 Comuna: ${envio.comuna}\n`;
+  if (envio.metodo === "domicilio") text += `   🏠 Dirección: ${envio.direccion}\n`;
+  else text += `   🏢 Agencia: ${envio.agencia}\n`;
+  if (envio.notas) text += `   📝 Obs.: ${envio.notas}\n`;
+  text += "\n";
+  text += "💗 *¡Listo!*, una vez confirmado su pedido envíanos fotito del depósito o transferencia.\n\n";
   text += "🚚 *Enviaremos tu pedido por Starken o Bluexpress y te compartiremos el número de seguimiento.*\n";
   text += "✦ *WhatsApp: +56 9 6876 2137* | Mínimo de compra: \$20.000\n\n";
   text += "🥰 *Muchas gracias por comprar en BlessedCarteras.*";
@@ -736,6 +1014,16 @@ document.querySelectorAll(".navlinks a").forEach(a => {
     document.getElementById("navlinks")?.classList.remove("open");
   });
 });
+
+/* =========================================================
+   OPINIONES
+   ========================================================= */
+async function renderReviews() {
+  const box = document.getElementById("reviewsList")
+    || document.getElementById("reviews")
+    || document.getElementById("reviewsBox")
+    || document.getElementById("reviewList");
+  if (!box) return; // si la página no tiene sección de opiniones, no hace nada
 
   // Intentar cargar desde backend
   try {
@@ -963,6 +1251,7 @@ document.addEventListener("keydown", e => {
     closeProductModal();
     closeCart();
     closeProductImage();
+    closeShippingForm();
   }
 });
 
@@ -973,10 +1262,172 @@ const yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 /* =========================================================
+   PUBLICIDAD CYBER (sección elegante + aviso en la barra superior)
+   Fechas: lunes 5 oct 2026 00:00 → miércoles 7 oct 2026 23:59 (hora de Chile)
+   ========================================================= */
+const CYBER_PROMO_INICIO = new Date("2026-10-05T00:00:00-03:00");
+const CYBER_PROMO_FIN    = new Date("2026-10-07T23:59:59-03:00");
+
+function cyberPromoEstado() {
+  const now = new Date();
+  if (cyberOn() || (now >= CYBER_PROMO_INICIO && now <= CYBER_PROMO_FIN)) return "activo";
+  if (now < CYBER_PROMO_INICIO) return "proximo";
+  return "terminado";
+}
+
+function cyberPromoDescuento() {
+  return (typeof CYBER !== "undefined" && CYBER && CYBER.descuento) ? Number(CYBER.descuento) : 0;
+}
+
+function cyberPromoStyles() {
+  if (!document.getElementById("cyber-fonts")) {
+    const l = document.createElement("link");
+    l.id = "cyber-fonts";
+    l.rel = "stylesheet";
+    l.href = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Great+Vibes&display=swap";
+    document.head.appendChild(l);
+  }
+  if (document.getElementById("cyber-promo-style")) return;
+  const st = document.createElement("style");
+  st.id = "cyber-promo-style";
+  st.textContent = `
+    #cyberPromo{
+      position:relative; overflow:hidden; text-align:center; color:#fff;
+      margin:28px auto; max-width:1180px; border-radius:26px;
+      padding:clamp(28px,5vw,56px) clamp(16px,4vw,40px);
+      background:radial-gradient(circle at 20% 15%, #7a1c47 0%, transparent 55%),
+                 radial-gradient(circle at 85% 90%, #b8325f 0%, transparent 50%),
+                 linear-gradient(135deg,#2b0d1c,#4a1230 55%,#2b0d1c);
+      box-shadow:0 14px 40px rgba(74,18,48,.35);
+      border:1.5px solid rgba(232,199,122,.55);
+      font-family:"Cormorant Garamond",Georgia,serif;
+    }
+    #cyberPromo::before,#cyberPromo::after{
+      content:"✦"; position:absolute; color:#e8c77a; opacity:.7; font-size:1.6rem;
+    }
+    #cyberPromo::before{ top:16px; left:22px; }
+    #cyberPromo::after { bottom:16px; right:22px; }
+    #cyberPromo .cp-eyebrow{
+      font-size:clamp(.85rem,2vw,1.05rem); letter-spacing:.38em; text-transform:uppercase;
+      color:#e8c77a; font-weight:600; margin-bottom:4px;
+    }
+    #cyberPromo .cp-title{
+      font-family:"Great Vibes","Cormorant Garamond",cursive; font-weight:400;
+      font-size:clamp(3rem,10vw,6rem); line-height:1.05; margin:0;
+      background:linear-gradient(90deg,#f6dc9a,#fff 45%,#e8c77a);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      text-shadow:0 2px 18px rgba(232,199,122,.25);
+    }
+    #cyberPromo .cp-off{
+      font-size:clamp(1.5rem,4.5vw,2.6rem); font-weight:700; margin:6px 0 2px; color:#ffd6e4;
+    }
+    #cyberPromo .cp-off b{ color:#e8c77a; font-size:1.25em; }
+    #cyberPromo .cp-dates{
+      font-size:clamp(1.05rem,2.6vw,1.35rem); font-style:italic; color:#f3dfe7; margin:0 0 20px;
+    }
+    #cyberPromo .cp-timer{
+      display:flex; justify-content:center; gap:clamp(8px,2vw,18px); margin:0 0 6px; flex-wrap:wrap;
+    }
+    #cyberPromo .cp-box{
+      min-width:clamp(62px,14vw,92px); padding:10px 8px; border-radius:14px;
+      background:rgba(255,255,255,.08); border:1px solid rgba(232,199,122,.45);
+    }
+    #cyberPromo .cp-box strong{ display:block; font-size:clamp(1.6rem,5vw,2.6rem); line-height:1; color:#fff; font-weight:700; }
+    #cyberPromo .cp-box small{ font-size:.78rem; letter-spacing:.18em; text-transform:uppercase; color:#e8c77a; }
+    #cyberPromo .cp-label{ font-size:1rem; letter-spacing:.22em; text-transform:uppercase; color:#e8c77a; margin:0 0 10px; }
+    #cyberPromo .cp-btn{
+      display:inline-block; margin-top:18px; padding:13px 34px; border-radius:40px;
+      background:linear-gradient(90deg,#e8c77a,#f6dc9a); color:#4a1230; text-decoration:none;
+      font-weight:700; font-size:1.1rem; letter-spacing:.06em; font-family:inherit;
+      box-shadow:0 6px 18px rgba(0,0,0,.3);
+    }
+    #cyberPromo .cp-note{ margin-top:14px; font-size:.98rem; color:#e9cbd7; }
+    .topbar-movimiento .cyber-topbar-item{ background:#4a1230; color:#f6dc9a !important; font-weight:800; padding:3px 16px; border-radius:20px; border:1px solid #e8c77a; letter-spacing:.04em; text-shadow:none; display:inline-block; }
+  `;
+  document.head.appendChild(st);
+}
+
+function cyberPromoTick() {
+  const sec = document.getElementById("cyberPromo");
+  if (!sec) return;
+
+  const estado = cyberPromoEstado();
+  if (estado !== sec.dataset.estado) { renderCyberPromo(); return; }
+
+  const objetivo = estado === "activo" ? CYBER_PROMO_FIN : CYBER_PROMO_INICIO;
+  let diff = Math.max(0, objetivo - new Date());
+  const d = Math.floor(diff / 86400000); diff %= 86400000;
+  const h = Math.floor(diff / 3600000);  diff %= 3600000;
+  const m = Math.floor(diff / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = String(v).padStart(2, "0"); };
+  set("cpD", d); set("cpH", h); set("cpM", m); set("cpS", s);
+}
+
+function renderCyberPromo() {
+  const prev = document.getElementById("cyberPromo");
+  const estado = cyberPromoEstado();
+
+  // Aviso en la barra superior (se desliza con los demás mensajes)
+  const bar = document.querySelector(".topbar-movimiento");
+  if (bar) {
+    const old = bar.querySelector(".cyber-topbar-item");
+    if (old) old.remove();
+    if (estado !== "terminado") {
+      const dsc = cyberPromoDescuento();
+      const s = document.createElement("span");
+      s.className = "cyber-topbar-item";
+      s.textContent = estado === "activo"
+        ? `⚡ CYBER BLESSED ¡YA ESTÁ AQUÍ!${dsc ? " · " + dsc + "% OFF" : ""} ⚡`
+        : `⚡ CYBER BLESSED · 5 al 7 de octubre${dsc ? " · hasta " + dsc + "% OFF" : ""} ⚡`;
+      bar.insertBefore(s, bar.firstChild);
+    }
+  }
+
+  if (estado === "terminado") { if (prev) prev.remove(); return; }
+
+  cyberPromoStyles();
+
+  const dsc = cyberPromoDescuento();
+  const off = dsc ? `<b>${dsc}%</b> de descuento` : "Descuentos <b>especiales</b>";
+  const html = `
+    <div class="cp-eyebrow">${estado === "activo" ? "Ya disponible" : "Edición especial · Muy pronto"}</div>
+    <h2 class="cp-title">Cyber Blessed</h2>
+    <div class="cp-off">${off} en toda la tienda</div>
+    <p class="cp-dates">Lunes 5 al miércoles 7 de octubre</p>
+    <div class="cp-label">${estado === "activo" ? "Termina en" : "Comienza en"}</div>
+    <div class="cp-timer">
+      <div class="cp-box"><strong id="cpD">00</strong><small>Días</small></div>
+      <div class="cp-box"><strong id="cpH">00</strong><small>Horas</small></div>
+      <div class="cp-box"><strong id="cpM">00</strong><small>Min</small></div>
+      <div class="cp-box"><strong id="cpS">00</strong><small>Seg</small></div>
+    </div>
+    <a class="cp-btn" href="#destacados">${estado === "activo" ? "Comprar ahora" : "Ver productos"} →</a>
+    <div class="cp-note">💗 Pedidos por WhatsApp · Mínimo de compra $20.000</div>
+  `;
+
+  let sec = prev;
+  if (!sec) {
+    sec = document.createElement("section");
+    sec.id = "cyberPromo";
+    const dest = document.getElementById("destacados");
+    if (dest && dest.parentNode) dest.parentNode.insertBefore(sec, dest);
+    else document.querySelector("main")?.appendChild(sec);
+  }
+  sec.dataset.estado = estado;
+  sec.innerHTML = html;
+
+  cyberPromoTick();
+  if (!window.__cyberPromoTimer) window.__cyberPromoTimer = setInterval(cyberPromoTick, 1000);
+}
+
+/* =========================================================
    RENDER INICIAL
    ========================================================= */
 // Asegurar que los productos se rendericen al cargar la página
 document.addEventListener("DOMContentLoaded", () => {
+  ensureShippingUI();
+  renderCyberPromo();
   renderProducts();
   renderCart();
   renderReviews();

@@ -1755,3 +1755,31 @@ body::after {
   .floating-wa::before { animation: none; }
   .floating-wa { bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
 }
+
+/* ===== MENÚ SUPERIOR AJUSTADO A CELULAR (evita que se ensanche la página) ===== */
+@media (max-width: 800px) {
+  .nav { padding: 8px 10px; gap: 6px; }
+  .brand { gap: 8px; min-width: 0; }
+  .logo { width: 46px; height: 46px; }
+  .brand-name { font-size: clamp(14px, 4.2vw, 22px); letter-spacing: -.5px; }
+  .actions { gap: 6px; }
+  .login-text-btn { padding: 6px 9px; font-size: 11px; }
+  .menu-btn { padding: 2px 4px; }
+}
+@media (max-width: 340px) {
+  .login-text-btn { padding: 5px 7px; font-size: 10px; }
+  .brand-name { font-size: 13px; }
+}
+
+/* ===== PASOS DE COMPRA EN PANTALLAS MUY ANGOSTAS ===== */
+@media (max-width: 380px) {
+  .process { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .step { min-width: 0; }
+  .step:last-child { grid-column: 1 / -1; }
+}
+
+/* ===== CARRITO CERRADO: sin sombra visible en la orilla derecha ===== */
+.cart-drawer:not(.open) {
+  box-shadow: none;
+  visibility: hidden;
+}

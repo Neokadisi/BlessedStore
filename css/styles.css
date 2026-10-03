@@ -1732,3 +1732,26 @@ body::after {
 @media (prefers-reduced-motion: reduce) {
   .floating-wa::before { animation: none; }
 }
+
+/* ===== OPTIMIZACIÓN PARA CELULAR (navegación más fluida) ===== */
+@media (max-width: 800px), (pointer: coarse) {
+  /* fondos animados: se quitan en celular porque repintan toda la pantalla en cada cuadro */
+  body { animation: none; background-size: 100% 100%; }
+  body::before { animation: none; }
+  body::after { display: none; }
+  .fondo-carteritas, .blessed-floaters { display: none; }
+
+  /* el desenfoque de fondo es muy pesado para el celular */
+  *, *::before, *::after {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  /* toques más rápidos y scroll directo */
+  a, button, input, select, textarea { touch-action: manipulation; }
+  html { scroll-behavior: auto; }
+
+  /* WhatsApp: sin animación de aro y respetando la barra inferior del celular */
+  .floating-wa::before { animation: none; }
+  .floating-wa { bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
+}

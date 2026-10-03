@@ -426,7 +426,7 @@ function productCard(p, index) {
       ${needsPrice(p) ? '<span class="badge-new">POR DEFINIR</span>' : ""}
       ${cyberOn() && !needsPrice(p) && !soldOut ? `<span class="badge-cyber">⚡ -${CYBER.descuento}%</span>` : ""}
       ${soldOut ? '<span class="badge-agotado">AGOTADO</span>' : ""}
-      <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(p.name)}" onerror="placeholderImg(this)">
+      <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(p.name)}" loading="lazy" decoding="async" onerror="placeholderImg(this)">
     </div>
     ${galleryHtml}
     <div class="product-info">
@@ -649,7 +649,7 @@ function renderCart() {
 
       return `
         <div class="cart-item">
-          <img src="${escapeHtml(x.img)}" onerror="placeholderImg(this)" alt="${escapeHtml(x.name)}">
+          <img src="${escapeHtml(x.img)}" loading="lazy" decoding="async" onerror="placeholderImg(this)" alt="${escapeHtml(x.name)}">
           <div class="cart-item-content">
             <strong>${escapeHtml(x.name)}</strong>
             ${x.colorSeleccionado
@@ -1393,6 +1393,14 @@ function cyberPromoStyles() {
       90%{ opacity:.5; }
       100%{ transform:translateY(-620px) rotate(200deg); opacity:0; }
     }
+    @media (max-width:800px){
+      #cyberPromo.cp-in{ animation:none; }
+      #cyberPromo.cp-in .cp-title{ animation:cpUp .8s .4s both cubic-bezier(.2,.8,.2,1); }
+      #cyberPromo.cp-in .cp-box:nth-child(4){ animation:cpPop .6s 1.45s both cubic-bezier(.3,1.5,.5,1); }
+      #cyberPromo.cp-in .cp-btn{ animation:cpUp .7s 1.6s both cubic-bezier(.2,.8,.2,1); }
+      #cyberPromo .cp-spark{ display:none; }
+      #cyberPromo::before, #cyberPromo::after{ animation:none; opacity:.7; }
+    }
     @media (prefers-reduced-motion:reduce){
       #cyberPromo, #cyberPromo *, #cyberPromo::before, #cyberPromo::after{ animation:none !important; transition:none !important; }
       #cyberPromo{ opacity:1; transform:none; }
@@ -1403,6 +1411,7 @@ function cyberPromoStyles() {
 }
 
 function cyberPromoTick() {
+  if (document.hidden) return;
   const sec = document.getElementById("cyberPromo");
   if (!sec) return;
 
@@ -1572,6 +1581,9 @@ document.addEventListener("DOMContentLoaded", () => {
       background:linear-gradient(90deg,#e8c77a,#ff6f9f,#e8c77a);
     }
 
+    @media (max-width:800px){
+      .rv[data-rv="zoom"].rv-in{ animation-name:rvUp; }
+    }
     @media (prefers-reduced-motion:reduce){
       .rv{ opacity:1 !important; }
       .rv.rv-in, .hero-content > *, .floating-wa, .inspiration .heart{ animation:none !important; }
@@ -1609,7 +1621,13 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   preparar();
-  new MutationObserver(programar).observe(document.body, { childList: true, subtree: true });
+  new MutationObserver((muts) => {
+    for (const m of muts) {
+      for (const n of m.addedNodes) {
+        if (n.nodeType === 1) { programar(); return; }
+      }
+    }
+  }).observe(document.body, { childList: true, subtree: true });
 
   // barra de progreso
   const bar = document.createElement('div');
@@ -1626,7 +1644,12 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   };
-  addEventListener('scroll', actualizar, { passive: true });
+  let rafScroll = false;
+  addEventListener('scroll', () => {
+    if (rafScroll) return;
+    rafScroll = true;
+    requestAnimationFrame(() => { rafScroll = false; actualizar(); });
+  }, { passive: true });
   addEventListener('resize', actualizar);
   actualizar();
 })();

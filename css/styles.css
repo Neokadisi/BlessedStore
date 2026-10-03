@@ -1644,3 +1644,91 @@ body::after {
   right: -4px;
   top: -4px;
 } 
+
+
+
+
+.card-reveal {
+  opacity: 0;
+  transform: translateY(40px) scale(0.96);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(.2,.8,.2,1);
+  transition-delay: var(--delay, 0ms);
+}
+
+.card-reveal.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Respeta a quienes tienen animaciones desactivadas */
+@media (prefers-reduced-motion: reduce) {
+  .card-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ===== BOTÓN "INICIAR SESIÓN" ===== */
+.login-text-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 18px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #fff0f5, #ffe4ee);
+  border: 1px solid #f5c9db;
+  color: var(--pink-deep);
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: .2s;
+}
+.login-text-btn:hover {
+  background: var(--pink);
+  border-color: var(--pink);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(248, 91, 139, .3);
+}
+@media (max-width: 800px) {
+  .login-text-btn { padding: 7px 10px; font-size: 11px; }
+}
+
+/* ===== WHATSAPP FLOTANTE (estilo oficial moderno) ===== */
+.floating-wa {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(145deg, #3be07f, #25D366 45%, #128C7E);
+  box-shadow: 0 8px 24px rgba(18, 140, 126, .45), inset 0 1px 2px rgba(255, 255, 255, .35);
+  transition: transform .25s, box-shadow .25s;
+}
+.floating-wa svg {
+  width: 36px;
+  height: 36px;
+  fill: #fff;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .2));
+}
+.floating-wa::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: waRing 2.2s ease-out infinite;
+}
+.floating-wa:hover {
+  transform: scale(1.1) rotate(-6deg);
+  box-shadow: 0 12px 30px rgba(18, 140, 126, .6), inset 0 1px 2px rgba(255, 255, 255, .35);
+}
+@keyframes waRing {
+  0%   { box-shadow: 0 0 0 0 rgba(37, 211, 102, .55); }
+  100% { box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
+}
+@media (max-width: 480px) {
+  .floating-wa { width: 56px; height: 56px; }
+  .floating-wa svg { width: 32px; height: 32px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .floating-wa::before { animation: none; }
+}
